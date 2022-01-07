@@ -1,0 +1,4 @@
+storage/**
+Gemfile.lock
+*.out
+credentials.hash

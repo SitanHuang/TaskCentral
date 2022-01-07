@@ -1,0 +1,10 @@
+{
+  "name": "TaskCentral",
+  "short_name": "TC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdfdfd",
+  "theme_color": "#8F7034",
+  "orientation": "portrait-primary",
+  "icons": []
+}

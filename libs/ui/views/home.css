@@ -1,0 +1,139 @@
+.content-container .home {
+  position: relative;
+  
+  --right-panel-width: max(450px, 45vw);
+}
+
+.task-container {
+  width: 100%;
+  min-height: 100%;
+  z-index: 1;
+  background-color: #fafafa;
+
+  /* fixes box-shadow spilling over to right panel */
+  overflow-x: hidden;
+}
+
+.task-detail {
+  display: none;
+  width: 100%;
+  z-index: 2;
+  min-height: 100%;
+
+  position: absolute;
+  right: 0;
+  top: 0;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+}
+
+@media screen and (min-width: 64em) {
+  .task-container {
+    width: calc(100vw - var(--right-panel-width));
+  }
+
+  .task-detail {
+    width: var(--right-panel-width);
+    display: block;
+  }
+}
+
+#add-form {
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 5px;
+  transition: all 300ms ease-out;
+}
+
+#add-form .input-row {
+  height: 1.9rem;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+#add-form .input-row > .input-wrapper {
+  flex-grow: 1;
+}
+
+#add-form.focus-within {
+  background-color: white;
+  border-color: transparent;
+  box-shadow:   0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+}
+
+#add-form > .detail-row {
+  display: block;
+  overflow: hidden;
+  height: 0;
+  transition: all 300ms ease-out;
+}
+
+#add-form.focus-within > .detail-row {
+  height: auto;
+  margin-top: 0.4rem;
+}
+
+#add-form .input-row > .input-wrapper > input {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  outline: none;
+  line-height: inherit;
+}
+
+#add-form .input-row > i.fa {
+  width: 33px;
+  text-align: center;
+  flex: 0 0 33px;
+  opacity: 0.25;
+}
+
+#add-form .input-row > * {
+  display: block;
+  line-height: 35px;
+}
+
+#add-form .date-due {
+  border: 1px solid #cdcdcd;
+  border-radius: 9px;
+  line-height: 2em;
+  padding: 0 0.5em;
+  cursor: pointer;
+  background-color: white;
+}
+
+#add-form .date-due:after {
+  content: '×';
+  color: rgba(0, 0, 0, 0.87);
+  margin-left: 3px;
+}
+
+#add-form .detail-row sub-title {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+#add-form .detail-row .projects {
+  width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+#add-form .detail-row .projects::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent; 
+}
+
+.colors-container color {
+  width: 80%;
+  display: block;
+  border-radius: 100%;
+  height: 0;
+  margin-bottom: 6px;
+  padding-bottom: 80%;
+  cursor: pointer;
+}

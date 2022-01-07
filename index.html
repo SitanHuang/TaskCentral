@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TaskCentral</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="maximum-scale=1, user-scalable=no, minimal-ui, width=device-width, initial-scale=1">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#8F7034">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#8F7034">
+
+    <link href="https://fonts.googleapis.com/icon?family=Roboto" rel="stylesheet">
+
+    <style>
+      :root {
+        --app-primary-color: #8F7034;
+      }
+    </style>
+
+    <!-- the only essential css not to lazy load -->
+    <link rel="stylesheet" href="libs/ui/splash.css" />
+
+  </head>
+  <body>
+    <div id="splash">
+      <h1>T</h1>
+      <span id="splash-status"></span>
+    </div>
+
+    <div class="top-bar">
+      <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item">
+            <a href="#" data-menu="home" class="pure-menu-link">Home</a>
+          </li>
+          <li class="pure-menu-item">
+            <a href="#" data-menu="gantt" class="pure-menu-link">Gantt</a>
+          </li>
+          <li class="pure-menu-item">
+            <a href="#" data-menu="time" class="pure-menu-link">Time</a>
+          </li>
+          <li class="pure-menu-item">
+            <a href="#" data-menu="settings" class="pure-menu-link">Settings</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-container">
+      <div class="home">
+        <div class="task-container">
+          <div class="actions pad">
+            <button class="pure-button">
+              Filter <i class="fa fa-filter"></i>
+          </button>
+          </div>
+          <form id="add-form" autocomplete="off" onsubmit="ui_home_add_trigger(); return false;">
+            <div class="input-row">
+              <i class="fa fa-plus"></i>
+              <div class="input-wrapper">
+                <input type="text" name="name" onfocus="ui_home_add_input_focus()">
+              </div>
+
+              <input type="hidden" name="project" onchange="ui_home_add_project_changed(this);ui_home_add_input_focus()">
+              <div class="project"></div>
+              <div class="tags"></div>
+
+              <div class="datepicker">
+                <i class="fa fa-calendar-alt"></i>
+                <input type="date" name="due" onchange="ui_home_add_date_changed(this);ui_home_focus_input();">
+              </div>
+              <div class="date-due" style="display: none;" onclick="ui_home_remove_due_date();ui_home_focus_input();">
+                Tomorrow
+              </div>
+            </div>
+            <div class="detail-row">
+              <sub-title>PROJECT</sub-title>
+              <div class="projects"></div>
+              <!-- TODO: stub -->
+              <!-- <sub-title>TAGS</sub-title> -->
+            </div>
+          </form>
+        </div>
+        <div class="task-detail">
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar" oncontextmenu="return false">
+      <div class="left">
+        asdfasdfsadfasf
+      </div>
+      <i class="fas" id="sync-status"></i>
+    </div>
+
+    <!-- Modal: Create new project on add in home page-->
+    <div class="modal micromodal-slide" id="modal-home-new-proj" aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-home-new-proj-title">
+          <form autocomplete="off" onsubmit="ui_home_add_project_callback(this);return false;" class="pure-form pure-form-stacked">
+            <header class="modal__header">
+              <h2 class="modal__title" id="modal-home-new-proj-title">
+                New project
+              </h2>
+              <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+            </header>
+            <main class="modal__content" id="modal-home-new-proj-content">
+              <div class="pure-g">
+                <div class="pure-u-1 pure-u-md-2-3">
+                  <label for="multi-first-name">Name</label>
+                  <input required type="text" name="name" class="pure-u-23-24" />
+                </div>
+                <div class="pure-u-1 pure-u-md-1-3">
+                  <label for="multi-first-name">Color</label>
+                  <input type="color" name="color" class="pure-u-23-24" style="padding: 0;"/>
+                </div>
+              </div>
+              <div class="pure-g colors-container"></div>
+            </main>
+            <footer class="modal__footer" style="text-align: right;">
+              <button type="clear" class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+              <button type="submit" class="modal__btn modal__btn-primary">Add</button>
+            </footer>
+          </form>
+        </div>
+      </div>
+    </div>
+        
+
+    <script src="libs/external/jquery-3.6.0.min.js"></script>
+    <script src="libs/external/randomColor.min.js"></script>
+    <script src="libs/external/micromodal.min.js"></script>
+
+    <script src="libs/commons.js"></script>
+    
+    <script src="libs/data.js"></script>
+    <script src="libs/task.js"></script>
+    <script src="libs/project.js"></script>
+    <script src="libs/backend.js"></script>
+
+    <script src="libs/query.js"></script>
+
+    <script src="libs/ui/views/home.js"></script>
+
+    <script src="libs/ui/layout.js"></script>
+    <script src="libs/index.js"></script>
+
+    <!-- loads stylesheets -->
+    <script src="libs/ui/css.js"></script>
+  </body>
+</html>
