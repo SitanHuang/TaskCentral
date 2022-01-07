@@ -18,8 +18,14 @@ function task_new(override) {
     earliest: null, // earliest time to begin working
     until: null, // latest time that the task is still relevant
     status: 'default',
+    priority: 5, // 0-10 inclusive, relative degree of importance
+    weight: 0, // 0-10 inclusive, relative amount of work
     progress: null, // latest progress, updated via task.log.push()
     total: 0, // total difference in timestamp spent on working (start -> default)
+    // TODO: stub
+    // [subtasks: []],
+    // status change should pay attention to log
+    // ex. if status==completed, can't start/pause task
     log: [
       { type: 'default', time: stamp } // always first
       // { type: 'start', time: timestamp },
@@ -27,6 +33,36 @@ function task_new(override) {
       // { type: 'progress', time: timestamp, progress: int 0-100 },
     ]
   }, override);
+}
+
+function task_calc_importance(task) {
+  let now = timestamp();
+
+  if (task.status == 'completed')
+    return 0;
+  
+  if (task.status == 'start')
+    return 11 * (task.priority + 1) / 11;
+  
+  if (task.until && now >= task.until)
+    return 0;
+
+  // weight 10 vs priority 3
+  let weight = (task.weight + 1) / 11 * 10;
+  let priority = (task.priority + 1) / 11 * 3;
+
+  let days_left = task.due ? (task.due - now) / 8.64e+7 : 100;
+  // account for negative days:
+  days_left = days_left >= 0 ? days_left + 1 : 1 / (1 - days_left);
+
+  if (task.earliest && now < task.earliest)
+    days_left = 100;
+
+  weight /= days_left;
+  if (task.progress)
+    weight *= Math.max(0.05, (100 - task.progress) / 100);
+
+  return weight * priority + priority;
 }
 
 function task_set(task) {

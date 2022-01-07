@@ -6,8 +6,16 @@ function ui_menu_select_home() {
   _home_addForm = $('#add-form');
   _home_addForm[0].reset();
   _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
+  // ^ sliders should automatically go to center
   _home_addForm.removeClass('focus-within');
+
+
+  ui_home_update_list();
 }
+
+// =========================================
+//                Add task
+// =========================================
 
 function ui_home_focus_input() {
   _home_addForm.find('input[name=name]').focus();
@@ -138,12 +146,62 @@ function ui_home_add_trigger() {
     name: name,
     project: _home_addForm.find('.input-row input[name=project]').val() || null,
     due: task_parse_date_input(_home_addForm.find('.input-row input[name=due]')
-           .val()).getTime() || null
+           .val()).getTime() || null,
+    priority: parseInt(_home_addForm.find('.detail-row input[name=priority]').val()),
+    weight: parseInt(_home_addForm.find('.detail-row input[name=weight]').val()),
   });
   task_set(task);
 
   ui_menu_select_home();
 }
+
+// =========================================
+//                Listing
+// =========================================
+
+HOME_MODE = 'default';
+
+let _home_task_list;
+
+function ui_home_update_list() {
+  _home_task_list = _home_con.find('.task-container > .task-list').html('');
+
+  let tasks = query_exec({
+    queries: [{
+      // TODO: grab filter
+      collect: ['tasks'],
+      from: 0,
+      to: Infinity
+    }]
+  })[0].tasks;
+
+  eval('_ui_home_' + HOME_MODE +'_list')(tasks);
+}
+
+function _ui_home_gen_task_row(task) {
+  return $('<h4></h4>').text(task.name + ':' + Math.round(task_calc_importance(task)))
+}
+
+function _ui_home_normal_list_gen(tasks) {
+  if (!tasks.length) {
+    _home_task_list.html(`<p class="no-tasks">You're all done!</p>`);
+  } else {
+    for (let task of tasks) {
+      _ui_home_gen_task_row(task).appendTo(_home_task_list);
+    }
+  }
+}
+
+// --------------- default -----------------
+function _ui_home_default_list(tasks) {
+  // default: sort by importance algorithm
+  tasks = tasks.sort((a, b) => 
+    task_calc_importance(b) - task_calc_importance(a)
+  );
+
+  _ui_home_normal_list_gen(tasks);
+}
+
 
 $(window).click(function() {
   if (!$('#modal-home-new-proj').hasClass('is-open'))
