@@ -77,3 +77,18 @@ function task_parse_date_input(val) {
   val = (val && val.value) || val;
   return new Date(val + 'T00:00:00');
 }
+
+/*
+ * the range for when the task is relevant
+ */
+function task_get_endpoints(task) {
+  return [
+    Math.min(task.created, task.earliest),
+    Math.max(timestamp(), task.due || task.until)
+  ];
+}
+
+function task_is_overlap(task, range) {
+  let e = task_get_endpoints(task);
+  return (e[0] <= range[1]) && (range[0] <= e[1]);
+}
