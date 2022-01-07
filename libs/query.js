@@ -4,13 +4,15 @@
  *     from: time,
  *     to: time,
  *     projects: [], // list or projects (OR filter)
+ *     status: [], // OR filter
+ *     hidden: null,
  *     collect: [
  *       'tasks', // return task entries
  *     ]
  *   }]
  * }
  */
-function query_exec(queries) {
+function query_exec(query) {
   if (!query.queries.length)
     return [];
   
@@ -27,6 +29,10 @@ function query_exec(queries) {
     // -------- set up query --------
     _range_min = Math.min(_range_min || q.from, q.from);
     _range_max = Math.max(_range_max || q.to, q.to);
+    
+    q.projects = q.projects || [];
+    q.status = q.status || [];
+    q.hidden = q.hidden || null;
 
     q._range = [q.from, q.to];
 
@@ -64,10 +70,42 @@ function query_exec(queries) {
       if (!task_is_overlap(task, q._range))
         continue; // go to next query
       
+      // ------- exclusive conditions -------
+      
+      if (q.hidden !== null && q.hidden !== task.hidden)
+        continue;
+
+      if (q.projects.length) {
+        // q.projects can have null value
+        // if (!task.project) // task has no project
+        //   continue;
+        let matched = false;
+        for (let p of q.projects) {
+          if (p == task.project) {
+            matched = true;
+            break; // only need 1 match
+          }
+        }
+        if (!matched)
+          continue;
+      }
+      if (q.status.length) {
+        let matched = false;
+        for (let p of q.status) {
+          if (p == task.status) {
+            matched = true;
+            break; // only need 1 match
+          }
+        }
+        if (!matched)
+          continue;
+      }
+      
       // TODO: more exclusive conditions....
 
+      // ----------- collect -----------
       if (q.collect.indexOf('tasks') >= 0)
-          data[i].tasks.push(e);
+          data[i].tasks.push(task);
     }
   }
 

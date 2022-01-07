@@ -82,9 +82,11 @@ function task_parse_date_input(val) {
  * the range for when the task is relevant
  */
 function task_get_endpoints(task) {
+  let start = Math.min(task.created, task.earliest || task.created);
+  let end = Math.max(timestamp(), task.due || task.until);
   return [
-    Math.min(task.created, task.earliest),
-    Math.max(timestamp(), task.due || task.until)
+    Math.min(start, end),
+    Math.max(start, end)
   ];
 }
 
