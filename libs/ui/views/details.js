@@ -21,6 +21,10 @@ function ui_detail_select_task(task) {
     };
   _home_detail_form.find('input[name=project]')
     .val(task.project);
+  _home_detail_form.find('input[name=status]')
+    .val(task.status);
+  _home_detail_form.find('input[name=total]')
+    .val(timeIntervalString(task.total, 0));
 
   _home_detail_form.find('input[type=date]').each(function () {
     let input = this;

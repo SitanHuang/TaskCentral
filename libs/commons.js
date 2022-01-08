@@ -30,3 +30,16 @@ function fontColorFromHex(color) {
   const brightness = red*0.299 + green*0.587 + blue*0.114;
   return brightness > 180 ? 'black' : 'white';
 }
+
+function timeIntervalString(final, initial) {
+  let delta = Math.abs(final - initial) / 1000;
+  
+  let hours = Math.floor(delta / 3600) % 24;
+  delta -= hours * 3600;
+  
+  let minutes = Math.floor(delta / 60) % 60;
+  delta -= minutes * 60;
+
+  let seconds = (Math.round(delta % 60 * 10) / 10).toFixed(1);
+  return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.padStart(4, '0')}`;
+}
