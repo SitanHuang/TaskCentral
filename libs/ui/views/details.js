@@ -25,6 +25,16 @@ function ui_detail_select_task(task) {
     .val(task.status);
   _home_detail_form.find('input[name=total]')
     .val(timeIntervalString(task.total, 0));
+  _home_detail_form.find('input[name=created]')
+    .val(new Date(task.created).toLocaleString())
+
+  let hidden = _home_detail_form.find('input[name=hidden]')[0];
+  hidden.checked = task.hidden;
+  hidden.onchange = () => {
+    if (!_selected_task) return;
+    _selected_task.hidden = hidden.checked;
+    _ui_home_details_signal_changed();
+  };
 
   _home_detail_form.find('input[type=date]').each(function () {
     let input = this;

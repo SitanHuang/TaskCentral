@@ -335,10 +335,10 @@ function _ui_home_normal_list_gen(tasks) {
 }
 
 function _ui_home_normal_status(tasks) {
-  let due = tasks.filter(x => x.due).length;
+  let due = tasks.filter(x => x.status != 'completed' && x.due);
   let now = timestamp();
-  let ready = tasks.filter(x => x.due && (!x.earliest || now >= x.earliest)).length;
-  $('#status-bar').text(`Tasks: ${tasks.length}  Due: ${due}  Ready: ${ready}`);
+  let ready = due.filter(x => !x.earliest || now >= x.earliest).length;
+  $('#status-bar').text(`Tasks: ${tasks.length}  Due: ${due.length}  Ready: ${ready}`);
 }
 
 // --------------- default -----------------
