@@ -47,9 +47,15 @@ function _ui_home_add_update_actions() {
         });
     });
   
+    _ui_home_create_add_new_proj_btn(projects, 'ui_home_add_project_callback(this);return false;');
+}
+
+// reused in details panel
+function _ui_home_create_add_new_proj_btn(projects, onsubmit) {
   $('<a class="pure-button flat-always"><i class="fa fa-plus"></i> NEW</a>')
     .click(() => {
       let $modal = $('#modal-home-new-proj');
+      $modal.find('form').attr('onsubmit', onsubmit + ';return false');
       $modal.find('input').val('');
       $modal.find('input[name=color]').val(randomColor());
 
@@ -87,14 +93,9 @@ function ui_home_add_project_callback(form) {
 
   const color = form.find('input[name=color]').val();
 
-  const red = parseInt(color.substring(1,3),16);
-  const green = parseInt(color.substring(3,5),16);
-  const blue = parseInt(color.substring(5,7),16);
-  const brightness = red*0.299 + green*0.587 + blue*0.114;
-
   back.data.projects[name] = project_new({
     color: color,
-    fontColor: brightness > 180 ? 'black' : 'white'
+    fontColor: fontColorFromHex(color)
   });
 
   back.set_dirty();
@@ -269,6 +270,8 @@ function _ui_home_gen_task_row(task) {
     $row.find('i.fa-play, i.fa-check').hide();
   if (task.status == 'completed')
     $row.addClass('completed');
+  if (task == _selected_task)
+    $row.addClass('activated');
   
 
   $row.find('i.fa-check-square')

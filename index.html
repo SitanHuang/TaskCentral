@@ -100,13 +100,38 @@
             <header>
               <i class="fa fa-times" onclick="ui_detail_close()"></i>
               <div></div>
-              <button type="submit" class="button-primary pure-button">Save</button>
             </header>
             <form-body class="pure-form pure-form-aligned">
               <div class="pure-control-group">
                 <label>Name</label>
                 <input type="text" name="name">
               </div>
+              <div class="pure-control-group">
+                <label style="vertical-align: top">Project</label>
+                <input type="hidden" name="project" onchange="ui_home_detail_project_changed(this)">
+                <div class="project-container">
+                  <div class="project"></div>
+                  <div class="projects"></div>
+                </div>
+              </div>
+              <div class="pure-control-group">
+                <label>Due</label>
+                <input type="date" name="due">
+              </div>
+              <div class="pure-control-group">
+                <label>Earliest</label>
+                <input type="date" name="earliest">
+              </div>
+              <div class="pure-control-group">
+                <label>Until</label>
+                <input type="date" name="until">
+              </div>
+              <!-- TODO: total time & log -->
+              <!-- TODO: status -->
+              <!-- TODO: hidden -->
+              <!-- TODO: created -->
+              <!-- TODO: progress -->
+              <!-- TODO: priority/weight -->
             </form-body>
           </form>
         </div>
@@ -122,7 +147,7 @@
     <div class="modal micromodal-slide" id="modal-home-new-proj" aria-hidden="true">
       <div class="modal__overlay" tabindex="-1">
         <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-home-new-proj-title">
-          <form autocomplete="off" onsubmit="ui_home_add_project_callback(this);return false;" class="pure-form pure-form-stacked">
+          <form autocomplete="off" onsubmit="" class="pure-form pure-form-stacked">
             <header class="modal__header">
               <h2 class="modal__title" id="modal-home-new-proj-title">
                 New project

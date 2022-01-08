@@ -22,3 +22,11 @@ function isTomorrow(d) {
     d.getMonth() == today.getMonth() &&
     d.getFullYear() == today.getFullYear()
 }
+
+function fontColorFromHex(color) {
+  const red = parseInt(color.substring(1,3),16);
+  const green = parseInt(color.substring(3,5),16);
+  const blue = parseInt(color.substring(5,7),16);
+  const brightness = red*0.299 + green*0.587 + blue*0.114;
+  return brightness > 180 ? 'black' : 'white';
+}
