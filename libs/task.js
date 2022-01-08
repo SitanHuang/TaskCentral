@@ -162,6 +162,12 @@ function task_start(task) {
   back.set_dirty();
 }
 
+function task_update_progress(task, progress) {
+  task.progress = Math.max(Math.min(progress, 100), 0);
+  task.log.push({ type: 'progress', time: timestamp(), progress: task.progress });
+  back.set_dirty();
+}
+
 function task_pause(task) {
   task.status = 'default';
   task.log.push({ type: 'default', time: timestamp() });

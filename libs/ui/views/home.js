@@ -189,7 +189,7 @@ function ui_home_mode_select_trigger(mode, ele, q) {
   $(ele).addClass('pure-menu-selected');
   _home_button.text(mode);
 
-  HOME_QUERY = q;
+  HOME_QUERY = JSON.parse(JSON.stringify(q)); // clone
   HOME_MODE = mode;
   ui_menu_select_home();
 }
@@ -206,7 +206,7 @@ const HOME_DEFAULT_QUERY = {
     hidden: false,
     collect: ['tasks'],
     from: 0,
-    to: Infinity
+    to: Number.MAX_VALUE
   }]
 };
 const HOME_ALL_QUERY = {
@@ -214,11 +214,11 @@ const HOME_ALL_QUERY = {
     status: [],
     collect: ['tasks'],
     from: 0,
-    to: Infinity
+    to: Number.MAX_VALUE
   }]
 };
 
-HOME_QUERY = HOME_DEFAULT_QUERY;
+HOME_QUERY = JSON.parse(JSON.stringify(HOME_DEFAULT_QUERY));
 
 let _home_task_list;
 
@@ -311,7 +311,12 @@ function _ui_home_gen_task_row(task) {
     });
 
   if (task.project)
-    project_create_chip(task.project).appendTo($row.find('.project'));
+    project_create_chip(task.project)
+      .click(() => {
+        HOME_QUERY.queries[0].projects = [task.project];
+        ui_menu_select_home();
+      })
+      .appendTo($row.find('.project'));
   $row.find('name').text(task.name);
   return $row;
 }

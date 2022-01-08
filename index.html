@@ -96,7 +96,19 @@
           </div>
         </div>
         <div class="task-detail">
-          <form></form>
+          <form onsubmit="return false;" oncontextmenu="return false;">
+            <header>
+              <i class="fa fa-times" onclick="ui_detail_close()"></i>
+              <div></div>
+              <button type="submit" class="button-primary pure-button">Save</button>
+            </header>
+            <form-body class="pure-form pure-form-aligned">
+              <div class="pure-control-group">
+                <label>Name</label>
+                <input type="text" name="name">
+              </div>
+            </form-body>
+          </form>
         </div>
       </div>
     </div>

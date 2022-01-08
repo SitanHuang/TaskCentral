@@ -236,3 +236,8 @@ p.no-tasks {
   text-align: center;
   display: block;
 }
+
+.button-primary {
+  background-color: var(--app-primary-color);
+  color: white;
+}

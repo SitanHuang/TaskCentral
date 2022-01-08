@@ -7,9 +7,12 @@ function ui_detail_select_task(task) {
 
   _home_detail = _home_con.find('.task-detail').addClass('activated');
   _home_detail_form = _home_detail.find('form');
-  _home_detail_form.text(task.name + new Date())
 
   _selected_task = task;
+
+  _home_detail_form.find('input[name=name]')
+    .val(task.name);
+
   history.pushState("details", null, null);
   window.onpopstate = function(event) {
     if (event) {
