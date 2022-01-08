@@ -39,6 +39,9 @@
           ui_update_sync_status();
           ui_menu_init();
 
+          if (back.data.started)
+            timer_start_task(back.data.tasks[back.data.started]);
+
           // wait til transitions finish
           setTimeout(() => {
             document.getElementById('splash').remove();

@@ -49,6 +49,90 @@
   background: inherit;
 }
 
+.home task {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border-bottom: 1px solid #e3e3e3;
+  transition: all 300ms ease-out;
+  user-select: none;
+}
+
+.home task:active:not(.child-clicked) {
+  background-color: #dadada;
+}
+
+.home task:last-child {
+  border-bottom: none;
+}
+
+.home task primary i.fa-check-square,
+.home task primary i.fa-trash {
+  display: none;
+}
+.home task.completed primary i.fa-check-square,
+.home task.completed primary i.fa-trash {
+  display: block;
+}
+
+.home task.completed {
+  background: #fafafa;
+}
+
+.home task.completed primary > *:not(.fa) {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.home task.completed primary i.fa-play,
+.home task.completed primary i.fa-check {
+  display: none;
+}
+
+.home task primary {
+  min-height: 1.9rem;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.home task primary > * {
+  display: block;
+  line-height: 35px;
+  white-space: nowrap;
+}
+
+
+.home task primary > i.fa {
+  width: 33px;
+  text-align: center;
+  flex: 0 0 33px;
+  opacity: 0.87;
+  border-radius: 100%;
+  transition: all 300ms ease-out;
+  background-color: transparent;
+  /* prevents growing height */
+  align-self: flex-start;
+}
+
+.home task primary > i.fa:active {
+  background-color: #c9c9c9;
+}
+
+.home task primary project {
+  margin-right: 0;
+}
+
+.home task primary > name {
+  width: 100%;
+  padding: 4px 0 0 0;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  outline: none;
+  line-height: 1.5em;
+  white-space: normal;
+}
+
 #add-form .input-row {
   height: 1.9rem;
   display: flex;
@@ -101,12 +185,10 @@
 }
 
 #add-form .date-due {
+  background-color: white;
   border: 1px solid #cdcdcd;
   border-radius: 9px;
-  line-height: 2em;
-  padding: 0 0.5em;
   cursor: pointer;
-  background-color: white;
 }
 
 #add-form .date-due:after {

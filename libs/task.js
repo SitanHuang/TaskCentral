@@ -56,7 +56,7 @@ function task_calc_importance(task) {
   days_left = days_left >= 0 ? days_left + 1 : 1 / (1 - days_left);
 
   if (task.earliest && now < task.earliest)
-    days_left = 100;
+    days_left *= 100;
 
   weight /= days_left;
   if (task.progress)
@@ -129,4 +129,54 @@ function task_get_endpoints(task) {
 function task_is_overlap(task, range) {
   let e = task_get_endpoints(task);
   return (e[0] <= range[1]) && (range[0] <= e[1]);
+}
+
+function task_delete(task) {
+  delete back.data.tasks[task.id];
+  back.set_dirty();
+}
+
+function task_complete(task) {
+  task.status = 'completed';
+  task.log.push({ type: 'default', time: timestamp(), note: 'Completed.' });
+  back.set_dirty();
+}
+
+function task_reopen(task) {
+  task.status = 'default';
+  task.log.push({ type: 'default', time: timestamp(), note: 'Reopened.' });
+  back.set_dirty();
+}
+
+function task_start(task) {
+  if (task.status != 'default') {
+    alert('FATAL: Task is not in "default" status.')
+    throw 'FATAL: ' + JSON.stringify(task);
+  }
+  task.status = 'start';
+  task.log.push({ type: 'start', time: timestamp() });
+  back.data.started = task.id;
+  back.set_dirty();
+}
+
+function task_pause(task) {
+  task.status = 'default';
+  task.log.push({ type: 'default', time: timestamp() });
+  delete back.data.started;
+  
+  // aggregate to total time spent
+  let start = task_get_latest_start_stamp(task);
+  if (start)
+    task.total += timestamp() - start;
+
+  back.set_dirty();
+}
+
+function task_get_latest_start_stamp(task) {
+  for (let i = task.log.length - 1; i >= 0;i--) {
+    let log = task.log[i];
+    if (log?.type == 'start')
+      return log.time;
+  }
+  return null;
 }

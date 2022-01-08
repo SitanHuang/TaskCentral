@@ -97,9 +97,7 @@
     </div>
 
     <div class="bottom-bar" oncontextmenu="return false">
-      <div class="left">
-        asdfasdfsadfasf
-      </div>
+      <div class="left" id="status-bar"></div>
       <i class="fas" id="sync-status"></i>
     </div>
 
@@ -136,6 +134,20 @@
       </div>
     </div>
         
+    <div id="timer-container" oncontextmenu="return false;" style="display: none;">
+      <name>
+        covid test
+      </name>
+      <timer>
+        00:01:37
+      </timer>
+      <!-- <pause>
+        <i class="fa fa-pause-circle"></i>
+      </pause> -->
+      <stop onclick="task_pause(back.data.tasks[back.data.started]);timer_stop_task(back.data.tasks[back.data.started]);ui_menu_select_home();">
+        <i class="fa fa-stop-circle"></i>
+      </stop>
+    </div>
 
     <script src="libs/external/jquery-3.6.0.min.js"></script>
     <script src="libs/external/randomColor.min.js"></script>
@@ -153,6 +165,7 @@
     <script src="libs/ui/views/home.js"></script>
 
     <script src="libs/ui/layout.js"></script>
+    <script src="libs/ui/timer.js"></script>
     <script src="libs/index.js"></script>
 
     <!-- loads stylesheets -->

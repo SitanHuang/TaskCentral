@@ -9,6 +9,7 @@ function ui_menu_select_home() {
   // ^ sliders should automatically go to center
   _home_addForm.removeClass('focus-within');
 
+  // TODO: update details
 
   ui_home_update_list();
 }
@@ -40,7 +41,7 @@ function _ui_home_add_update_actions() {
         });
     });
   
-  $('<a href="#" class="pure-button flat-always"><i class="fa fa-plus"></i> NEW</a>')
+  $('<a class="pure-button flat-always"><i class="fa fa-plus"></i> NEW</a>')
     .click(() => {
       let $modal = $('#modal-home-new-proj');
       $modal.find('input').val('');
@@ -61,6 +62,13 @@ function _ui_home_add_update_actions() {
         }).appendTo($colors);
       }
 
+      history.pushState("modal-home-new-proj", null, null);
+      window.onpopstate = function(event) {
+        if (event) {
+          MicroModal.close('modal-home-new-proj');
+          window.onpopstate = null;
+        }
+      };
       MicroModal.show('modal-home-new-proj');
     })
     .appendTo(projects);
@@ -86,6 +94,7 @@ function ui_home_add_project_callback(form) {
   back.set_dirty();
 
   MicroModal.close('modal-home-new-proj');
+  window.onpopstate = null;
 
   _ui_home_add_update_actions();
   _home_addForm.find('input[name=project]').val(name).change();
@@ -119,19 +128,19 @@ function ui_home_add_date_changed(input) {
 }
 
 function _ui_home_add_remove_date() {
-  _home_con.find('.datepicker').show();
-  _home_con.find('.date-due').hide();
+  _home_addForm.find('.datepicker').show();
+  _home_addForm.find('.date-due').hide();
 }
 
 function _ui_home_add_show_date() {
   const due = task_parse_date_input(_home_addForm.find('input[name=due]').val());
    
 
-  _home_con.find('.datepicker').hide();
-  _home_con.find('.date-due')
-            .text(task_stringify_due(due))
-            .attr('style', task_colorize_due(due))
-            .show();
+  _home_addForm.find('.datepicker').hide();
+  _home_addForm.find('.date-due')
+               .text(task_stringify_due(due))
+               .attr('style', task_colorize_due(due))
+               .show();
 }
 
 function ui_home_remove_due_date() {
@@ -161,25 +170,93 @@ function ui_home_add_trigger() {
 
 HOME_MODE = 'default';
 
+const HOME_DEFAULT_QUERY = {
+  queries: [{
+    status: ['start', 'default'],
+    hidden: false,
+    collect: ['tasks'],
+    from: 0,
+    to: Infinity
+  }]
+};
+
+HOME_QUERY = HOME_DEFAULT_QUERY;
+
 let _home_task_list;
 
 function ui_home_update_list() {
   _home_task_list = _home_con.find('.task-container > .task-list').html('');
 
-  let tasks = query_exec({
-    queries: [{
-      // TODO: grab filter
-      collect: ['tasks'],
-      from: 0,
-      to: Infinity
-    }]
-  })[0].tasks;
-
-  eval('_ui_home_' + HOME_MODE +'_list')(tasks);
+  eval('_ui_home_' + HOME_MODE +'_list')();
 }
 
 function _ui_home_gen_task_row(task) {
-  return $('<h4></h4>').text(task.name + ':' + Math.round(task_calc_importance(task)))
+  let $row = $(document.createElement('task'));
+  $row.html(`
+    <primary>
+      <i class="fa fa-trash"></i>
+      <i class="fa fa-check-square"></i>
+      <i class="fa fa-play"></i>
+      <i class="fa fa-check"></i>
+      <name></name>
+      <div class="project"></div>
+      <div class="date-due" style="display: none;"></div>
+    </primary>
+  `);
+
+  if (task.due) {
+    $row.find('.date-due')
+          .text(task_stringify_due(task.due))
+          .attr('style', task_colorize_due(task.due))
+          .show();
+  }
+
+  if (task.status != 'default')
+    $row.find('i.fa-play, i.fa-check').hide();
+  
+  
+
+  $row.find('i.fa-check-square')
+    .click(() => {
+      task_reopen(task);
+      ui_menu_select_home();
+    });
+  $row.find('i.fa-trash')
+    .click(() => {
+      if (confirm('Delete task "' + task.name + '"?')) {
+        task_delete(task);
+        // TODO: update details panel
+        ui_menu_select_home();
+      }
+    });
+  $row.find('i.fa-play')
+    .click(() => {
+      if (back.data.started) {
+        alert('Another task is already in progress!');
+        return false;
+      }
+      task_start(task);
+      timer_start_task(task);
+    });
+  $row.find('i.fa-check')
+    .click(() => {
+      task_complete(task);
+      $row.addClass('completed');
+    });
+
+  $row.attr('oncontextmenu', 'return false');
+  $row.find('i')
+    .bind('mousedown touchstart click', () => {
+      $row.addClass('child-clicked');
+    })
+    .bind('mouseup mouseleave touchend', () => {
+      $row.removeClass('child-clicked');
+    });
+
+  if (task.project)
+    project_create_chip(task.project).appendTo($row.find('.project'));
+  $row.find('name').text(task.name);
+  return $row;
 }
 
 function _ui_home_normal_list_gen(tasks) {
@@ -193,13 +270,23 @@ function _ui_home_normal_list_gen(tasks) {
 }
 
 // --------------- default -----------------
-function _ui_home_default_list(tasks) {
+function _ui_home_default_list() {
+  let tasks = _ui_query_filter();
+
   // default: sort by importance algorithm
   tasks = tasks.sort((a, b) => 
     task_calc_importance(b) - task_calc_importance(a)
   );
+  let due = tasks.filter(x => x.due).length;
+
+  $('#status-bar').text(`Tasks: ${tasks.length}  Due: ${due}`);
 
   _ui_home_normal_list_gen(tasks);
+}
+
+function _ui_query_filter() {
+  // TODO: grab filter
+  return query_exec(HOME_QUERY)[0].tasks;
 }
 
 

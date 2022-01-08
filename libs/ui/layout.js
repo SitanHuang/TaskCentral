@@ -35,5 +35,6 @@ function ui_menu_select(id) {
     .parent().addClass('pure-menu-selected');
   $('.content-container > div').hide();
   $('.content-container > div.' + id).show();
+  $('#status-bar').text('');
   eval('ui_menu_select_' + id + '()');
 }

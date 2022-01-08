@@ -32,7 +32,7 @@ function query_exec(query) {
     
     q.projects = q.projects || [];
     q.status = q.status || [];
-    q.hidden = q.hidden || null;
+    q.hidden = typeof q.hidden == "boolean" ? q.hidden : null;
 
     q._range = [q.from, q.to];
 

@@ -62,6 +62,70 @@ button .fa{
   -webkit-tap-highlight-color: transparent;
 }
 
+#timer-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background-color: var(--app-primary-color);
+  width: 100vw;
+  height: calc(100vh - 28px);
+  z-index: 10;
+
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+#timer-container name {
+  color: white;
+  padding: 0.5em;
+  line-height: 1.5em;
+  font-size: 2.5rem;
+  display: -webkit-box;
+  text-align: center;
+  border-bottom: 1px solid white;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 5.3em;
+}
+
+#timer-container pause, #timer-container stop {
+  color: white;
+  position: fixed;
+  bottom: calc(24px + 5vw);
+  font-size: 75px;
+  user-select: none;
+  cursor: pointer;
+  transition: all 300ms ease-out;
+}
+
+#timer-container pause:active,
+#timer-container pause.play,
+#timer-container stop:active {
+  color: rgba(0,0,0,0.87);
+}
+
+#timer-container pause {
+  left: 15vw;
+}
+
+#timer-container stop {
+  width: 100vw;
+  text-align: center;
+}
+
+#timer-container timer {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 3rem;
+  color: white;
+  display: block;
+  text-align: center;
+  position: fixed;
+  top: calc(50vh - 1em);
+  width: 100vw;
+}
+
 .bottom-bar {
   position: fixed;
   bottom: 0;
@@ -94,12 +158,18 @@ button .fa{
 
 .bottom-bar .left {
   display: block;
-  height: 21px;
+  height: 17px;
+  line-height: 18px;
+  font-size: 0.8rem;
   flex-grow: 100;
+  white-space: pre;
 }
 
 .date-due {
+  font-size: 0.8rem;
   user-select: none;
+  line-height: 2em;
+  padding: 0 0.5em;
 }
 
 .datepicker {
@@ -135,13 +205,18 @@ button .fa{
 }
 
 project {
+  font-size: 0.8rem;
   line-height: 2em;
-  padding: 0 0.5em;
+  padding: 0 0.3em;
   margin-right: 5px;
   border-radius: 10px;
   display: inline-block;
   user-select: none;
   cursor: pointer;
+  /* prevents growing height */
+  align-self: flex-start; 
+  position: relative;
+  top: -2px;
 }
 
 project.removable:after {
