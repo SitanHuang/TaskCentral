@@ -37,4 +37,6 @@ function timer_stop_task(task) {
   clearInterval(_timer_interval_id);
   $timer_container
     .hide();
+  if (_selected_task)
+    ui_menu_select_home();
 }

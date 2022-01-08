@@ -97,7 +97,7 @@ button .fa{
   font-size: 75px;
   user-select: none;
   cursor: pointer;
-  transition: all 300ms ease-out;
+  transition: left 300ms ease-out;
 }
 
 #timer-container pause:active,

@@ -134,6 +134,9 @@ function task_is_overlap(task, range) {
 function task_delete(task) {
   delete back.data.tasks[task.id];
   back.set_dirty();
+
+  if (_selected_task?.id == task?.id)
+      ui_detail_close();
 }
 
 function task_complete(task) {

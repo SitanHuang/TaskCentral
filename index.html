@@ -52,9 +52,14 @@
       <div class="home">
         <div class="task-container">
           <div class="actions pad">
+            <button class="pure-button" id="home-mode-button"
+              style="text-transform: capitalize;"
+              onclick="ui_home_mode_select()">
+              default
+            </button>
             <button class="pure-button">
               Filter <i class="fa fa-filter"></i>
-          </button>
+            </button>
           </div>
           <form id="add-form" autocomplete="off" onsubmit="ui_home_add_trigger(); return false;">
             <div class="input-row">
@@ -91,7 +96,7 @@
           </div>
         </div>
         <div class="task-detail">
-          <img src="assets/nothing.png" class="pure-img" style="max-width: 330px; margin: 0 auto; margin-top: 10%;">
+          <form></form>
         </div>
       </div>
     </div>
@@ -133,6 +138,35 @@
         </div>
       </div>
     </div>
+    <!-- Modal: Home mode -->
+    <div class="modal micromodal-slide" id="modal-home-mode" aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-home-mode-title">
+          <form autocomplete="off" onsubmit="ui_home_add_project_callback(this);return false;" class="pure-form pure-form-stacked">
+            <header class="modal__header">
+              <h2 class="modal__title" id="modal-home-mode-title">
+                
+              </h2>
+              <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+            </header>
+            <main class="modal__content" id="modal-home-mode-content">
+              <div class="pure-menu pure-menu-scrollable custom-restricted">
+                <ul class="pure-menu-list">
+                  <li class="pure-menu-item pure-menu-selected"
+                    onclick="ui_home_mode_select_trigger('default', this, HOME_DEFAULT_QUERY)">
+                    <a href="#" class="pure-menu-link">Default</a>
+                  </li>
+                  <li class="pure-menu-item"
+                    onclick="ui_home_mode_select_trigger('all', this, HOME_ALL_QUERY)">
+                    <a href="#" class="pure-menu-link">All</a>
+                  </li>
+                </ul>
+              </div>
+            </main>
+          </form>
+        </div>
+      </div>
+    </div>
         
     <div id="timer-container" oncontextmenu="return false;" style="display: none;">
       <name>
@@ -163,6 +197,7 @@
     <script src="libs/query.js"></script>
 
     <script src="libs/ui/views/home.js"></script>
+    <script src="libs/ui/views/details.js"></script>
 
     <script src="libs/ui/layout.js"></script>
     <script src="libs/ui/timer.js"></script>

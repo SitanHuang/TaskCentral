@@ -1,16 +1,22 @@
 let _home_addForm;
 let _home_con;
+let _home_button;
 
 function ui_menu_select_home() {
+  
   _home_con = $('.content-container > div.home');
   _home_addForm = $('#add-form');
+  _home_button = $('#home-mode-button');
   _home_addForm[0].reset();
   _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
   // ^ sliders should automatically go to center
   _home_addForm.removeClass('focus-within');
-
-  // TODO: update details
-
+  
+  if (_selected_task)
+    ui_detail_select_task(_selected_task);
+  else if (_home_detail)
+    ui_detail_close();
+  
   ui_home_update_list();
 }
 
@@ -164,6 +170,30 @@ function ui_home_add_trigger() {
   ui_menu_select_home();
 }
 
+function ui_home_mode_select() {
+  history.pushState("modal-home-mode", null, null);
+  window.onpopstate = function(event) {
+    if (event) {
+      MicroModal.close('modal-home-mode');
+      window.onpopstate = null;
+    }
+  };
+  MicroModal.show('modal-home-mode');
+}
+
+function ui_home_mode_select_trigger(mode, ele, q) {
+  window.onpopstate = null;
+  MicroModal.close('modal-home-mode');
+
+  $('#modal-home-mode .pure-menu-selected').removeClass('pure-menu-selected');
+  $(ele).addClass('pure-menu-selected');
+  _home_button.text(mode);
+
+  HOME_QUERY = q;
+  HOME_MODE = mode;
+  ui_menu_select_home();
+}
+
 // =========================================
 //                Listing
 // =========================================
@@ -174,6 +204,14 @@ const HOME_DEFAULT_QUERY = {
   queries: [{
     status: ['start', 'default'],
     hidden: false,
+    collect: ['tasks'],
+    from: 0,
+    to: Infinity
+  }]
+};
+const HOME_ALL_QUERY = {
+  queries: [{
+    status: [],
     collect: ['tasks'],
     from: 0,
     to: Infinity
@@ -192,6 +230,7 @@ function ui_home_update_list() {
 
 function _ui_home_gen_task_row(task) {
   let $row = $(document.createElement('task'));
+  $row.attr('data-uuid', task.id);
   $row.html(`
     <primary>
       <i class="fa fa-trash"></i>
@@ -204,6 +243,21 @@ function _ui_home_gen_task_row(task) {
     </primary>
   `);
 
+  // if buttons/project is clicked, don't propagate
+  // to activate details
+  $row.find('primary > *:is(i, .project)').click((e) => {
+    e.stopPropagation();
+  });
+
+  $row.click(() => {
+    _home_task_list.find('task.activated').removeClass('activated');
+    ui_detail_select_task(task);
+    $row.addClass('activated');
+  });
+
+  if (task.earliest && timestamp() < task.earliest)
+    $row.addClass('earliest');
+
   if (task.due) {
     $row.find('.date-due')
           .text(task_stringify_due(task.due))
@@ -213,7 +267,8 @@ function _ui_home_gen_task_row(task) {
 
   if (task.status != 'default')
     $row.find('i.fa-play, i.fa-check').hide();
-  
+  if (task.status == 'completed')
+    $row.addClass('completed');
   
 
   $row.find('i.fa-check-square')
@@ -242,6 +297,8 @@ function _ui_home_gen_task_row(task) {
     .click(() => {
       task_complete(task);
       $row.addClass('completed');
+      if (_selected_task)
+        ui_detail_select_task(task);
     });
 
   $row.attr('oncontextmenu', 'return false');
@@ -269,6 +326,13 @@ function _ui_home_normal_list_gen(tasks) {
   }
 }
 
+function _ui_home_normal_status(tasks) {
+  let due = tasks.filter(x => x.due).length;
+  let now = timestamp();
+  let ready = tasks.filter(x => x.due && (!x.earliest || now >= x.earliest)).length;
+  $('#status-bar').text(`Tasks: ${tasks.length}  Due: ${due}  Ready: ${ready}`);
+}
+
 // --------------- default -----------------
 function _ui_home_default_list() {
   let tasks = _ui_query_filter();
@@ -277,9 +341,21 @@ function _ui_home_default_list() {
   tasks = tasks.sort((a, b) => 
     task_calc_importance(b) - task_calc_importance(a)
   );
-  let due = tasks.filter(x => x.due).length;
 
-  $('#status-bar').text(`Tasks: ${tasks.length}  Due: ${due}`);
+  _ui_home_normal_status(tasks);
+
+  _ui_home_normal_list_gen(tasks);
+}
+// --------------- all -----------------
+function _ui_home_all_list() {
+  let tasks = _ui_query_filter();
+
+  // all: sort by creation date
+  tasks = tasks.sort((a, b) => 
+    b.created - a.created
+  );
+
+  _ui_home_normal_status(tasks);
 
   _ui_home_normal_list_gen(tasks);
 }

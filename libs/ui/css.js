@@ -16,6 +16,7 @@
     'libs/ui/index.css',
     
     'libs/ui/views/home.css',
+    'libs/ui/views/details.css',
   ];
 
   const images = [
