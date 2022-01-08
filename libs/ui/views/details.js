@@ -11,7 +11,14 @@ function ui_detail_select_task(task) {
   _home_detail_form.find('input').val('');
 
   _home_detail_form.find('input[name=name]')
-    .val(task.name);
+    .val(task.name)[0].onchange = (e) => {
+      if (!_selected_task) return;
+
+      let name = e.target.value.trim();
+
+      _selected_task.name = name;
+      _ui_home_details_signal_changed();
+    };
   _home_detail_form.find('input[name=project]')
     .val(task.project);
 
