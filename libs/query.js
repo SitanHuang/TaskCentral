@@ -3,6 +3,7 @@
  *   queries: [{
  *     from: time,
  *     to: time,
+ *     projectRegex: null, // "none" | fuzzy string
  *     projects: [], // list or projects (OR filter)
  *     status: [], // OR filter
  *     hidden: null,
@@ -15,9 +16,9 @@
 function query_exec(query) {
   if (!query.queries.length)
     return [];
-  
+
   let data = [];
-  
+
   let _range_min;
   let _range_max;
 
@@ -29,12 +30,16 @@ function query_exec(query) {
     // -------- set up query --------
     _range_min = Math.min(_range_min || q.from, q.from);
     _range_max = Math.max(_range_max || q.to, q.to);
-    
+
     q.projects = q.projects || [];
     q.status = q.status || [];
     q.hidden = typeof q.hidden == "boolean" ? q.hidden : null;
 
     q._range = [q.from, q.to];
+
+    // regex can't be serialized to JSON
+    // use underscore to preserve original query
+    q._projectRegex = q.projectRegex ? fzy_compile(q.projectRegex) : null;
 
     let d = { from: q.from, to: q.to };
     data.push(d);
@@ -69,9 +74,9 @@ function query_exec(query) {
       // not the range of a specific query
       if (!task_is_overlap(task, q._range))
         continue; // go to next query
-      
+
       // ------- exclusive conditions -------
-      
+
       if (q.hidden !== null && q.hidden !== task.hidden)
         continue;
 
@@ -100,7 +105,12 @@ function query_exec(query) {
         if (!matched)
           continue;
       }
-      
+
+      if (q.projectRegex == 'none') {
+        if (task.project)
+          continue;
+      } else if (q._projectRegex && !task?.project?.match(q._projectRegex))
+        continue;
       // TODO: more exclusive conditions....
 
       // ----------- collect -----------
