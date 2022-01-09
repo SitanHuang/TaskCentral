@@ -18,6 +18,7 @@ function task_new(override) {
     earliest: null, // earliest time to begin working
     until: null, // latest time that the task is still relevant
     status: 'default',
+    // [notes: string],
     priority: 5, // 0-10 inclusive, relative degree of importance
     weight: 0, // 0-10 inclusive, relative amount of work
     progress: null, // latest progress, updated via task.log.push(), null same as 0

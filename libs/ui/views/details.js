@@ -38,6 +38,19 @@ function ui_detail_select_task(task) {
     .val(timeIntervalString(task.total, 0));
   _home_detail_form.find('input[name=created]')
     .val(new Date(task.created).toLocaleString());
+
+  _home_detail_form.find('.textarea[name=notes]')
+    .text(task.notes || '')[0].onblur = (e) => {
+      if (!_selected_task) return;
+
+      let content = e.target.innerText.trim();
+
+      if (content)
+        _selected_task.notes = content;
+      else
+        delete _selected_task.notes;
+      _ui_home_details_signal_changed();
+    };
   
   ['weight', 'priority'].forEach(x => {
     _home_detail_form.find('input[name=' + x + ']')

@@ -43,3 +43,15 @@ function timeIntervalString(final, initial) {
   let seconds = (Math.round(delta % 60 * 10) / 10).toFixed(1);
   return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.padStart(4, '0')}`;
 }
+
+function onPasteFormatRemovalHandler(elem, e) {
+  if (e.originalEvent && e.originalEvent.clipboardData && e.originalEvent.clipboardData.getData) {
+    e.preventDefault();
+    var text = e.originalEvent.clipboardData.getData('text/plain');
+    window.document.execCommand('insertText', false, text);
+  } else if (e.clipboardData && e.clipboardData.getData) {
+    e.preventDefault();
+    var text = e.clipboardData.getData('text/plain');
+    window.document.execCommand('insertText', false, text);
+  }
+}

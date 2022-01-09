@@ -154,6 +154,12 @@
                 <input type="text" readonly name="status">
               </div>
               <div class="pure-control-group">
+                <label>Notes</label>
+                <span name="notes" class="textarea" contenteditable
+                  style="resize: none;"
+                  onpaste="onPasteFormatRemovalHandler(this, event)"></span>
+              </div>
+              <div class="pure-control-group">
                 <label>Created</label>
                 <input type="text" readonly name="created">
               </div>
