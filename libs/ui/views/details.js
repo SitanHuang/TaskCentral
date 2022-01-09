@@ -71,7 +71,7 @@ function ui_detail_select_task(task) {
     input.valueAsNumber = task[input.name] || NaN;
     input.onchange = () => {
       if (!_selected_task) return;
-      _selected_task[input.name] = input.valueAsNumber ? task_parse_date_input(input.value) : null;
+      _selected_task[input.name] = input.valueAsNumber ? task_parse_date_input(input.value).getTime() : null;
       _ui_home_details_signal_changed();
     };
   });
