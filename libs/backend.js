@@ -2,7 +2,7 @@ function Backend() {
   let that = this;
 
   let fail = function (jqXHR, textStatus, errorThrown) {
-    alert(`与服务器同步失败 （${textStatus}: ${errorThrown}）`);
+    alert(`Sync failed - （${textStatus}: ${errorThrown}）`);
     window.location.href = 'about:blank';
   }
 
@@ -10,14 +10,21 @@ function Backend() {
   this.dirty = false; // can be set by app
   this.uploading = false; // only set by back.update()
 
+  this.mtime = null; // last retrieved mtime from server, in string
+
   this.init = function () {
     console.log('Retreiving data');
-    var promise = new Promise(function (resolve, reject) {
+    let promise = new Promise(function (resolve, reject) {
       $.get('/storage/data?y=' + new Date().getTime()).fail(fail).done(
         function (data) {
           try {
             that.data = JSON.parse(data);
-            data_init_default();
+            that.update_mtime().catch(fail).then(
+              function (mtime) {
+                that.mtime = mtime;
+                data_init_default();
+              }
+            );
           } catch (e) {
             fail(null, e.message, e);
           }
@@ -27,6 +34,17 @@ function Backend() {
     return promise;
   };
 
+  this.update_mtime = function () {
+    let promise = new Promise(function (resolve, reject) {
+      $.post('/mtime?y=' + new Date().getTime()).fail(fail).done(
+        function (mtime) {
+          resolve(mtime);
+        }
+      );
+    });
+    return promise;
+  }
+
   this.update = function () {
     that.dirty = false;
 
@@ -35,28 +53,46 @@ function Backend() {
     that.uploading = true;
 
     console.log('Sending data');
-    var st = JSON.stringify(that.data);
-    var blob = new Blob([st], { type: 'application/json' });
-    var file = new File([ blob ], 'data.json');
-    var fd = new FormData();
-    fd.append('file', file, 'data.json');
 
-    var promise = new Promise(function (resolve, reject) {
-      $.ajax({
-          type: "POST",
-          url: '/overwrite',
-          data: fd,
-          processData: false,
-          contentType: false,
-      }).fail(fail).done(function () {
-        // that.init().then(function () {
-        //   that.uploading = false;
-        //   resolve();
-        // });
-        that.uploading = false;
-        resolve();
+    let promise = new Promise(function (resolve, reject) {
+      that.update_mtime().catch(fail).then(function (mtime) {
+        console.debug('local mtime:server mtime = ' + that.mtime + ':' + mtime);
+        if (that.mtime != mtime) {
+          alert("Remote file changed since last sync! Reloading page for ya...");
+
+          window.onbeforeunload = null;
+
+          location.reload(); // force reload not needed
+
+          reject();
+          return;
+        }
+
+        let st = JSON.stringify(that.data);
+        let blob = new Blob([st], { type: 'application/json' });
+        let file = new File([ blob ], 'data.json');
+        let fd = new FormData();
+        fd.append('file', file, 'data.json');
+
+        $.ajax({
+            type: "POST",
+            url: '/overwrite',
+            data: fd,
+            processData: false,
+            contentType: false,
+        }).fail(fail).done(function () {
+          // that.init().then(function () {
+          //   that.uploading = false;
+          //   resolve();
+          // });
+
+          that.update_mtime().catch(fail).then(function (mtime2) {
+            that.mtime = mtime2;
+            that.uploading = false;
+            resolve();
+          });
+        });
       });
-
     });
 
     return promise;
@@ -79,7 +115,7 @@ function Backend() {
   }
 }
 
-var back = new Backend();
+let back = new Backend();
 
 // alert if window is closing while uploading
 window.onbeforeunload = function (e) {

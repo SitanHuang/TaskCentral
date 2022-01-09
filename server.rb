@@ -34,6 +34,10 @@ get '/?' do
   send_file 'index.html'
 end
 
+post '/mtime' do
+  (File.mtime("#{$ROOT}/storage/data").to_f*1000).round.to_s
+end
+
 post '/overwrite' do
   unless params[:file] && params[:file][:tempfile]
     halt 400, 'No file detected.'
