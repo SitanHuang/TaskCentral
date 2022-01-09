@@ -3,7 +3,7 @@ let _home_con;
 let _home_button;
 
 function ui_menu_select_home() {
-  
+
   _home_con = $('.content-container > div.home');
   _home_addForm = $('#add-form');
   _home_button = $('#home-mode-button');
@@ -11,12 +11,12 @@ function ui_menu_select_home() {
   _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
   // ^ sliders should automatically go to center
   _home_addForm.removeClass('focus-within');
-  
+
   if (_selected_task)
     ui_detail_select_task(_selected_task);
   else if (_home_detail)
     ui_detail_close();
-  
+
   ui_home_update_list();
 }
 
@@ -46,7 +46,7 @@ function _ui_home_add_update_actions() {
           _home_addForm.find('input[name=project]').val(x).change();
         });
     });
-  
+
     _ui_home_create_add_new_proj_btn(projects, 'ui_home_add_project_callback(this);return false;');
 }
 
@@ -141,7 +141,7 @@ function _ui_home_add_remove_date() {
 
 function _ui_home_add_show_date() {
   const due = task_parse_date_input(_home_addForm.find('input[name=due]').val());
-   
+
 
   _home_addForm.find('.datepicker').hide();
   _home_addForm.find('.date-due')
@@ -272,7 +272,7 @@ function _ui_home_gen_task_row(task) {
     $row.addClass('completed');
   if (task == _selected_task)
     $row.addClass('activated');
-  
+
 
   $row.find('i.fa-check-square')
     .click(() => {
@@ -338,7 +338,9 @@ function _ui_home_normal_status(tasks) {
   let due = tasks.filter(x => x.status != 'completed' && x.due);
   let now = timestamp();
   let ready = due.filter(x => !x.earliest || now >= x.earliest).length;
-  $('#status-bar').text(`Tasks: ${tasks.length}  Due: ${due.length}  Ready: ${ready}`);
+  let total = tasks.reduce((s, x) => ({ total: s.total + x.total })).total;
+  $('#status-bar')
+    .text(`A: ${tasks.length} D: ${due.length} R: ${ready} | ${timeIntervalStringShort(total)}`);
 }
 
 // --------------- default -----------------
@@ -346,7 +348,7 @@ function _ui_home_default_list() {
   let tasks = _ui_query_filter();
 
   // default: sort by importance algorithm
-  tasks = tasks.sort((a, b) => 
+  tasks = tasks.sort((a, b) =>
     task_calc_importance(b) - task_calc_importance(a)
   );
 
@@ -359,7 +361,7 @@ function _ui_home_all_list() {
   let tasks = _ui_query_filter();
 
   // all: sort by creation date
-  tasks = tasks.sort((a, b) => 
+  tasks = tasks.sort((a, b) =>
     b.created - a.created
   );
 

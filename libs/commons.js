@@ -32,16 +32,29 @@ function fontColorFromHex(color) {
 }
 
 function timeIntervalString(final, initial) {
+  initial = initial || 0;
   let delta = Math.abs(final - initial) / 1000;
-  
+
   let hours = Math.floor(delta / 3600) % 24;
   delta -= hours * 3600;
-  
+
   let minutes = Math.floor(delta / 60) % 60;
   delta -= minutes * 60;
 
   let seconds = (Math.round(delta % 60 * 10) / 10).toFixed(1);
   return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.padStart(4, '0')}`;
+}
+
+function timeIntervalStringShort(final, initial) {
+  initial = initial || 0;
+  let delta = Math.abs(final - initial) / 1000;
+  let hrs = delta / 3600;
+  if (hrs > 1)
+    return hrs.toFixed(1) + 'hr';
+  let min = delta / 60;
+  if (min > 1)
+    return min.toFixed(1) + 'min';
+  return delta.toFixed(1) + 's';
 }
 
 function onPasteFormatRemovalHandler(elem, e) {
