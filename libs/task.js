@@ -20,7 +20,7 @@ function task_new(override) {
     status: 'default',
     priority: 5, // 0-10 inclusive, relative degree of importance
     weight: 0, // 0-10 inclusive, relative amount of work
-    progress: null, // latest progress, updated via task.log.push()
+    progress: null, // latest progress, updated via task.log.push(), null same as 0
     total: 0, // total difference in timestamp spent on working (start -> default)
     // TODO: stub
     // [subtasks: []],
@@ -59,6 +59,7 @@ function task_calc_importance(task) {
     days_left *= 100;
 
   weight /= days_left;
+  // 0 is same as null
   if (task.progress)
     weight *= Math.max(0.05, (100 - task.progress) / 100);
 
@@ -162,9 +163,30 @@ function task_start(task) {
   back.set_dirty();
 }
 
+function task_gen_readable_log(task) {
+  let s = '';
+  task.log.forEach(x => {
+    s += x.type.substring(0, 3).toUpperCase() + ' ';
+    s += new Date(x.time).toLocaleString() + ' ';
+    if (!isNaN(x.progress))
+      s += ' int=' + x.progress.toString().padStart(2, '0') + ' ';
+    if (x.note)
+      s += ' "' + x.note + '" ';
+    s += '\n';
+  });
+  return s;
+}
+
 function task_update_progress(task, progress) {
   task.progress = Math.max(Math.min(progress, 100), 0);
-  task.log.push({ type: 'progress', time: timestamp(), progress: task.progress });
+
+  let now = timestamp();
+
+  // delete nearest 5min progress
+  task.log = task.log
+    .filter(x => !(x.type == 'progress' && Math.abs(now - x.time) < 300000));
+
+  task.log.push({ type: 'progress', time: now, progress: task.progress });
   back.set_dirty();
 }
 

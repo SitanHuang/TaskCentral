@@ -115,6 +115,18 @@
                 </div>
               </div>
               <div class="pure-control-group">
+                <label>Priority</label>
+                <input type="range" min="0" max="10" step="1" name="priority">
+              </div>
+              <div class="pure-control-group">
+                <label>Weight</label>
+                <input type="range" min="0" max="10" step="1" name="weight">
+              </div>
+              <div class="pure-control-group">
+                <label>Progress</label>
+                <input type="range" min="0" max="100" step="1" name="progress">
+              </div>
+              <div class="pure-control-group">
                 <label>Due</label>
                 <input type="date" name="due">
               </div>
@@ -130,26 +142,26 @@
                 <label>Visibility</label>
                 <label for="home-details-hidden-checkbox" class="pure-checkbox"
                   style="text-align: left;">
-                  <input type="checkbox" name="hidden" id="home-details-hidden-checkbox"> Hide/show
+                  <input type="checkbox" name="hidden" id="home-details-hidden-checkbox"> Hidden
                 </label>
+              </div>
+              <div class="pure-control-group">
+                <label>Time spent</label>
+                <input type="text" readonly name="total">
               </div>
               <div class="pure-control-group">
                 <label>Status</label>
                 <input type="text" readonly name="status">
               </div>
               <div class="pure-control-group">
-                <label>Total</label>
-                <input type="text" readonly name="total">
-              </div>
-              <div class="pure-control-group">
                 <label>Created</label>
                 <input type="text" readonly name="created">
               </div>
+              <div class="pure-control-group">
+                <label>Log</label>
+                <textarea readonly name="log" style="height: 7.5em;font-family: var(--mono-family);"></textarea>
+              </div>
               <!-- TODO: total time & log -->
-              <!-- TODO: hidden -->
-              <!-- TODO: created -->
-              <!-- TODO: progress -->
-              <!-- TODO: priority/weight -->
             </form-body>
           </form>
         </div>

@@ -2,6 +2,8 @@
   font-size: 18px;
 
   --card-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+
+  --mono-family: 'Roboto Mono', monospace;
 }
 
 body {
@@ -116,7 +118,7 @@ button .fa{
 }
 
 #timer-container timer {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--mono-family);
   font-size: 3rem;
   color: white;
   display: block;
