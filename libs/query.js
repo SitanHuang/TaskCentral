@@ -134,7 +134,9 @@ function query_generate_gantt_tracks(tasks, range) {
 
   // sort by duration, longest periods go on top tracks
   periods = periods.sort((a, b) =>
-    (b.to - b.from) - (a.to - a.from)
+    ((b.to - b.from) - (a.to - a.from)) ||
+    // if difference == 0, importance is next
+    (task_calc_importance(b.task) - task_calc_importance(a.task))
   );
 
   let tracks = [];
