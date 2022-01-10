@@ -283,3 +283,11 @@ p.no-tasks {
   text-align: center;
   box-sizing: border-box;
 }
+
+.pure-button-group {
+  display: inline-block;
+}
+
+.filters-holder .pure-button-group {
+  margin-right: 4px;
+}
