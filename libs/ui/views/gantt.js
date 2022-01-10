@@ -158,6 +158,7 @@ function ui_gantt_render() {
 
         let interval = Math.ceil(Math.max(
           spanWidth + GANTT_DAY_WIDTH,
+          window.innerWidth * 0.75,
           GANTT_DAY_WIDTH * 15
         ));
 
