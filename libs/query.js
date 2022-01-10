@@ -132,11 +132,14 @@ function query_exec(query) {
 function query_generate_gantt_tracks(tasks, range) {
   let periods = _query_generate_gantt_periods(tasks, range);
 
-  // sort by duration, longest periods go on top tracks
   periods = periods.sort((a, b) =>
+    // sort by duration, longest periods go on top tracks
     ((b.to - b.from) - (a.to - a.from)) ||
     // if difference == 0, importance is next
-    (task_calc_importance(b.task) - task_calc_importance(a.task))
+    (task_calc_importance(b.task) - task_calc_importance(a.task)) ||
+    // if completed or importance = 0, use weight then priority
+    (b.weight - a.weight) ||
+    (b.priority - a.priority)
   );
 
   let tracks = [];
@@ -164,11 +167,6 @@ function query_generate_gantt_tracks(tasks, range) {
     track.push(period);
   }
 
-  tracks.forEach(t => {
-    console.log('---------');
-    console.log(t.map(x => Math.round((x.to - x.from) / 8.64e+7) + 'd:' + new Date(x.from).toLocaleDateString() + '-' + new Date(x.to).toLocaleDateString() + ':' + x.task.name).join('\n'));
-  });
-
   return tracks;
 }
 
@@ -177,17 +175,27 @@ function _query_generate_gantt_periods(tasks, range) {
   let periods = [];
 
   for (let task of tasks) {
-    let [f, t] = task_gantt_endpoints(task).map(x => roundDateToNearestDay(x));
+    let [f, t] = task_gantt_endpoints(task).map(x => roundDateToNearestDay(x).getTime());
 
     // out of range
     if (f > to || t < from)
       continue;
 
     // truncate range
-    f = Math.max(f, from);
-    t = Math.min(t, to);
+    let nf = Math.max(f, from);
+    let nt = Math.min(t, to);
 
-    periods.push({ from: f, to: t, task: task });
+    let period = {
+      from: nf,
+      to: nt,
+      task: task,
+      // useful for deciding whether or not to
+      // use rounded corners in gantt
+      startCapped: f != nf,
+      endCapped: t != nt
+    };
+
+    periods.push(period);
   }
 
   return periods;

@@ -29,7 +29,7 @@
       <span id="splash-status"></span>
     </div>
 
-    <div class="top-bar">
+    <div class="top-bar" oncontextmenu="return false;">
       <div class="pure-menu pure-menu-horizontal">
         <ul class="pure-menu-list">
           <li class="pure-menu-item">
@@ -172,6 +172,21 @@
             </form-body>
           </form>
         </div>
+      </div>
+      <div class="gantt" oncontextmenu="return false;">
+        <header>
+          <div class="actions pad">
+            <button class="pure-button" onclick="ui_filter_open(GANTT_QUERY, ui_gantt_render)">
+              Filter <i class="fa fa-filter"></i>
+            </button>
+            <div class="filters-holder"></div>
+          </div>
+        </header>
+        <gantt-container>
+          <!-- programatically scrolled -->
+          <gantt-header></gantt-header>
+          <gantt-graph></gantt-graph>
+        </gantt-container>
       </div>
     </div>
 
@@ -371,6 +386,7 @@
 
     <script src="libs/ui/views/home.js"></script>
     <script src="libs/ui/views/details.js"></script>
+    <script src="libs/ui/views/gantt.js"></script>
 
     <script src="libs/ui/layout.js"></script>
     <script src="libs/ui/timer.js"></script>

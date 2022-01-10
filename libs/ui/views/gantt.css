@@ -1,0 +1,78 @@
+gantt-container {
+  width: 100vw;
+  overflow-y: auto;
+  display: block;
+  user-select: none;
+}
+
+gantt-graph {
+  position: relative;
+  display: block;
+  background: white;
+  min-width: 100vw;
+  min-height: var(--gantt-day-width);
+  border-bottom: 1px solid #e3e3e3;
+  background-image: repeating-linear-gradient( 
+          90deg,
+          #e3e3e3, /* starting at pixel 0 */
+          #e3e3e3 1px, /* White, continuing to pixel 1 */
+          white 1px, /* Transparent beginning at pixel 1 */
+          white var(--gantt-day-width) /* Transparent ending at pixel 40 (39 + 1) */
+        );
+}
+
+gantt-graph period {
+  --period-height: calc(var(--gantt-day-width) * 0.75);
+  position: absolute;
+  overflow: hidden;
+  white-space: nowrap;
+  height: var(--period-height);
+  line-height: var(--period-height);
+  display: block;
+  text-align: center;
+  z-index: 3;
+}
+
+gantt-graph period.overlay {
+  overflow: visible;
+  color: rgba(0, 0, 0, 0.87);
+  z-index: 2;
+}
+
+gantt-graph period.start-round {
+  border-top-left-radius: calc(var(--gantt-day-width)/4);
+  border-bottom-left-radius: calc(var(--gantt-day-width)/4);
+}
+gantt-graph period.end-round {
+  border-top-right-radius: calc(var(--gantt-day-width)/4);
+  border-bottom-right-radius: calc(var(--gantt-day-width)/4);
+}
+
+gantt-graph period span {
+  display: inline-block;
+  text-align: center;
+}
+
+gantt-header {
+  display: block;
+  position: relative;
+  background: white;
+  min-width: 100vw;
+  height: calc(2 * var(--gantt-day-width) + 1px);
+  border-top: 1px solid #e3e3e3;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+gantt-header date {
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: var(--gantt-day-width);
+  height: var(--gantt-day-width);
+  border-bottom: 1px solid #e3e3e3;
+  border-right: 1px solid #e3e3e3;
+  box-sizing: border-box;
+  background: white;
+}

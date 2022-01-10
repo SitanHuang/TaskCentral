@@ -109,7 +109,7 @@ function ui_filter_update_holders(target_provider, callback_provider) {
       row.find('button:last-child').click(() => {
         delete back.data.filters[name];
         back.set_dirty();
-        ui_filter_update_holders();
+        ui_filter_update_holders(target_provider, callback_provider);
       });
       row.appendTo(holder);
     });
