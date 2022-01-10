@@ -12,7 +12,7 @@ function task_new(override) {
     name: '',
     project: null,
     tags: {}, // TODO: stub
-    created: stamp, 
+    created: stamp,
     hidden: false, // unlike complete, this one can hide everything
     due: null,
     earliest: null, // earliest time to begin working
@@ -41,10 +41,10 @@ function task_calc_importance(task) {
 
   if (task.status == 'completed')
     return 0;
-  
+
   if (task.status == 'start')
     return 11 * (task.priority + 1) / 11;
-  
+
   if (task.until && now >= task.until)
     return 0;
 
@@ -83,7 +83,7 @@ function task_stringify_due(task) {
     return task_stringify_due(task.due);
   else if (task.id)
     return 'None'; // no due date
-  
+
   let date = new Date(task);
   if (isToday(date))
     return 'Today';
@@ -98,7 +98,7 @@ function task_colorize_due(task) {
     return task_stringify_due(task.due);
   else if (task.id)
     return ''; // no due date
-  
+
   const now = new Date();
   const diff = task - now;
   if (diff <= 0) // overdue/due today
@@ -195,7 +195,7 @@ function task_pause(task) {
   task.status = 'default';
   task.log.push({ type: 'default', time: timestamp() });
   delete back.data.started;
-  
+
   // aggregate to total time spent
   let start = task_get_latest_start_stamp(task);
   if (start)
@@ -211,4 +211,16 @@ function task_get_latest_start_stamp(task) {
       return log.time;
   }
   return null;
+}
+
+function task_completed_stamp(task) {
+  let def = Math.min(task.until, timestamp());
+  let d = def;
+  for (let l of task.log) {
+    if (l.type == 'default' && l.note.toLowerCase().indexOf('completed') >= 0)
+      d = l.time;
+    else if (l.type == 'default' || l.type == 'start')
+      d = def;
+  }
+  return d;
 }

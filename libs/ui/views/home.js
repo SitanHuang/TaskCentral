@@ -223,6 +223,24 @@ const HOME_ALL_QUERY = {
     to: new Date(2100, 1, 1).getTime()
   }]
 };
+const HOME_COMPLETED_QUERY = {
+  queries: [{
+    status: ['completed'],
+    collect: ['tasks'],
+    from: 0,
+    to: new Date(2100, 1, 1).getTime()
+  }]
+};
+const HOME_HIDDEN_QUERY = {
+  queries: [{
+    // just like default, hidden hides completed tasks
+    status: ['start', 'default'],
+    hidden: true,
+    collect: ['tasks'],
+    from: 0,
+    to: new Date(2100, 1, 1).getTime()
+  }]
+};
 
 HOME_QUERY = JSON.parse(JSON.stringify(HOME_DEFAULT_QUERY));
 
@@ -368,6 +386,32 @@ function _ui_home_all_list() {
   // all: sort by creation date
   tasks = tasks.sort((a, b) =>
     b.created - a.created
+  );
+
+  _ui_home_normal_status(tasks);
+
+  _ui_home_normal_list_gen(tasks);
+}
+// --------------- completed -----------------
+function _ui_home_completed_list() {
+  let tasks = _ui_query_filter();
+
+  // completed: sort by complete date
+  tasks = tasks.sort((a, b) =>
+    task_completed_stamp(b) - task_completed_stamp(a)
+  );
+
+  _ui_home_normal_status(tasks);
+
+  _ui_home_normal_list_gen(tasks);
+}
+// --------------- hidden -----------------
+function _ui_home_hidden_list() {
+  let tasks = _ui_query_filter();
+
+  // hidden: sort by importance algorithm
+  tasks = tasks.sort((a, b) =>
+    task_calc_importance(b) - task_calc_importance(a)
   );
 
   _ui_home_normal_status(tasks);
