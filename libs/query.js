@@ -7,6 +7,7 @@
  *     projects: [], // list or projects (OR filter)
  *     status: [], // OR filter
  *     hidden: null,
+ *     due: null,
  *     collect: [
  *       'tasks', // return task entries
  *     ]
@@ -34,6 +35,7 @@ function query_exec(query) {
     q.projects = q.projects || [];
     q.status = q.status || [];
     q.hidden = typeof q.hidden == "boolean" ? q.hidden : null;
+    q.due = typeof q.due == "boolean" ? q.due : null;
 
     q._range = [q.from, q.to];
 
@@ -78,6 +80,8 @@ function query_exec(query) {
       // ------- exclusive conditions -------
 
       if (q.hidden !== null && q.hidden !== task.hidden)
+        continue;
+      if (q.due !== null && (q.due != (!!task.due)))
         continue;
 
       if (q.projects.length) {

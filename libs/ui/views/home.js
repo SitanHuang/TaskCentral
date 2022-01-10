@@ -3,7 +3,6 @@ let _home_con;
 let _home_button;
 
 function ui_menu_select_home() {
-
   _home_con = $('.content-container > div.home');
   _home_addForm = $('#add-form');
   _home_button = $('#home-mode-button');
@@ -18,6 +17,12 @@ function ui_menu_select_home() {
     ui_detail_close();
 
   ui_home_update_list();
+
+  let target_provider = () => HOME_QUERY;
+  let callback_provider = () => ui_home_update_list;
+
+
+  ui_filter_update_holders(target_provider, callback_provider);
 }
 
 // =========================================
@@ -207,7 +212,7 @@ const HOME_DEFAULT_QUERY = {
     hidden: false,
     collect: ['tasks'],
     from: 0,
-    to: Number.MAX_VALUE
+    to: new Date(2100, 1, 1).getTime()
   }]
 };
 const HOME_ALL_QUERY = {
@@ -215,7 +220,7 @@ const HOME_ALL_QUERY = {
     status: [],
     collect: ['tasks'],
     from: 0,
-    to: Number.MAX_VALUE
+    to: new Date(2100, 1, 1).getTime()
   }]
 };
 
@@ -371,7 +376,6 @@ function _ui_home_all_list() {
 }
 
 function _ui_query_filter() {
-  // TODO: grab filter
   return query_exec(HOME_QUERY)[0].tasks;
 }
 

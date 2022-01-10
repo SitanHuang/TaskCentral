@@ -216,7 +216,7 @@ project {
   user-select: none;
   cursor: pointer;
   /* prevents growing height */
-  align-self: flex-start; 
+  align-self: flex-start;
   position: relative;
   top: -2px;
 }
@@ -242,4 +242,44 @@ p.no-tasks {
 .button-primary {
   background-color: var(--app-primary-color);
   color: white;
+}
+
+.pure-form-aligned .pure-control-group > *:not(span:not(.textarea)):last-child,
+.pure-form-aligned .pure-control-group > input {
+  width: calc(100%);
+}
+
+@media screen and (min-width: 480px) {
+  .pure-form-aligned .pure-control-group > label:first-child {
+    width: 5em;
+  }
+
+  .pure-form-aligned .pure-control-group > *:not(span:not(.textarea)):last-child,
+  .pure-form-aligned .pure-control-group > input,
+  .pure-form-aligned .pure-control-group > .stacked-checkboxes {
+    display: inline-block;
+    width: calc(100% - 8em);
+  }
+
+  .pure-form-aligned .pure-control-group > .pure-form-message-inline {
+    padding-left: 7em;
+  }
+}
+
+.modal__container {
+  max-width: min(90vw, 400px);
+  padding: 1em;
+}
+
+.pure-form-aligned .pure-control-group .stacked-checkboxes .pure-checkbox {
+  text-align: left;
+}
+
+.filters-holder {
+  display: inline-block;
+  line-height: normal;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: center;
+  box-sizing: border-box;
 }

@@ -1,6 +1,6 @@
 .content-container .home {
   position: relative;
-  
+
   --right-panel-width: max(450px, 45vw);
 }
 
@@ -13,6 +13,11 @@
   overflow-y: auto;
   /* fixes box-shadow spilling over to right panel */
   overflow-x: hidden;
+}
+
+.task-container > .actions {
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .task-detail {
@@ -259,7 +264,7 @@
 
 #add-form .detail-row .projects::-webkit-scrollbar {
   width: 0;  /* Remove scrollbar space */
-  background: transparent; 
+  background: transparent;
 }
 
 .colors-container color {
@@ -281,7 +286,3 @@
   margin: -1px 0;
 }
 
-#modal-home-mode .modal__container {
-  width: min(90vw, 400px);
-  padding: 1em;
-}

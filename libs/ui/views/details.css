@@ -32,10 +32,6 @@
   flex: 1;
 }
 
-.task-detail form-body .pure-control-group > *:last-child {
-  width: calc(100%);
-}
-
 .task-detail .textarea {
   display: block;
   white-space: pre;
@@ -55,15 +51,9 @@
   vertical-align: middle;
 }
 
-@media screen and (min-width: 480px) {
-  .task-detail form-body .pure-control-group > label {
-    width: 5em;
-  }
-
-  .task-detail form-body .pure-control-group > *:last-child {
-    display: inline-block;
-    width: calc(100% - 8em);
-  }
+.task-detail .textarea:focus {
+  outline: 0;
+  border-color: #129fea;
 }
 
 .task-detail .project-container > .project {
@@ -77,4 +67,8 @@
 .task-detail .project-container > .projects {
   padding: 2px 0;
   border-top: 1px solid #e3e3e3;
+}
+
+#modal-home-mode .modal__container {
+  width: min(90vw, 400px);
 }

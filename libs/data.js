@@ -7,7 +7,8 @@ function data_init_default() {
         fontColor: 'white'
       })
     },
-    tags: {}
+    tags: {},
+    filters: {}, // used by UI to store user-defined query filters
   };
   back.data = Object.assign(def, back.data);
 }

@@ -57,9 +57,10 @@
               onclick="ui_home_mode_select()">
               default
             </button>
-            <button class="pure-button">
+            <button class="pure-button" onclick="ui_filter_open(HOME_QUERY, ui_home_update_list)">
               Filter <i class="fa fa-filter"></i>
             </button>
+            <div class="filters-holder"></div>
           </div>
           <form id="add-form" autocomplete="off" onsubmit="ui_home_add_trigger(); return false;">
             <div class="input-row">
@@ -179,16 +180,16 @@
       <i class="fas" id="sync-status"></i>
     </div>
 
-    <!-- Modal: Create new project on add in home page-->
-    <div class="modal micromodal-slide" id="modal-home-new-proj" aria-hidden="true">
+    <!-- Modal: Create new project on add in home page -->
+    <div class="modal micromodal-slide" id="modal-home-new-proj">
       <div class="modal__overlay" tabindex="-1">
-        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-home-new-proj-title">
+        <div class="modal__container" role="dialog">
           <form autocomplete="off" onsubmit="" class="pure-form pure-form-stacked">
             <header class="modal__header">
               <h2 class="modal__title" id="modal-home-new-proj-title">
                 New project
               </h2>
-              <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+              <button class="modal__close" data-micromodal-close></button>
             </header>
             <main class="modal__content" id="modal-home-new-proj-content">
               <div class="pure-g">
@@ -204,23 +205,111 @@
               <div class="pure-g colors-container"></div>
             </main>
             <footer class="modal__footer" style="text-align: right;">
-              <button type="clear" class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+              <button type="clear" class="modal__btn" data-micromodal-close>Cancel</button>
               <button type="submit" class="modal__btn modal__btn-primary">Add</button>
             </footer>
           </form>
         </div>
       </div>
     </div>
-    <!-- Modal: Home mode -->
-    <div class="modal micromodal-slide" id="modal-home-mode" aria-hidden="true">
+    <!-- Modal: Filter -->
+    <div class="modal micromodal-slide" id="modal-filter">
       <div class="modal__overlay" tabindex="-1">
-        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-home-mode-title">
+        <div class="modal__container" role="dialog">
+          <form onsubmit="return false;" autocomplete="off" class="pure-form pure-form-aligned">
+            <header class="modal__header">
+              <h2 class="modal__title" id="modal-filter-title">
+                Set Filter
+              </h2>
+              <button class="modal__close" data-micromodal-close></button>
+            </header>
+            <main class="modal__content" id="modal-filter-content">
+              <div class="pure-control-group">
+                <label>Project</label>
+                <input type="text" name="project">
+                <span class="pure-form-message-inline">
+                  "none" for tasks without project; ex. "school..hw", "school.*", "school*"
+                </span>
+              </div>
+              <div class="pure-control-group">
+                <label>Selected Projects</label>
+                <input type="text" name="projects" readonly>
+                <span class="pure-form-message-inline">
+                  to change, reset filter
+                </span>
+              </div>
+              <div class="pure-control-group">
+                <label style="vertical-align: top;">Status</label>
+                <div class="stacked-checkboxes">
+                  <label for="filter-checkbox-default" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-default">
+                    Default
+                  </label>
+                  <label for="filter-checkbox-start" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-start">
+                    Started
+                  </label>
+                  <label for="filter-checkbox-completed" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-completed">
+                    Completed
+                  </label>
+                </div>
+                <span class="pure-form-message-inline">
+                  queries everything if none selected
+                </span>
+              </div>
+              <div class="pure-control-group">
+                <label>Visibility</label>
+                <select name="visibility">
+                  <option value=""></option>
+                  <option value="hidden">Hidden</option>
+                  <option value="visible">Visible</option>
+                </select>
+              </div>
+              <div class="pure-control-group">
+                <label>Due</label>
+                <select name="due">
+                  <option value="null"></option>
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+              </div>
+              <div class="pure-control-group">
+                <label>From</label>
+                <input type="date" name="from">
+                <span class="pure-form-message-inline">
+                  min(min(created, earliest || created), END)
+                </span>
+              </div>
+              <div class="pure-control-group">
+                <label>To</label>
+                <input type="date" name="to">
+                <span class="pure-form-message-inline">
+                  max(max(now, due || until), START)
+                </span>
+              </div>
+              <!-- TODO: projects -->
+              <!-- TODO: ready -->
+            </main>
+            <footer class="modal__footer" style="text-align: right;">
+              <button type="clear" class="modal__btn" data-micromodal-close>Cancel</button>
+              <button type="button" onclick="ui_filter_save()" class="modal__btn">Save</button>
+              <button type="submit" class="modal__btn modal__btn-primary">Apply</button>
+            </footer>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Modal: Home mode -->
+    <div class="modal micromodal-slide" id="modal-home-mode">
+      <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" role="dialog">
           <form autocomplete="off" onsubmit="ui_home_add_project_callback(this);return false;" class="pure-form pure-form-stacked">
             <header class="modal__header">
               <h2 class="modal__title" id="modal-home-mode-title">
 
               </h2>
-              <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+              <button class="modal__close" data-micromodal-close></button>
             </header>
             <main class="modal__content" id="modal-home-mode-content">
               <div class="pure-menu pure-menu-scrollable custom-restricted">
@@ -269,6 +358,8 @@
 
     <script src="libs/fuzzy.js"></script>
     <script src="libs/query.js"></script>
+
+    <script src="libs/ui/filter.js"></script>
 
     <script src="libs/ui/views/home.js"></script>
     <script src="libs/ui/views/details.js"></script>
