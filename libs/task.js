@@ -217,7 +217,7 @@ function task_completed_stamp(task) {
   let def = Math.min(task.until, timestamp());
   let d = def;
   for (let l of task.log) {
-    if (l.type == 'default' && l.note.toLowerCase().indexOf('completed') >= 0)
+    if (l.type == 'default' && l.note?.toLowerCase().indexOf('completed') >= 0)
       d = l.time;
     else if (l.type == 'default' || l.type == 'start')
       d = def;
