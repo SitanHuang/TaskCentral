@@ -117,6 +117,32 @@ function task_parse_date_input(val) {
 }
 
 /*
+ * range for gantt periods,
+ * less inclusive than relavant endpoints
+ */
+function task_gantt_endpoints(task) {
+  let start = task.earliest ? task.earliest : task.created;
+  let now = timestamp();
+  let end = now;
+
+  if (task.status == 'completed') {
+    end = task_completed_stamp(task);
+  } else {
+    // if before until, either now or due
+    // cannot be after until
+    if (task.due)
+      end = Math.max(end, task.due);
+    if (task.until)
+      end = Math.min(end, task.until);
+  }
+
+  return [
+    start, // start date always earliest/created
+    Math.max(start, end) // cannot be before start date
+  ];
+}
+
+/*
  * the range for when the task is relevant
  */
 function task_get_endpoints(task) {
@@ -224,3 +250,4 @@ function task_completed_stamp(task) {
   }
   return d;
 }
+

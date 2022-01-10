@@ -68,3 +68,27 @@ function onPasteFormatRemovalHandler(elem, e) {
     window.document.execCommand('insertText', false, text);
   }
 }
+
+/*
+ * find closest local midnight
+ */
+function roundDateToNearestDay(date) {
+  date = new Date(date);
+  let tz = date.getTimezoneOffset() * 60000;
+  // 1. nearest 4 hours (US max timezone difference=3)
+  // 2. nearest day
+
+  let localMidNight = new Date(date);
+  localMidNight.setHours(0,0,0,0);
+
+  // if date within 4 hours of next midnight,
+  // use next midnight
+  if (date - localMidNight >= (24 - 4) * 3.6e+6)
+    localMidNight.setDate(localMidNight.getDate() + 1);
+
+  return localMidNight;
+}
+
+function isOverlapping(r1, r2) {
+  return (r1[0] <= r2[1]) && (r2[0] <= r1[1]);
+}
