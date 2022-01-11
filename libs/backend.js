@@ -12,6 +12,7 @@ function Backend() {
 
   this.mtime = null; // last retrieved mtime from server, in string
 
+  // should only be called once
   this.init = function () {
     console.log('Retreiving data');
     let promise = new Promise(function (resolve, reject) {
@@ -23,6 +24,23 @@ function Backend() {
               function (mtime) {
                 that.mtime = mtime;
                 data_init_default();
+
+                window.onfocus = throttle(() => {
+                  that.update_mtime().catch(fail).then(
+                    function (mtime) {
+                      if (that.mtime != mtime) {
+                        alert("Remote file changed since last sync! Reloading page for ya...");
+              
+                        window.onbeforeunload = null;
+              
+                        location.reload(); // force reload not needed
+              
+                        reject();
+                        return;
+                      }
+                    }
+                  );
+                }, 1000);
               }
             );
           } catch (e) {
@@ -38,6 +56,7 @@ function Backend() {
     let promise = new Promise(function (resolve, reject) {
       $.post('/mtime?y=' + new Date().getTime()).fail(fail).done(
         function (mtime) {
+          console.debug('local mtime:server mtime = ' + that.mtime + ':' + mtime);
           resolve(mtime);
         }
       );
@@ -56,7 +75,6 @@ function Backend() {
 
     let promise = new Promise(function (resolve, reject) {
       that.update_mtime().catch(fail).then(function (mtime) {
-        console.debug('local mtime:server mtime = ' + that.mtime + ':' + mtime);
         if (that.mtime != mtime) {
           alert("Remote file changed since last sync! Reloading page for ya...");
 
