@@ -3,6 +3,8 @@ gantt-container {
   overflow-y: auto;
   display: block;
   user-select: none;
+
+  --today-indicator-color: red;
 }
 
 gantt-graph {
@@ -30,7 +32,7 @@ gantt-graph period {
   line-height: var(--period-height);
   display: block;
   text-align: center;
-  z-index: 3;
+  z-index: 10;
 }
 
 gantt-graph period.overlay {
@@ -40,12 +42,12 @@ gantt-graph period.overlay {
 }
 
 gantt-graph period.start-round {
-  border-top-left-radius: calc(var(--gantt-day-width)/4);
-  border-bottom-left-radius: calc(var(--gantt-day-width)/4);
+  border-top-left-radius: calc(var(--gantt-day-width)/2);
+  border-bottom-left-radius: calc(var(--gantt-day-width)/2);
 }
 gantt-graph period.end-round {
-  border-top-right-radius: calc(var(--gantt-day-width)/4);
-  border-bottom-right-radius: calc(var(--gantt-day-width)/4);
+  border-top-right-radius: calc(var(--gantt-day-width)/2);
+  border-bottom-right-radius: calc(var(--gantt-day-width)/2);
 }
 
 gantt-graph period span {
@@ -53,15 +55,28 @@ gantt-graph period span {
   text-align: center;
 }
 
+gantt-graph today {
+  z-index: 50;
+  height: 100%;
+  background: var(--today-indicator-color);
+  width: 2px;
+  display: block;
+  position: absolute;
+  top: 0;
+  box-shadow: var(--card-shadow);
+}
+
 gantt-header {
   display: block;
   position: relative;
   background: white;
   min-width: 100vw;
-  height: calc(2 * var(--gantt-day-width) + 1px);
+  height: calc(3 * var(--header-row-height) + 1px);
   border-top: 1px solid #e3e3e3;
   overflow: hidden;
   white-space: nowrap;
+
+  --header-row-height: 1.8em;
 }
 
 gantt-header date {
@@ -69,10 +84,17 @@ gantt-header date {
   position: absolute;
   top: 0;
   left: 0;
-  line-height: var(--gantt-day-width);
-  height: var(--gantt-day-width);
+  line-height: var(--header-row-height);
+  height: var(--header-row-height);
   border-bottom: 1px solid #e3e3e3;
   border-right: 1px solid #e3e3e3;
   box-sizing: border-box;
   background: white;
+}
+
+gantt-header date.today {
+  background: var(--today-indicator-color);
+  color: white;
+  border-color: var(--today-indicator-color) !important;
+  box-shadow: var(--card-shadow);
 }

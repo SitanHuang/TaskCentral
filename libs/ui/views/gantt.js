@@ -69,8 +69,11 @@ function ui_gantt_render() {
   let header = container.find('gantt-header').html('');
   let graph = container.find('gantt-graph').html('');
 
+  let today_indicator;
+
   // =========== create header ===========  
   let _previousLeft = 0;
+
   for (
     let index = new Date(from);
     // first day less than end
@@ -81,7 +84,7 @@ function ui_gantt_render() {
   ) {
     // total number of days this month / to
     let maxDays = new Date(Math.min(
-      new Date(index.getFullYear(), index.getMonth()+1, 0),
+      new Date(index.getFullYear(), index.getMonth() + 1, 0),
       to
     )).getDate();
     // index might not start with first day of month
@@ -98,14 +101,38 @@ function ui_gantt_render() {
     
     for (let day = index.getDate(); day <= maxDays; day++) {
       let date2 = $(document.createElement('date'));
-      let width = GANTT_DAY_WIDTH;
       date2
-        .css('width', width)
-        .css('top', 'var(--gantt-day-width)')
+        .css('width', GANTT_DAY_WIDTH)
+        .css('top', 'calc(2 * var(--header-row-height))')
         .css('left', _previousLeft + 1)
         .text(day)
         .appendTo(header);
       
+      if (isToday(new Date(index.getFullYear(), index.getMonth(), day))) {
+        date2.addClass('today');
+
+        today_indicator = $(document.createElement('today'));
+        today_indicator.attr('id', 'gantt-today-indicator');
+        today_indicator.css('left', _previousLeft + 1);
+        today_indicator.appendTo(graph);
+      }
+
+      let dow = (index.getDay() + (day - index.getDate())) % 7;
+      let code = [' ', 'M', 'T', 'W', 'R', 'F', ' '][dow];
+
+      let date3 = $(document.createElement('date'));
+      let width = GANTT_DAY_WIDTH;
+      date3
+        .css('width', width)
+        .css(
+          'border-right',
+          dow == 0 || dow == 5 ? '1px solid #e3e3e3' : '0'
+        )
+        .css('top', 'var(--header-row-height)')
+        .css('left', _previousLeft + 1)
+        .text(code)
+        .appendTo(header);
+
       _previousLeft += GANTT_DAY_WIDTH;
     }
   }
@@ -123,6 +150,8 @@ function ui_gantt_render() {
       `
     );
 
+  let PERIOD_PADDING = 5;
+
   for (let row = 0;row < tracks.length; row++) {
     let track = tracks[row];
 
@@ -135,9 +164,9 @@ function ui_gantt_render() {
       let $p = $(document.createElement('period'));
       $p.css('background', proj.color)
         .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + (row * GANTT_DAY_WIDTH) + 'px)')
-        .css('left', start)
+        .css('left', start + PERIOD_PADDING)
         .css('color', proj.fontColor)
-        .css('width', length)
+        .css('width', length - PERIOD_PADDING * 2)
         .appendTo(graph);
       
       if (!period.startCapped)
@@ -181,5 +210,19 @@ function ui_gantt_render() {
     }
   }
 
+  ui_gantt_scroll_to_today();
+
   console.timeEnd('Re-render gantt');
+}
+
+function ui_gantt_scroll_to_today() {
+  let today_indicator = document.getElementById('gantt-today-indicator');
+  let container = _gantt_con.find('gantt-container');
+  if (today_indicator) {
+    container[0].scrollLeft = Math.max(
+      0,
+      today_indicator.offsetLeft - container[0].clientWidth / 3
+    );
+    today_indicator.scrollIntoViewIfNeeded();
+  }
 }
