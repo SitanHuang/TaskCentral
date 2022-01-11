@@ -176,6 +176,10 @@ function ui_gantt_render() {
         .css('left', start + PERIOD_PADDING)
         .css('color', proj.fontColor)
         .css('width', length - PERIOD_PADDING * 2)
+        .click(() => {
+          ui_menu_select('home');
+          ui_detail_select_task(period.task);
+        })
         .appendTo(graph);
 
       if (period.task.status == 'completed')

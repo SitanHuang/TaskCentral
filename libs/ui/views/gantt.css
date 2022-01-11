@@ -33,6 +33,7 @@ gantt-graph period {
   display: block;
   text-align: center;
   z-index: 10;
+  cursor: pointer;
 }
 
 gantt-graph period.completed {
