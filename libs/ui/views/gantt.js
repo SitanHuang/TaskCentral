@@ -177,6 +177,9 @@ function ui_gantt_render() {
         .css('color', proj.fontColor)
         .css('width', length - PERIOD_PADDING * 2)
         .appendTo(graph);
+
+      if (period.task.status == 'completed')
+        $p.addClass('completed');
       
       if (!period.startCapped)
         $p.addClass('start-round');

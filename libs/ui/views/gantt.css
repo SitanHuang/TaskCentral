@@ -35,6 +35,10 @@ gantt-graph period {
   z-index: 10;
 }
 
+gantt-graph period.completed {
+  opacity: 0.3;
+}
+
 gantt-graph period.overlay {
   overflow: visible;
   color: rgba(0, 0, 0, 0.87);
