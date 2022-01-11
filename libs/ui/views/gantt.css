@@ -41,6 +41,10 @@ gantt-graph period.overlay {
   z-index: 2;
 }
 
+gantt-graph period.overlay span {
+  background: white;
+}
+
 gantt-graph period.start-round {
   border-top-left-radius: calc(var(--gantt-day-width)/2);
   border-bottom-left-radius: calc(var(--gantt-day-width)/2);
