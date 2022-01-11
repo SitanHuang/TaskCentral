@@ -57,6 +57,16 @@ GANTT_DAY_WIDTH = 40; // px
 function ui_gantt_render() {
   console.time('Re-render gantt');
 
+  let container = _gantt_con.find('gantt-container');
+  let header = container.find('gantt-header').html('');
+  let graph = container.find('gantt-graph').html('');
+
+  // if more than 1 year
+  if (1 <= (GANTT_QUERY.queries[0].to - GANTT_QUERY.queries[0].from) / 3.154e+10) {
+    if (!confirm('Query range is too big. App might freeze. Continue?'))
+      return false;
+  }
+
   let tasks = query_exec(GANTT_QUERY)[0].tasks;
   
   let range = [GANTT_QUERY.queries[0].from, GANTT_QUERY.queries[0].to];
@@ -65,10 +75,6 @@ function ui_gantt_render() {
 
   let tracks = query_generate_gantt_tracks(tasks, range);
   
-  let container = _gantt_con.find('gantt-container');
-  let header = container.find('gantt-header').html('');
-  let graph = container.find('gantt-graph').html('');
-
   let today_indicator;
 
   // =========== create header ===========  
