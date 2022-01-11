@@ -34,7 +34,7 @@
 
 .task-detail .textarea {
   display: block;
-  white-space: pre;
+  white-space: pre-wrap;
   width: 100%;
   overflow: hidden;
   resize: both;
