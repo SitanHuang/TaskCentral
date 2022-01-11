@@ -111,9 +111,12 @@ function ui_gantt_render() {
       if (isToday(new Date(index.getFullYear(), index.getMonth(), day))) {
         date2.addClass('today');
 
+        let now = new Date();
+        let percOfDay = (now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() + now.getMilliseconds() / 1000) / 86400;
+
         today_indicator = $(document.createElement('today'));
         today_indicator.attr('id', 'gantt-today-indicator');
-        today_indicator.css('left', _previousLeft + 1);
+        today_indicator.css('left', _previousLeft + percOfDay * GANTT_DAY_WIDTH);
         today_indicator.appendTo(graph);
       }
 
