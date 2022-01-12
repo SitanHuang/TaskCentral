@@ -43,7 +43,7 @@
             <a href="#" data-menu="log" class="pure-menu-link">Log</a>
           </li>
           <li class="pure-menu-item">
-            <a href="#" data-menu="settings" class="pure-menu-link">Settings</a>
+            <a href="#" data-menu="settings" class="pure-menu-link">Utilities</a>
           </li>
         </ul>
       </div>
@@ -263,6 +263,14 @@
           </div>
         </grid>
       </div>
+      <div class="settings" oncontextmenu="return false;">
+        <div class="pad">
+          <button class="pure-button"
+            onclick="ui_settings_export_ledg()">
+            Export periods to `ledg` timeclock files (zip, 1970-2100)
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="bottom-bar" oncontextmenu="return false">
@@ -446,6 +454,7 @@
     <script src="libs/external/jquery-3.6.0.min.js"></script>
     <script src="libs/external/randomColor.min.js"></script>
     <script src="libs/external/micromodal.min.js"></script>
+    <script src="libs/external/zip-no-worker-deflate.min.js"></script>
 
     <script src="libs/commons.js"></script>
 
@@ -463,6 +472,7 @@
     <script src="libs/ui/views/details.js"></script>
     <script src="libs/ui/views/gantt.js"></script>
     <script src="libs/ui/views/log.js"></script>
+    <script src="libs/ui/views/settings.js"></script>
 
     <script src="libs/ui/layout.js"></script>
     <script src="libs/ui/timer.js"></script>
