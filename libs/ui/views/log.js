@@ -70,7 +70,7 @@ function ui_log_render() {
 }
 
 LOG_CAL_HEIGHT = 50 * 24;
-function _ui_log_render_calendar(stamp) {
+function _ui_log_render_calendar(stamp, chevron) {
   stamp = stamp || LOG_QUERY.queries[0].from;
   let diff = LOG_QUERY.queries[0].to - LOG_QUERY.queries[0].from;
 
@@ -93,10 +93,10 @@ function _ui_log_render_calendar(stamp) {
   }
 
   container.find('.fa.fa-chevron-left')[0].onclick = () => {
-    _ui_log_render_calendar(stamp - diff);
+    _ui_log_render_calendar(stamp - diff, true);
   };
   container.find('.fa.fa-chevron-right')[0].onclick = () => {
-    _ui_log_render_calendar(stamp + diff);
+    _ui_log_render_calendar(stamp + diff, true);
   };
 
   let query = { queries: [] };
@@ -173,11 +173,16 @@ function _ui_log_render_calendar(stamp) {
 
   // make gridlines
   for (let i = 0;i < 23;i++) {
-    $(document.createElement('hour'))
+    let hr = $(document.createElement('hour'))
       .css('bottom', LOG_CAL_HEIGHT - ((i + 1) * LOG_CAL_HEIGHT / 24))
       .text((i % 12 + 1) + (i > 10 ? 'pm' : 'am'))
       .appendTo(content);
   }
+
+  if (!chevron)
+    container.find('backdrop period:last-child').each(function () {
+      this.scrollIntoViewIfNeeded();
+    });
 
   container.find('.stats num[name=num]')
     .text(totalPeriods);
