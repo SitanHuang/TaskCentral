@@ -62,7 +62,7 @@ function ui_gantt_render() {
   let graph = container.find('gantt-graph').html('');
 
   // if more than 1 year
-  if (1 <= (GANTT_QUERY.queries[0].to - GANTT_QUERY.queries[0].from) / 3.154e+10) {
+  if (1 < (GANTT_QUERY.queries[0].to - GANTT_QUERY.queries[0].from) / 3.154e+10) {
     if (!confirm('Query range is too big. App might freeze. Continue?'))
       return false;
   }

@@ -34,6 +34,115 @@
   .log daily {
     max-width: 400px;
   }
+
+  .log .info-card {
+    margin: 0;
+  }
+
+  .log cal {
+    width: 100%;
+  }
+
+  .log grid > div:first-child {
+    width: calc(100% - 400px - 1.5rem);
+    padding-right: 0;
+  }
+}
+
+.log cal .content {
+  position: relative;
+}
+
+.log cal .days-header {
+  margin-right: 1px;
+}
+
+.log cal .backdrop-scroll {
+  max-height: calc(100vh - 312px);
+  overflow-y: auto;
+}
+
+.log cal .backdrop-scroll::-webkit-scrollbar {
+  width: 1px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.log cal .backdrop-scroll::-webkit-scrollbar-thumb {
+  background: var(--app-primary-color);
+}
+
+.log cal .content period {
+  position: absolute;
+  width: 100%;
+  background: rgb(227, 227, 227);
+  display: block;
+  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  font-size: 12px;
+  letter-spacing: .1px;
+  line-height: 15px;
+  z-index: 5;
+  padding: 1px 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid #fafafa;
+  border-radius: 4px;
+}
+
+.log cal .content hour {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  font-size: 11px;
+  line-height: 1em;
+  height: 1em;
+  background: transparent;
+  border-bottom: 1px solid #e3e3e3;
+  display: block;
+  z-index: 1;
+  color: #70757a;
+}
+
+.log cal day {
+  display: inline-block;
+  border-right: 1px solid #e3e3e3;
+}
+
+.log cal day date {
+  text-align: center;
+  display: block;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -1.6px;
+  text-indent: 2.9px;
+  line-height: 16px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.log cal day dow {
+  text-align: center;
+  display: block;
+  line-height: 32px;
+  color: #70757a;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  margin-left: 0;
+}
+
+.log cal day:last-of-type {
+  border: 0;
+}
+
+.log cal backdrop {
+  position: relative;
+  display: block;
+  width: 100%;
+  background-color: #fafafa;
+  height: var(--log-cal-height);
 }
 
 .log daily period {
