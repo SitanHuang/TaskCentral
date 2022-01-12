@@ -39,19 +39,19 @@ async function ui_settings_export_ledg() {
       let periods = task_gen_working_periods(task, range);
       for (let period of periods) {
         let from = new Date(period.from);
-        from = from.getFullYear() + '-' +
-               (from.getMonth() + 1) + '-' +
-               from.getDate() + ' ' +
-               from.getHours() + ':' +
-               from.getMinutes() + ':' +
-               from.getSeconds();
+        from = from.getFullYear().toString().padEnd(2, '0') + '-' +
+               (from.getMonth() + 1).toString().padEnd(2, '0') + '-' +
+               from.getDate().toString().padEnd(2, '0') + ' ' +
+               from.getHours().toString().padEnd(2, '0') + ':' +
+               from.getMinutes().toString().padEnd(2, '0') + ':' +
+               from.getSeconds().toString().padEnd(2, '0');
         let to = new Date(period.to);
-        to = to.getFullYear() + '-' +
-               (to.getMonth() + 1) + '-' +
-               to.getDate() + ' ' +
-               to.getHours() + ':' +
-               to.getMinutes() + ':' +
-               to.getSeconds();
+        to = to.getFullYear().toString().padEnd(2, '0') + '-' +
+               (to.getMonth() + 1).toString().padEnd(2, '0') + '-' +
+               to.getDate().toString().padEnd(2, '0') + ' ' +
+               to.getHours().toString().padEnd(2, '0') + ':' +
+               to.getMinutes().toString().padEnd(2, '0') + ':' +
+               to.getSeconds().toString().padEnd(2, '0');
         let proj = (period.task.project || '').replace(/\s/g, '');
         content += `i ${from} Expense${proj ? '.' + proj : proj} ${period.task.name}\n`;
         content += `O ${to}\n\n`;
