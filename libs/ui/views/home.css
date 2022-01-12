@@ -262,11 +262,6 @@
   overflow-x: auto;
 }
 
-#add-form .detail-row .projects::-webkit-scrollbar {
-  width: 0;  /* Remove scrollbar space */
-  background: transparent;
-}
-
 .colors-container color {
   width: 80%;
   display: block;
