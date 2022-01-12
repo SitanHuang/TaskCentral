@@ -1,3 +1,7 @@
+.content-container .gantt {
+  background-color: #fafafa;
+}
+
 .gantt header .actions {
   overflow-x: auto;
   white-space: nowrap;

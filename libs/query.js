@@ -200,3 +200,37 @@ function _query_generate_gantt_periods(tasks, range) {
 
   return periods;
 }
+
+function query_generate_log_daily_tasks(query, date) {
+  date = new Date(date);
+  query = JSON.parse(JSON.stringify(query));
+
+  query.queries[0].from = date.getTime();
+  // next midnight
+  date.setDate(date.getDate() + 1);
+  query.queries[0].to = date.getTime();
+
+  console.log(query.queries[0])
+  
+  return query_exec(query)[0].tasks;
+}
+
+function query_generate_log_daily_periods(tasks, date) {
+  date = new Date(date);
+
+  let from = date.getTime();
+  // next midnight
+  date.setDate(date.getDate() + 1);
+  let to = date.getTime();
+  let range = [from, to];
+
+  let periods = [];
+
+  for (let task of tasks) {
+    let p = task_gen_working_periods(task, range);
+    // fastest way to concat (https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki)
+    Array.prototype.push.apply(periods, p);
+  }
+
+  return periods;
+}

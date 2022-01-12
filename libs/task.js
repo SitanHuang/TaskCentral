@@ -251,3 +251,36 @@ function task_completed_stamp(task) {
   return d;
 }
 
+/*
+ * STA -> DEF
+ * STA -> now
+ * 
+ * [capRange: [from, to]]
+ */
+function task_gen_working_periods(task, capRange) {
+  let periods = [];
+  capRange = capRange || [-Infinity, Infinity];
+
+  let start;
+  for (let log of task.log) {
+    if (log.type == 'start') {
+      start = Math.max(capRange[0], log.time);
+    } else if (log.type == 'default' && start) {
+      let end = Math.min(capRange[1], log.time);
+
+      if (end > start)
+        periods.push({ from: start, to: end, task: task });
+      
+      start = null;
+    }
+  }
+
+  if (start) {
+    let end = Math.min(capRange[1], timestamp());
+
+    if (end > start)
+      periods.push({ from: start, to: end, task: task });
+  }
+
+  return periods;
+}

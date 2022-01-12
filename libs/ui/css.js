@@ -18,6 +18,7 @@
     'libs/ui/views/home.css',
     'libs/ui/views/details.css',
     'libs/ui/views/gantt.css',
+    'libs/ui/views/log.css',
   ];
 
   const images = [

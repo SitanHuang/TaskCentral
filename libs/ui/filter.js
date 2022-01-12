@@ -36,7 +36,7 @@ function ui_filter_open(target, callback) {
   });
 
   form.find('select[name=visibility]')
-    .val(target.hidden === null ? "" : (target.hidden ? "hidden" : "visible"));
+    .val(typeof target.hidden != 'boolean' ? "" : (target.hidden ? "hidden" : "visible"));
 
   form.find('select[name=due]')
     .val(String(target.due || null));

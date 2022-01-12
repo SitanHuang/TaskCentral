@@ -40,7 +40,7 @@
             <a href="#" data-menu="gantt" class="pure-menu-link">Gantt</a>
           </li>
           <li class="pure-menu-item">
-            <a href="#" data-menu="time" class="pure-menu-link">Time</a>
+            <a href="#" data-menu="log" class="pure-menu-link">Log</a>
           </li>
           <li class="pure-menu-item">
             <a href="#" data-menu="settings" class="pure-menu-link">Settings</a>
@@ -177,6 +177,10 @@
       <div class="gantt" oncontextmenu="return false;">
         <header>
           <div class="actions pad">
+            <button class="pure-button"
+              onclick="GANTT_QUERY = JSON.parse(JSON.stringify(GANTT_DEFAULT_QUERY));ui_gantt_render()">
+              Reset
+            </button>
             <button class="pure-button" onclick="ui_gantt_scroll_to_today()">
               Today
             </button>
@@ -191,6 +195,42 @@
           <gantt-header></gantt-header>
           <gantt-graph></gantt-graph>
         </gantt-container>
+      </div>
+      <div class="log" oncontextmenu="return false;">
+        <header>
+          <div class="actions pad">
+            <button class="pure-button"
+              onclick="LOG_QUERY = JSON.parse(JSON.stringify(LOG_DEFAULT_QUERY));ui_log_render()">
+              Reset
+            </button>
+            <button class="pure-button" onclick="ui_filter_open(LOG_QUERY, ui_log_render)">
+              Filter <i class="fa fa-filter"></i>
+            </button>
+            <div class="filters-holder"></div>
+          </div>
+        </header>
+        <daily class="info-card">
+          <div class="info-action">
+            <i class="fa fa-chevron-left"></i>
+            <div class="title">asdf</div>
+            <i class="fa fa-chevron-right"></i>
+          </div>
+          <header class="stats">
+            <stat style="min-width: 33.3333%;">
+              <strong>NUM</strong>
+              <num name="num">3.2hr</num>
+            </stat>
+            <stat style="min-width: 33.3333%;">
+              <strong>SUM</strong>
+              <num name="sum">3.2hr</num>
+            </stat>
+            <stat style="min-width: 33.3333%;">
+              <strong>AVG</strong>
+              <num name="avg">3.2hr</num>
+            </stat>
+          </header>
+          <div class="content"></div>
+        </daily>
       </div>
     </div>
 
@@ -391,12 +431,13 @@
     <script src="libs/ui/views/home.js"></script>
     <script src="libs/ui/views/details.js"></script>
     <script src="libs/ui/views/gantt.js"></script>
+    <script src="libs/ui/views/log.js"></script>
 
     <script src="libs/ui/layout.js"></script>
     <script src="libs/ui/timer.js"></script>
     <script src="libs/index.js"></script>
 
-    <!-- loads stylesheets -->
+    <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js"></script>
   </body>
 </html>

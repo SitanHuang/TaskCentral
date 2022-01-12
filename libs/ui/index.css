@@ -291,3 +291,72 @@ p.no-tasks {
 .filters-holder .pure-button-group {
   margin-right: 4px;
 }
+
+.info-card {
+  box-shadow: var(--card-shadow);
+  width: 100vw;
+  margin: 0.5rem auto 1rem auto;
+  min-height: 1px;
+  background-color: white;
+  display: block;
+  user-select: none;
+}
+
+@media screen and (min-width: 480px) {
+  .info-card {
+    width: calc(100vw - 1.5rem);
+    border-radius: 2px;
+  }
+}
+
+.info-card .info-action:first-child {
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(160,160,160,0.2);
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.info-card .info-action:first-child > * {
+  display: block;
+  line-height: 35px;
+  white-space: nowrap;
+}
+
+.info-card .info-action:first-child > .title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.info-card .info-action:first-child > button,
+.info-card .info-action:first-child > i.fa {
+  width: 33px;
+  text-align: center;
+  flex: 0 0 33px;
+  cursor: pointer;
+}
+
+header.stats {
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(160,160,160,0.2);
+}
+
+header.stats stat {
+  display: block;
+  flex-grow: 1;
+  text-align: center;
+  border-right: 1px solid #e3e3e3;
+  font-family: var(--mono-family);
+}
+
+header.stats stat:last-of-type {
+  border: 0;
+}
+
+header.stats stat strong {
+  font-weight: bolder;
+  display: block;
+  margin: 0.5em 0;
+}

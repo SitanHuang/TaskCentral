@@ -1,0 +1,42 @@
+.content-container .log {
+  background-color: #fafafa;
+}
+
+.log header .actions {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.log daily period {
+  display: block;
+  padding: 1rem 0.4rem 0.5rem 1rem;
+  border-bottom: 1px solid rgba(160,160,160,0.2);
+}
+
+.log daily period:last-of-type {
+  border: 0;
+}
+
+.log daily period name {
+  display: block;
+  float: left;
+  max-width: calc(100% - 150px);
+}
+
+.log daily period .project {
+  float: right;
+}
+
+.log daily period time {
+  display: block;
+  clear: both;
+  color: rgba(52, 52, 52, 0.87);
+  padding-top: 0.5rem;
+  padding-right: 0.4rem;
+}
+
+.log daily period time span {
+  display: block;
+  float: right;
+  color: rgba(0, 0, 0, 0.87)
+}
