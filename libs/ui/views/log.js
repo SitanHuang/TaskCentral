@@ -120,7 +120,11 @@ function _ui_log_render_daily_change(stamp) {
       `<span>${timeIntervalStringShort(period.to - period.from)}</span>`
     );
 
-    $p.appendTo(content);
+    $p.click(() => {
+        ui_menu_select('home');
+        ui_detail_select_task(period.task);
+      })
+      .appendTo(content);
   }
 
   container.find('.stats num[name=num]')
