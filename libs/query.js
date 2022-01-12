@@ -210,8 +210,6 @@ function query_generate_log_daily_tasks(query, date) {
   date.setDate(date.getDate() + 1);
   query.queries[0].to = date.getTime();
 
-  console.log(query.queries[0])
-  
   return query_exec(query)[0].tasks;
 }
 

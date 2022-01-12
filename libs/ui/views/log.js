@@ -126,7 +126,7 @@ function _ui_log_render_daily_change(stamp) {
   container.find('.stats num[name=num]')
     .text(periods.length);
   container.find('.stats num[name=avg]')
-    .text(timeIntervalStringShort(total / periods.length));
+    .text(timeIntervalStringShort((total / periods.length) || 0));
   container.find('.stats num[name=sum]')
     .text(timeIntervalStringShort(total));
 }

@@ -2,9 +2,33 @@
   background-color: #fafafa;
 }
 
-.log header .actions {
-  overflow-x: auto;
-  white-space: nowrap;
+.log grid {
+  display: block;
+}
+
+.log grid:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (min-width: 480px) {
+  .log header .actions {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .log grid > div {
+    float: left;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 0.75rem;
+    min-height: 1px;
+  }
+
+  .log daily {
+    max-width: 400px;
+  }
 }
 
 .log daily period {
