@@ -12,6 +12,11 @@
   clear: both;
 }
 
+.log > header > .actions {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 @media screen and (min-width: 480px) {
   .log header .actions {
     overflow-x: auto;
