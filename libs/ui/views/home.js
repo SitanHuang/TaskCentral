@@ -291,8 +291,18 @@ function _ui_home_gen_task_row(task) {
 
   if (task.status != 'default')
     $row.find('i.fa-play, i.fa-check').hide();
-  if (task.status == 'completed')
+  if (task.status == 'completed') {
     $row.addClass('completed');
+  } else {
+    let progress = (task.progress || 0);
+    $row.css(
+      'background-image',
+      `linear-gradient(90deg, rgba(0,0,0,0.05) ${progress}%,
+                              rgba(0,0,0,0.05) ${progress}%,
+                              rgba(0,0,0,0) ${progress}%,
+                              rgba(0,0,0,0) 100%)`
+    );
+  }
   if (task == _selected_task)
     $row.addClass('activated');
 

@@ -120,7 +120,7 @@
 }
 
 .home task.completed {
-  background: #fafafa;
+  background-color: #fafafa;
 }
 
 .home task.completed primary > *:not(.fa) {
