@@ -10,7 +10,7 @@ function ui_menu_select_log() {
 
   if (_log_mtime != (_log_mtime = back.mtime))
     ui_log_render();
-  
+
   if (!_log_css_inserted) {
     _log_css_inserted = true;
     document.head.insertAdjacentHTML(
@@ -42,7 +42,7 @@ const LOG_DEFAULT_QUERY = (() => {
   now.setHours(0, 0, 0, 0);
 
   let day = now.getDay();
-  
+
   // get monday (assume monday is first day of week)
   now.setDate(now.getDate() - day + (day == 0 ? -6 : 1)); // adjust when day is sunday
   query.queries[0].from = now.getTime();
@@ -87,7 +87,7 @@ function _ui_log_render_calendar(stamp, chevron) {
     .text(startDate.toLocaleDateString() + ' - ' + endDate.toLocaleDateString());
 
   // if more than 1 month
-  if (1 < (diff) / 2.592e+9) {
+  if (1 < (diff) / 2.592e+9 && ! chevron) {
     if (!confirm('Calendar panel: Query range is too big. App might freeze. Continue?'))
       return false;
   }
@@ -112,7 +112,7 @@ function _ui_log_render_calendar(stamp, chevron) {
 
   // query results
   let result = query_exec(query);
-  
+
   let totalPeriods = 0;
   let totalTime = 0;
 
@@ -149,7 +149,7 @@ function _ui_log_render_calendar(stamp, chevron) {
       let percOfDay = new Date(period.from);
       percOfDay = percOfDay.getHours() / 24 +
                   percOfDay.getMinutes() / 24 / 60;
-      
+
       let height = (duration / 8.64e+7) * LOG_CAL_HEIGHT;
 
       let $p = $(document.createElement('period'));
@@ -207,7 +207,7 @@ function _ui_log_render_daily_change(stamp) {
     query_generate_log_daily_tasks(LOG_QUERY, date),
     date
   ).sort((a, b) => b.from - a.from);
-  
+
   let container = _log_con.find('daily');
 
   container.find('.title').text(
@@ -227,7 +227,7 @@ function _ui_log_render_daily_change(stamp) {
   let content = container.find('.content').html('');
 
   let total = 0;
-  
+
   for (let period of periods) {
     total += period.to - period.from;
 
@@ -240,7 +240,7 @@ function _ui_log_render_daily_change(stamp) {
       `
     );
     $p.find('name').text(period.task.name);
-    
+
     let proj = period.task.project;
     if (proj && back.data.projects[proj]) {
       project_create_chip(proj)
