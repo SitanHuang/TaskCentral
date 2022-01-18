@@ -1,0 +1,4 @@
+.forecast > header > .actions {
+  overflow-x: auto;
+  white-space: nowrap;
+}
