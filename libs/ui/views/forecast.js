@@ -120,13 +120,13 @@ function ui_forecast_render() {
   let d3 = d3_timeseries()
             .addSerie(
               data,
-              { x:'date', y: 's' },
-              { interpolate: 'monotone', color: '#db4437' }
+              { x:'date', y: 't' },
+              { interpolate: 'monotone', color: '#d5d5d5' }
             )
             .addSerie(
               null,
-              { x:'date', y: 't' },
-              { interpolate: 'monotone', color: '#d5d5d5' }
+              { x:'date', y: 's' },
+              { interpolate: 'monotone', color: '#db4437' }
             )
             .width(width)
             .height(height);
