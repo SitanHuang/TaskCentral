@@ -90,16 +90,29 @@ function ui_forecast_render() {
     }
 
     let endIndex = Math.floor((period.to - from) / 8.64e+7);
-    stress[endIndex].push(-0.3 * stressPerDay * days);
-    stress[endIndex + 1].push(-0.7 * stressPerDay * days);
+    stress[endIndex].push(-0.2 * stressPerDay * days);
+    stress[endIndex + 1].push(-0.8 * stressPerDay * days);
   }
 
   let data = [];
   let j = 0;
   let sum = 0;
+  let now = midnight();
+
   for (let i = new Date(from);j < stress.length;i.setDate(i.getDate() + 1) && j++) {
     sum += stress[j].reduce((a, b) => a + b, 0);
-    data.push({ date: new Date(i), s: sum });
+
+    let total = NaN;
+
+    if (i < now + 8.64e+7) {
+      let periods = query_generate_log_daily_periods(tasks, i);
+      total = 0;
+      for (let period of periods) {
+        total += (period.to - period.from) / 3.6e+6; // hours
+      }
+    }
+
+    data.push({ date: new Date(i), s: sum, t: total });
   }
 
   console.log(stress, data)
@@ -109,6 +122,11 @@ function ui_forecast_render() {
               data,
               { x:'date', y: 's' },
               { interpolate: 'monotone', color: '#db4437' }
+            )
+            .addSerie(
+              null,
+              { x:'date', y: 't' },
+              { interpolate: 'monotone', color: '#d5d5d5' }
             )
             .width(width)
             .height(height);
