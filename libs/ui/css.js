@@ -13,6 +13,9 @@
     'libs/ui/pure-min.css',
     'libs/ui/grids-responsive-min.css',
 
+    // d3
+    'libs/ui/d3_timeseries.min.css',
+
     'libs/ui/index.css',
     
     'libs/ui/views/home.css',

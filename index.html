@@ -43,6 +43,9 @@
             <a href="#" data-menu="log" class="pure-menu-link">Log</a>
           </li>
           <li class="pure-menu-item">
+            <a href="#" data-menu="forecast" class="pure-menu-link">Forecast</a>
+          </li>
+          <li class="pure-menu-item">
             <a href="#" data-menu="settings" class="pure-menu-link">Utilities</a>
           </li>
         </ul>
@@ -263,6 +266,23 @@
           </div>
         </grid>
       </div>
+      <div class="forecast" oncontextmenu="return false;">
+        <header>
+          <div class="actions pad">
+            <button class="pure-button"
+              onclick="FORECAST_QUERY = JSON.parse(JSON.stringify(FORECAST_DEFAULT_QUERY));ui_forecast_render()">
+              Reset
+            </button>
+            <button class="pure-button" onclick="ui_filter_open(FORECAST_QUERY, ui_forecast_render)">
+              Filter <i class="fa fa-filter"></i>
+            </button>
+            <div class="filters-holder"></div>
+          </div>
+        </header>
+        <div class="forecast-container">
+
+        </div>
+      </div>
       <div class="settings" oncontextmenu="return false;">
         <div class="pad">
           <button class="pure-button"
@@ -437,15 +457,8 @@
     </div>
 
     <div id="timer-container" oncontextmenu="return false;" style="display: none;">
-      <name>
-        covid test
-      </name>
-      <timer>
-        00:01:37
-      </timer>
-      <!-- <pause>
-        <i class="fa fa-pause-circle"></i>
-      </pause> -->
+      <name></name>
+      <timer></timer>
       <stop onclick="task_pause(back.data.tasks[back.data.started]);timer_stop_task(back.data.tasks[back.data.started]);ui_menu_select_home();">
         <i class="fa fa-stop-circle"></i>
       </stop>
@@ -455,6 +468,8 @@
     <script src="libs/external/randomColor.min.js"></script>
     <script src="libs/external/micromodal.min.js"></script>
     <script src="libs/external/zip-no-worker-deflate.min.js"></script>
+    <script src="libs/external/d3.v4.js"></script>
+    <script src="libs/external/d3_timeseries.min.js"></script>
 
     <script src="libs/commons.js"></script>
 
@@ -473,6 +488,7 @@
     <script src="libs/ui/views/gantt.js"></script>
     <script src="libs/ui/views/log.js"></script>
     <script src="libs/ui/views/settings.js"></script>
+    <script src="libs/ui/views/forecast.js"></script>
 
     <script src="libs/ui/layout.js"></script>
     <script src="libs/ui/timer.js"></script>
