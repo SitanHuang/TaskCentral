@@ -68,7 +68,7 @@ function ui_forecast_render() {
   for (let period of periods) {
     let task = period.task;
     let days = Math.ceil((period.to - period.from) / 8.64e+7) + 1;
-    let stressPerDay = ((task.weight) * (task.priority)) / days;
+    let stressPerDay = ((task.weight) * (task.priority)) / days / 5 / 5;
 
     let startIndex = Math.floor((period.from - from) / 8.64e+7);
 
