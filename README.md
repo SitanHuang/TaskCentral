@@ -3,6 +3,7 @@
   current progress, weight, due date, and earliest possible date to work on
 - time-tracking of time spent on each task
 - gantt chart
+- stress level forecast
 - calendar chart
 - export to [ledg](https://github.com/SitanHuang/ledg) timeclock files
 
