@@ -363,6 +363,10 @@
                     <input type="checkbox" id="filter-checkbox-default">
                     Default
                   </label>
+                  <label for="filter-checkbox-ready" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-ready">
+                    Ready
+                  </label>
                   <label for="filter-checkbox-start" class="pure-checkbox">
                     <input type="checkbox" id="filter-checkbox-start">
                     Started
@@ -435,6 +439,10 @@
                   <li class="pure-menu-item pure-menu-selected"
                     onclick="ui_home_mode_select_trigger('default', this, HOME_DEFAULT_QUERY)">
                     <a href="#" class="pure-menu-link">Default</a>
+                  </li>
+                  <li class="pure-menu-item pure-menu-selected"
+                    onclick="ui_home_mode_select_trigger('ready', this, HOME_READY_QUERY)">
+                    <a href="#" class="pure-menu-link">Ready</a>
                   </li>
                   <li class="pure-menu-item"
                     onclick="ui_home_mode_select_trigger('all', this, HOME_ALL_QUERY)">
