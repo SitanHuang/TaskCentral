@@ -67,13 +67,17 @@ function ui_forecast_render() {
 
   for (let period of periods) {
     let task = period.task;
-    let days = Math.ceil((period.to - period.from) / 8.64e+7) + 1;
+    let actualFrom = roundDateToNearestDay(period.actualFrom);
+    let actualTo = roundDateToNearestDay(period.actualTo);
+    let cappedDays = Math.floor((period.from - actualFrom) / 8.64e+7);
+    let days = Math.ceil((actualTo - actualFrom) / 8.64e+7) + 1;
     let stressPerDay = ((task.weight) * (task.priority)) / days / 5 / 5;
 
     let startIndex = Math.floor((period.from - from) / 8.64e+7);
 
-    for (let index = 0; index < days; index++) {
-      stress[index + startIndex].push(stressPerDay);
+    stress[startIndex].push(cappedDays * stressPerDay);
+    for (let index = cappedDays; index < days && index + startIndex - cappedDays < stress.length; index++) {
+      stress[index + startIndex - cappedDays].push(stressPerDay);
     }
 
     let prev = 0;
@@ -92,9 +96,11 @@ function ui_forecast_render() {
       }
     }
 
-    let endIndex = Math.floor((period.to - from) / 8.64e+7);
-    stress[endIndex].push(0.2 * stressPerDay * days * (prev - 100) / 100);
-    stress[endIndex + 1].push(0.8 * stressPerDay * days * (prev - 100) / 100);
+    if (period.to <= to) {
+      let endIndex = Math.floor((period.to - from) / 8.64e+7);
+      stress[endIndex].push(0.2 * stressPerDay * days * (prev - 100) / 100);
+      stress[endIndex + 1].push(0.8 * stressPerDay * days * (prev - 100) / 100);
+    }
   }
 
   let data = [];

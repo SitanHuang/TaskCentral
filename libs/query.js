@@ -175,7 +175,7 @@ function _query_generate_gantt_periods(tasks, range) {
   let periods = [];
 
   for (let task of tasks) {
-    let [f, t] = task_gantt_endpoints(task).map(x => roundDateToNearestDay(x).getTime());
+    const [f, t] = task_gantt_endpoints(task).map(x => roundDateToNearestDay(x).getTime());
 
     // out of range
     if (f > to || t < from)
@@ -186,6 +186,8 @@ function _query_generate_gantt_periods(tasks, range) {
     let nt = Math.min(t, to);
 
     let period = {
+      actualFrom: f,
+      actualTo: t,
       from: nf,
       to: nt,
       task: task,
