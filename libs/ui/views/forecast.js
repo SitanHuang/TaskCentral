@@ -90,8 +90,8 @@ function ui_forecast_render() {
     }
 
     let endIndex = Math.floor((period.to - from) / 8.64e+7);
-    stress[endIndex].push(-0.2 * stressPerDay * days);
-    stress[endIndex + 1].push(-0.8 * stressPerDay * days);
+    stress[endIndex].push(0.2 * stressPerDay * days * (prev - 100) / 100);
+    stress[endIndex + 1].push(0.8 * stressPerDay * days * (prev - 100) / 100);
   }
 
   let data = [];
