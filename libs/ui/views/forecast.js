@@ -96,7 +96,7 @@ function ui_forecast_render() {
       }
     }
 
-    if (period.to <= to) {
+    if (period.to < to) {
       let endIndex = Math.floor((period.to - from) / 8.64e+7);
       stress[endIndex].push(0.2 * stressPerDay * days * (prev - 100) / 100);
       stress[endIndex + 1].push(0.8 * stressPerDay * days * (prev - 100) / 100);
