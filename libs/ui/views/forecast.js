@@ -78,14 +78,17 @@ function ui_forecast_render() {
 
     let prev = 0;
     for (let log of task.log) {
-      if (log.type == 'progress') {
-        if (log.time < period.from) {
-          stress[startIndex].push(stressPerDay * (prev - log.progress) / 100);
-        } else if (log.time < period.to) {
-          let index = Math.ceil((roundDateToNearestDay(log.time).getTime() - from) / 8.64e+7);
-          stress[index].push(stressPerDay * (prev - log.progress) / 100);
+      if (log.type == 'progress' && log.progress) {
+        let time = roundDateToNearestDay(log.time).getTime();
+        if (time < period.from) {
+          stress[startIndex].push(stressPerDay * days * (prev - log.progress) / 100);
+          prev = log.progress;
+        } else if (time < period.to && time > period.from) {
+          let index = Math.floor((time - from) / 8.64e+7);
+          stress[index].push(0.2 * stressPerDay * days * (prev - log.progress) / 100);
+          stress[index + 1].push(0.8 * stressPerDay * days * (prev - log.progress) / 100);
+          prev = log.progress;
         }
-        prev = log.progress;
       }
     }
 
@@ -114,8 +117,6 @@ function ui_forecast_render() {
 
     data.push({ date: new Date(i), s: sum, t: total });
   }
-
-  console.log(stress, data)
 
   let d3 = d3_timeseries()
             .addSerie(
