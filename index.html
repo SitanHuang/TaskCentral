@@ -346,7 +346,7 @@
                 <label>Project</label>
                 <input type="text" name="project">
                 <span class="pure-form-message-inline">
-                  "none" for tasks without project; ex. "school..hw", "school.*", "school*"
+                  "none" for tasks without project; ex. "school..hw", "school.*", "school*"; add "\v" for regex mode
                 </span>
               </div>
               <div class="pure-control-group">
@@ -440,7 +440,7 @@
                     onclick="ui_home_mode_select_trigger('default', this, HOME_DEFAULT_QUERY)">
                     <a href="#" class="pure-menu-link">Default</a>
                   </li>
-                  <li class="pure-menu-item pure-menu-selected"
+                  <li class="pure-menu-item"
                     onclick="ui_home_mode_select_trigger('ready', this, HOME_READY_QUERY)">
                     <a href="#" class="pure-menu-link">Ready</a>
                   </li>
