@@ -1,4 +1,5 @@
 # Features
+- working on multi-user
 - auto-sorting of tasks based on a custom algorithm that involves priority,
   current progress, weight, due date, and earliest possible date to work on
 - time-tracking of time spent on each task
@@ -8,7 +9,6 @@
 - export to [ledg](https://github.com/SitanHuang/ledg) timeclock files
 
 ## Limitations
-- single user only
 - requires server & client to send the ENTIRE data file on every action (which
   is still pretty fast)
 
