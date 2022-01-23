@@ -16,7 +16,7 @@ function Backend() {
   this.init = function () {
     console.log('Retreiving data');
     let promise = new Promise(function (resolve, reject) {
-      $.get('/storage/data?y=' + new Date().getTime()).fail(fail).done(
+      $.get('storage/data?y=' + new Date().getTime()).fail(fail).done(
         function (data) {
           try {
             that.data = JSON.parse(data);
@@ -54,7 +54,7 @@ function Backend() {
 
   this.update_mtime = function () {
     let promise = new Promise(function (resolve, reject) {
-      $.post('/mtime?y=' + new Date().getTime()).fail(fail).done(
+      $.post('mtime?y=' + new Date().getTime()).fail(fail).done(
         function (mtime) {
           console.debug('local mtime:server mtime = ' + that.mtime + ':' + mtime);
           resolve(mtime);
@@ -94,7 +94,7 @@ function Backend() {
 
         $.ajax({
             type: "POST",
-            url: '/overwrite',
+            url: 'overwrite',
             data: fd,
             processData: false,
             contentType: false,

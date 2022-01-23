@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+name = ARGV.first
+fail "name shouldn't be empty!" unless name
+
+Dir.chdir(File.expand_path("..", File.dirname(__FILE__))) do
+  puts Dir.pwd
+  File.write("controllers/#{name}Controller.rb",
+             "class #{name}Controller < ApplicationController\n\t# mapped '/#{name.downcase}'\nend")
+  puts "\tWrote\tcontrollers/#{name}Controller.rb"
+  open("routes.rb", "a") do |f|
+    f << "\n# #{name}\nmap '/#{name.downcase}', #{name}Controller"
+  end
+  puts "\tAppend\troutes.rb"
+  Dir.mkdir("views/#{name.downcase}") unless Dir.exist?("views/#{name.downcase}")
+  puts "\tCreate\tviews/#{name.downcase}"
+  puts "Ready to open at /#{name.downcase}"
+end

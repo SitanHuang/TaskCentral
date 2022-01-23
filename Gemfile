@@ -1,4 +1,10 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'sinatra'
-gem 'webrick'
+gem 'sinatra-static-assets'
+gem 'emk-sinatra-url-for'
+gem 'rack'
+gem 'thin'
+gem 'sequel'
+gem 'i18n'
+gem 'sqlite3'

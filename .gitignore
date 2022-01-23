@@ -1,5 +1,8 @@
-storage/**
+**/storage/**
 Gemfile.lock
 *.out
 credentials.hash
 **.swp
+vendor/**
+**.db
+**.db-journal
