@@ -44,6 +44,8 @@ class ClientController < ApplicationController
 			halt 400, 'No file detected.'
 		end
 		tempfile = params[:file][:tempfile]
+		user = request.env["REMOTE_USER"]
+		session[:user] = session[:user] || User[user]
 		FileUtils.cp(tempfile.path, "#{settings.root}/res/storage/#{session[:user].data_path}")
 	end
 
