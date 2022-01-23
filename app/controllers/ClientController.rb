@@ -34,9 +34,11 @@ class ClientController < ApplicationController
 	end
 
 	post '/mtime' do
+    user = request.env["REMOTE_USER"]
+		session[:user] = session[:user] || User[user]
 		(File.mtime("#{settings.root}/res/storage/#{session[:user].data_path}").to_f*1000).round.to_s
 	end
-	
+
 	post '/overwrite' do
 		unless params[:file] && params[:file][:tempfile]
 			halt 400, 'No file detected.'
@@ -44,5 +46,5 @@ class ClientController < ApplicationController
 		tempfile = params[:file][:tempfile]
 		FileUtils.cp(tempfile.path, "#{settings.root}/res/storage/#{session[:user].data_path}")
 	end
-	
+
 end
