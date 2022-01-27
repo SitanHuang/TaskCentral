@@ -1,11 +1,12 @@
 let _home_addForm;
 let _home_con;
 let _home_button;
+let _home_init;
 
 function ui_menu_select_home() {
   _home_con = $('.content-container > div.home');
   _home_addForm = $('#add-form');
-  _home_button = $('#home-mode-button');
+  _home_button = $('#home-mode-button').text(HOME_MODE);
   _home_addForm[0].reset();
   _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
   // ^ sliders should automatically go to center
@@ -187,13 +188,12 @@ function ui_home_mode_select() {
   MicroModal.show('modal-home-mode');
 }
 
-function ui_home_mode_select_trigger(mode, ele, q) {
+function ui_home_mode_select_trigger(mode, q) {
   window.onpopstate = null;
   MicroModal.close('modal-home-mode');
 
-  $('#modal-home-mode .pure-menu-selected').removeClass('pure-menu-selected');
-  $(ele).addClass('pure-menu-selected');
-  _home_button.text(mode);
+  localStorage.home_mode = mode;
+  localStorage.home_query = JSON.stringify(q);
 
   HOME_QUERY = JSON.parse(JSON.stringify(q)); // clone
   HOME_MODE = mode;
@@ -204,7 +204,7 @@ function ui_home_mode_select_trigger(mode, ele, q) {
 //                Listing
 // =========================================
 
-HOME_MODE = 'default';
+HOME_MODE = localStorage?.home_mode || 'default';
 
 const HOME_DEFAULT_QUERY = {
   queries: [{
@@ -251,7 +251,7 @@ const HOME_HIDDEN_QUERY = {
   }]
 };
 
-HOME_QUERY = JSON.parse(JSON.stringify(HOME_DEFAULT_QUERY));
+HOME_QUERY = JSON.parse(localStorage?.home_query || JSON.stringify(HOME_DEFAULT_QUERY));
 
 let _home_task_list;
 
