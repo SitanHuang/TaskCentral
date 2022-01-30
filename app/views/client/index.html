@@ -283,15 +283,21 @@
 
         </div>
       </div>
-      <div class="settings" oncontextmenu="return false;">
+      <div class="settings pad" oncontextmenu="return false;">
+        <div class="pad">
+          <h4>Export</h4>
+          <a class="pure-button" href="storage/data">
+            Data take out (JSON)
+          </a>
+        </div>
         <div class="pad">
           <button class="pure-button"
             onclick="ui_settings_export_ledg()">
             Export as `ledg` timeclock files (zip, 1970-2100)
           </button>
         </div>
-        <br>
         <div class="pad">
+          <h4>User</h4>
           <form class="pure-form pure-form-aligned user-form pad" style="max-width: 600px;">
             <fieldset>
               <div class="pure-control-group">
@@ -311,6 +317,13 @@
               </div>
             </fieldset>
           </form>
+        </div>
+        <div class="pad">
+          <h4>Clean up</h4>
+          <button class="pure-button"
+            onclick="ui_menu_cleanup_periods()">
+            Remove logs with short durations
+          </button>
         </div>
       </div>
     </div>

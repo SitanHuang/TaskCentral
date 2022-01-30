@@ -22,6 +22,66 @@ function ui_menu_select_settings() {
     .text(`${back.user.size} / ${back.user.quota} bytes (${percUsed}% full)`);
 }
 
+function ui_menu_cleanup_periods() {
+  const query = {
+    queries: [{
+      status: [],
+      collect: ['tasks'],
+      from: 0,
+      to: new Date(2100, 1, 1).getTime()
+    }]
+  };
+  
+  const callback = () => {
+    let p = parseFloat(prompt("Remove periods with seconds less than:", "10.0"));
+    
+    if (!p) return;
+
+    let tasks = query_exec(query)[0].tasks;
+    
+    let total = 0;
+    let num = 0;
+
+    for (let task of tasks) {
+      let start;
+      let start_log;
+
+      let remove = [];
+
+      for (let log of task.log) {
+        if (log.type == 'start') {
+          start = log.time;
+          start_log = log;
+        } else if (log.type == 'default' && start) {
+          let end = log.time;
+          let duration = end - start;
+
+          if (duration / 1000 < p) {
+            total += duration;
+            num++;
+            remove.push(start_log, log);
+          }
+
+          start = start_log = null;
+        }
+      }
+
+      task.log = task.log.filter(x => remove.indexOf(x) == -1);
+    }
+
+    let s = confirm(`Remove ${timeIntervalStringShort(total)} in ${num} intervals? (avg ${timeIntervalStringShort(total / num)}/interval)`);
+    if (s) {
+      back.set_dirty()
+    } else {
+      window.onbeforeunload = null;
+                
+      location.reload();
+    }
+  };
+
+  ui_filter_open(query, callback);
+}
+
 async function ui_settings_export_ledg() {
   // - create a Data64URIWriter object to write the zipped data into a data URI
   // - create a ZipWriter object with the Data64URIWriter object as parameter
