@@ -1,11 +1,25 @@
 let _settings_con;
 
 function ui_menu_select_settings() {
+  _home_con = $('.content-container > div.settings');
+
   zip.configure({
     // our downloaded library is a reduced version
     // tha doesn't include webworker feature
     useWebWorkers: false
   });
+
+  let percUsed = Math.round(10000 * back.user.size / back.user.quota * 100) / 10000;
+
+  _home_con.find('.user-form input[name="username"]').val(back.user.name);
+  _home_con.find('.user-form input[name="permission"]').val(back.user.status);
+  _home_con.find('.user-form progress[name="quota"]')
+    .attr("max", back.user.quota)
+    .attr("value", back.user.size)
+    .text(`${percUsed}%`);
+  _home_con
+    .find('.user-form span[name="quota"]')
+    .text(`${back.user.size} / ${back.user.quota} bytes (${percUsed}% full)`);
 }
 
 async function ui_settings_export_ledg() {

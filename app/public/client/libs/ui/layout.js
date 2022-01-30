@@ -1,4 +1,5 @@
 const $ui_sync_icon = $('i#sync-status');
+const $ui_sync_quota = $('#quota-status');
 
 function ui_update_sync_status() {
   if (back.uploading) {
@@ -20,6 +21,14 @@ function ui_update_sync_status() {
       .removeClass('fa-circle-notch')
       .removeClass('fa-cloud-upload-alt');
   }
+
+  $ui_sync_quota
+    .text(
+      `
+        ${humanFileSize(back.user.size)} / ${humanFileSize(back.user.quota)}
+        (${Math.round(back.user.size / back.user.quota * 100)}%)
+      `
+    );
 }
 
 function ui_menu_init() {

@@ -10,44 +10,50 @@ function Backend() {
   this.dirty = false; // can be set by app
   this.uploading = false; // only set by back.update()
 
+  this.user = null;
+
   this.mtime = null; // last retrieved mtime from server, in string
 
   // should only be called once
   this.init = function () {
     console.log('Retreiving data');
     let promise = new Promise(function (resolve, reject) {
-      $.get('storage/data?y=' + new Date().getTime()).fail(fail).done(
-        function (data) {
-          try {
-            that.data = JSON.parse(data);
-            that.update_mtime().catch(fail).then(
-              function (mtime) {
-                that.mtime = mtime;
-                data_init_default();
+      $.post('user/info').fail(fail).done(function (user_data) {
+        that.user = JSON.parse(user_data);
 
-                window.onfocus = throttle(() => {
-                  that.update_mtime().catch(fail).then(
-                    function (mtime) {
-                      if (that.mtime != mtime) {
-                        alert("Remote file changed since last sync! Reloading page for ya...");
-              
-                        window.onbeforeunload = null;
-              
-                        location.reload(); // force reload not needed
-              
-                        reject();
-                        return;
+        $.get('storage/data?y=' + new Date().getTime()).fail(fail).done(
+          function (data) {
+            try {
+              that.data = JSON.parse(data);
+              that.update_mtime().catch(fail).then(
+                function (mtime) {
+                  that.mtime = mtime;
+                  data_init_default();
+  
+                  window.onfocus = throttle(() => {
+                    that.update_mtime().catch(fail).then(
+                      function (mtime) {
+                        if (that.mtime != mtime) {
+                          alert("Remote file changed since last sync! Reloading page for ya...");
+                
+                          window.onbeforeunload = null;
+                
+                          location.reload(); // force reload not needed
+                
+                          reject();
+                          return;
+                        }
                       }
-                    }
-                  );
-                }, 1000);
-              }
-            );
-          } catch (e) {
-            fail(null, e.message, e);
-          }
-          resolve();
-        })
+                    );
+                  }, 1000);
+                }
+              );
+            } catch (e) {
+              fail(null, e.message, e);
+            }
+            resolve();
+          })
+      });
     });
     return promise;
   };
@@ -98,11 +104,15 @@ function Backend() {
             data: fd,
             processData: false,
             contentType: false,
-        }).fail(fail).done(function () {
-          // that.init().then(function () {
-          //   that.uploading = false;
-          //   resolve();
-          // });
+        }).fail(fail).done(function (response) {
+          response = JSON.parse(response);
+          if (response.status != "ok") {
+            fail(null, "msg", response.msg);
+            return;
+          }
+
+          that.user.quota = response.quota || that.user.quota;
+          that.user.size = response.size || that.user.size;
 
           that.update_mtime().catch(fail).then(function (mtime2) {
             that.mtime = mtime2;

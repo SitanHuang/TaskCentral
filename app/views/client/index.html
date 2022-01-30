@@ -46,7 +46,7 @@
             <a href="#" data-menu="forecast" class="pure-menu-link">Forecast</a>
           </li>
           <li class="pure-menu-item">
-            <a href="#" data-menu="settings" class="pure-menu-link">Utilities</a>
+            <a href="#" data-menu="settings" class="pure-menu-link">User</a>
           </li>
         </ul>
       </div>
@@ -287,14 +287,37 @@
         <div class="pad">
           <button class="pure-button"
             onclick="ui_settings_export_ledg()">
-            Export periods to `ledg` timeclock files (zip, 1970-2100)
+            Export as `ledg` timeclock files (zip, 1970-2100)
           </button>
+        </div>
+        <br>
+        <div class="pad">
+          <form class="pure-form pure-form-aligned user-form pad" style="max-width: 600px;">
+            <fieldset>
+              <div class="pure-control-group">
+                <label for="aligned-name">Username</label>
+                <input type="text" readonly name="username"/>
+                <span class="pure-form-message-inline">Contact site admin to change login.</span>
+              </div>
+              <div class="pure-control-group">
+                <label for="aligned-email">Storage Level</label>
+                <input type="text" readonly name="permission" />
+                <span class="pure-form-message-inline">Contact site admin to upgrade.</span>
+              </div>
+              <div class="pure-control-group">
+                <label for="aligned-email">Quota</label>
+                <progress name="quota"></progress>
+                <span class="pure-form-message-inline" name="quota"></span>
+              </div>
+            </fieldset>
+          </form>
         </div>
       </div>
     </div>
 
     <div class="bottom-bar" oncontextmenu="return false">
       <div class="left" id="status-bar"></div>
+      <div class="right" id="quota-status"></div>
       <i class="fas" id="sync-status"></i>
     </div>
 
