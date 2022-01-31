@@ -171,7 +171,7 @@ function ui_gantt_render() {
       let proj = back.data.projects[period.task.project || 'default'];
 
       let $p = $(document.createElement('period'));
-      $p.css('background', proj.color)
+      $p.css('background-color', proj.color)
         .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + (row * GANTT_DAY_WIDTH) + 'px)')
         .css('left', start + PERIOD_PADDING)
         .css('color', proj.fontColor)
@@ -184,6 +184,25 @@ function ui_gantt_render() {
 
       if (period.task.status == 'completed')
         $p.addClass('completed');
+
+      if (period.task.status == 'default' && period.task.progress) {
+        if (proj.fontColor.toLowerCase() != 'white')
+          $p.css(
+            'background-image',
+            `linear-gradient(90deg, rgba(0,0,0,0.1) ${period.task.progress}%,
+                                    rgba(0,0,0,0.1) ${period.task.progress}%,
+                                    rgba(0,0,0,0) ${period.task.progress}%,
+                                    rgba(0,0,0,0) 100%)`
+          );
+        else
+          $p.css(
+            'background-image',
+            `linear-gradient(90deg, rgba(0,0,0,0.25) ${period.task.progress}%,
+                                    rgba(0,0,0,0.25) ${period.task.progress}%,
+                                    rgba(0,0,0,0) ${period.task.progress}%,
+                                    rgba(0,0,0,0) 100%)`
+          );
+      }
       
       if (!period.startCapped)
         $p.addClass('start-round');
