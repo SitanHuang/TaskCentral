@@ -91,6 +91,12 @@ function ui_detail_select_task(task) {
 
   _home_detail_form.find('input').change();
 
+  {
+    // scroll log to end
+    let ta = _home_detail_form.find('textarea[name=log]')[0];
+    ta.scrollTop = ta.scrollHeight;
+  }
+
   // putting _selected_task at the end so
   // onchange handlers don't update the task
   _selected_task = task;
