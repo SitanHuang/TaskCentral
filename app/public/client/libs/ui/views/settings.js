@@ -57,6 +57,7 @@ function ui_menu_cleanup_periods() {
           let duration = end - start;
 
           if (duration / 1000 < p) {
+            task.total -= duration;
             total += duration;
             num++;
             remove.push(start_log, log);
