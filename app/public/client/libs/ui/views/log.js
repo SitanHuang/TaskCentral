@@ -245,6 +245,7 @@ function _ui_log_render_daily_change(stamp) {
     if (proj && back.data.projects[proj]) {
       project_create_chip(proj)
         .click(() => {
+          LOG_QUERY = JSON.parse(JSON.stringify(LOG_QUERY));
           LOG_QUERY.queries[0].projects.push(proj);
           ui_log_render();
           _ui_log_render_daily_change(stamp);
