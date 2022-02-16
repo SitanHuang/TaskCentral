@@ -41,7 +41,7 @@ function timeIntervalString(final, initial) {
   initial = initial || 0;
   let delta = Math.abs(final - initial) / 1000;
 
-  let hours = Math.floor(delta / 3600) % 24;
+  let hours = Math.floor(delta / 3600);
   delta -= hours * 3600;
 
   let minutes = Math.floor(delta / 60) % 60;
@@ -134,8 +134,8 @@ function humanFileSize(bytes, si=false, dp=1) {
   if (Math.abs(bytes) < thresh)
     return bytes + ' B';
 
-  const units = si 
-    ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] 
+  const units = si
+    ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
     : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
   let u = -1;
   const r = 10**dp;
