@@ -22,6 +22,7 @@
     'libs/ui/views/details.css',
     'libs/ui/views/gantt.css',
     'libs/ui/views/log.css',
+    'libs/ui/views/metrics.css',
     'libs/ui/views/forecast.css',
   ];
 

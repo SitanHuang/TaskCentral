@@ -43,6 +43,9 @@
             <a href="#" data-menu="log" class="pure-menu-link">Log</a>
           </li>
           <li class="pure-menu-item">
+            <a href="#" data-menu="metrics" class="pure-menu-link">Metrics</a>
+          </li>
+          <li class="pure-menu-item">
             <a href="#" data-menu="forecast" class="pure-menu-link">Forecast</a>
           </li>
           <li class="pure-menu-item">
@@ -265,6 +268,30 @@
             </daily>
           </div>
         </grid>
+      </div>
+      <div class="metrics" oncontextmenu="return false;">
+        <header>
+          <div class="actions pad">
+            <button class="pure-button"
+              onclick="LOG_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));ui_log_render()">
+              Reset
+            </button>
+            <button class="pure-button" onclick="ui_filter_open(METRICS_QUERY, ui_log_render)">
+              Filter <i class="fa fa-filter"></i>
+            </button>
+            <div class="filters-holder"></div>
+          </div>
+        </header>
+        <div>
+          <cal class="info-card">
+            <div class="info-action">
+              <i class="fa fa-chevron-left"></i>
+              <div class="title"></div>
+              <i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="content"></div>
+          </cal>
+        </div>
       </div>
       <div class="forecast" oncontextmenu="return false;">
         <header>
@@ -534,6 +561,7 @@
     <script src="libs/ui/views/log.js"></script>
     <script src="libs/ui/views/settings.js"></script>
     <script src="libs/ui/views/forecast.js"></script>
+    <script src="libs/ui/views/metrics.js"></script>
 
     <script src="libs/ui/layout.js"></script>
     <script src="libs/ui/timer.js"></script>
