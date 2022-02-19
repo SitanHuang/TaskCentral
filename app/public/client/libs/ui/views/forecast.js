@@ -70,7 +70,7 @@ function ui_forecast_render() {
     let actualFrom = roundDateToNearestDay(period.actualFrom);
     let actualTo = roundDateToNearestDay(period.actualTo);
     let cappedDays = Math.floor((period.from - actualFrom) / 8.64e+7);
-    let days = Math.ceil((actualTo - actualFrom) / 8.64e+7) + 1;
+    let days = Math.floor((actualTo - actualFrom) / 8.64e+7) + 1;
     let stressPerDay = ((task.weight) * (task.priority)) / days / 5 / 5;
 
     let startIndex = Math.floor((period.from - from) / 8.64e+7);
