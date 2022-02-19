@@ -44,28 +44,93 @@ const METRICS_DEFAULT_QUERY = (() => {
 
 METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));
 
-function ui_metrics_render(stamp, chevron) {
-  console.time('Re-render metrics');
+var ui_metrics_render;
+{
+  let tasks;
+  let days;
+  let hours;
+  let startDate;
+  let endDate;
+  
+  /*
+  TODO:
+  tasks involved (all),
+  tasks ready (all),
+  intervals (all),
+  intervals per day (all),
+  time per day (all),
+  time recorded (all),
+  time per interval (all),
 
-  stamp = stamp || METRICS_QUERY.queries[0].from;
-  let diff = METRICS_QUERY.queries[0].to - METRICS_QUERY.queries[0].from;
+  ========= has priority & weight =========
 
-  let startDate = new Date(stamp);
-  let endDate = new Date(stamp + diff);
-  let days = Math.ceil((endDate - startDate) / 8.64e+7);
+  tasks involved,
+  tasks ready,
+  tasks remaining at start (with progress),
+  tasks remaining at end (with progress),
+  tasks remaining at start (without progress),
+  tasks remaining at end (without progress),
+  tasks completed (with progress),
+  tasks completed (without progress),
+  tasks completed per day (with progress),
+  tasks completed per day (without progress),
+  avg. perc remaining when completed (including overdue),
+  intervals,
+  intervals per day (all),
+  time per day (all),
+  time recorded (all),
+  time per interval (all),
+  time recorded,
+  tasks completed per interval (with progress),
+  tasks completed per time (with progress)
+  */
 
-  let container = _metrics_con;
-
-  container
-    .find('.title')
-    .text(startDate.toLocaleDateString() + ' - ' + endDate.toLocaleDateString());
-
-  container.find('.fa.fa-chevron-left')[0].onclick = () => {
-    ui_metrics_render(stamp - diff, true);
+  const functions = {
+    days: (start, end) => Math.ceil((end - start) / 8.64e+7)
   };
-  container.find('.fa.fa-chevron-right')[0].onclick = () => {
-    ui_metrics_render(stamp + diff, true);
-  };
 
-  console.timeEnd('Re-render metrics');
-}
+  ui_metrics_render = function (stamp, chevron) {
+    function _add_metric(name, html, exp) {
+      exp = exp || '';
+      container.find('.content.pure-g').append(
+        `<stat class="pure-u-1-1 pure-u-md-12-24 pure-u-lg-1-5">
+          <strong>${name}</strong>
+          ${html}
+          <span class="explanation">${exp}</span>
+        </stat>`
+      );
+    }
+    
+    console.time('Re-render metrics');
+  
+    stamp = stamp || METRICS_QUERY.queries[0].from;
+    let diff = METRICS_QUERY.queries[0].to - METRICS_QUERY.queries[0].from;
+  
+    startDate = new Date(stamp);
+    endDate = new Date(stamp + diff);
+    days = Math.ceil((endDate - startDate) / 8.64e+7);
+    hours = Math.ceil((endDate - startDate) / 3.6e+6);
+  
+    tasks = query_exec(METRICS_QUERY).tasks;
+  
+    let container = _metrics_con;
+  
+    container
+      .find('.title')
+      .text(startDate.toLocaleDateString() + ' - ' + endDate.toLocaleDateString());
+  
+    container.find('.fa.fa-chevron-left')[0].onclick = () => {
+      ui_metrics_render(stamp - diff, true);
+    };
+    container.find('.fa.fa-chevron-right')[0].onclick = () => {
+      ui_metrics_render(stamp + diff, true);
+    };
+  
+    container.find('.content.pure-g').html('');
+  
+    for (let f in functions)
+      _add_metric(f, functions[f](startDate, endDate));
+  
+    console.timeEnd('Re-render metrics');
+  };
+};
