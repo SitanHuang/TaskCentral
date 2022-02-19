@@ -273,16 +273,20 @@
         <header>
           <div class="actions pad">
             <button class="pure-button"
-              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_TODAY_QUERY));ui_metrics_render()">
-              Daily
+              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_TODAY_QUERY));$('#metrics-graph-interval').val('[0, 0, 1]');ui_metrics_render()">
+              Day
             </button>
             <button class="pure-button"
-              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_WEEK_QUERY));ui_metrics_render()">
-              Weekly
+              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_WEEK_QUERY));$('#metrics-graph-interval').val('[0, 0, 1]');ui_metrics_render()">
+              Week
             </button>
             <button class="pure-button"
-              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_MONTH_QUERY));ui_metrics_render()">
-              Monthly
+              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_MONTH_QUERY));$('#metrics-graph-interval').val('[0, 0, 7]');ui_metrics_render()">
+              Month
+            </button>
+            <button class="pure-button"
+              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_YEAR_QUERY));$('#metrics-graph-interval').val('[0, 1, 0]');ui_metrics_render()">
+              Year
             </button>
             <button class="pure-button" onclick="ui_filter_open(METRICS_QUERY, ui_metrics_render)">
               Filter <i class="fa fa-filter"></i>
@@ -297,6 +301,14 @@
               <div class="title"></div>
               <i class="fa fa-chevron-right"></i>
             </div>
+            <div class="graph-actions pure-form">
+              <label for="metrics-select-series"><strong>Data Series:</strong></label>
+              <select id="metrics-select-series"></select>
+              <label for="metrics-graph-interval"><strong>Graph Interval:</strong></label>
+              <input id="metrics-graph-interval" style="display: inline;" value="[0, 0, 1]">
+              <span>[Y, M, D]</span>
+            </div>
+            <div class="graph-container" id="metrics-graph-container"></div>
             <div class="content pure-g stats"></div>
           </cal>
         </div>

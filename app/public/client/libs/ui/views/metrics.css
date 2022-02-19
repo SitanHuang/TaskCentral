@@ -23,3 +23,18 @@
   border-bottom: 1px solid #e3e3e3;
   padding-bottom: 5px;
 }
+
+.metrics .graph-actions, .metrics .graph-container {
+  padding: 6px 12px;
+  border-bottom: 1px solid #e3e3e3;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+#metrics-graph-interval {
+  font-family: var(--mono-family);
+}
+
+.graph-container > svg rect {
+  fill: var(--app-primary-color);
+}

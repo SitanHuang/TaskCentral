@@ -91,6 +91,30 @@ const METRICS_MONTH_QUERY = (() => {
 
   return query;
 })();
+const METRICS_YEAR_QUERY = (() => {
+  let query = {
+    queries: [{
+      status: [],
+      hidden: null,
+      due: null,
+      projects: [],
+      collect: ['tasks'],
+    }]
+  };
+
+  let now = new Date();
+  now.setHours(0, 0, 0, 0);
+  now.setDate(1);
+  now.setMonth(0);
+
+  query.queries[0].from = now.getTime();
+
+  now.setFullYear(now.getFullYear() + 1);
+  query._increment = [1, 0, 0];
+  query.queries[0].to = now.getTime();
+
+  return query;
+})();
 
 METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));
 
@@ -104,7 +128,8 @@ var ui_metrics_render;
   let endDate;
 
   function norm(x) {
-    return x == Infinity || x == -Infinity? NaN : x;
+    x *= 1;
+    return x == Infinity || x == -Infinity || isNaN(x) ? 0 : x;
   }
 
   function explanation(e) {
@@ -333,7 +358,6 @@ var ui_metrics_render;
         let tasks = _query_generate_gantt_periods(
                       tasks2.filter(x => x.status == 'completed' && task_completed_stamp(x) < e && (x.due || x.until)),
                       [s, e - 8.64e+7]);
-        console.log(tasks)
         tasks = tasks.map(x => {
                   x = x.task;
                   let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)];
@@ -504,6 +528,83 @@ var ui_metrics_render;
     "Work Completed % of Total": (s, e) => (functions["Work Completed"][1](s, e) * 100 / functions["Work All"](s, e)).toFixed(0),
   };
 
+  $('#metrics-select-series').html(
+    Object.keys(functions).sort().map(x => `<option value="${x}">${x}</option>`).join("")
+  );
+  $('#metrics-graph-interval, #metrics-select-series').change(function () { ui_metrics_render() });
+
+  function _ui_metrics_render_graph() {
+    let funcName = document.getElementById('metrics-select-series').value;
+    let func = functions[funcName][1] || functions[funcName];
+    let interval = JSON.parse(document.getElementById('metrics-graph-interval').value);
+
+    let data = [];
+    let index = new Date(startDate);
+    let min = 0;
+    let max = 0;
+    index.setHours(0, 0, 0, 0);
+    while (index < endDate) {
+      let to = new Date(index);
+      to.setFullYear(to.getFullYear() + interval[0]);
+      to.setMonth(to.getMonth() + interval[1]);
+      to.setDate(to.getDate() + interval[2]);
+
+      let row = {
+        periodStart: new Date(index).toLocaleDateString(),
+        data: norm(func(index.getTime(), to.getTime()))
+      };
+
+      min = Math.min(row.data, min);
+      max = Math.max(row.data, max);
+
+      data.push(row);
+
+      index = to;
+    }
+    console.log(data, min, max)
+
+    let margin = { top: 20, right: 30, bottom: 40, left: 30 };
+    let width = Math.min(1024, document.getElementById('metrics-select-series').parentElement.clientWidth - 24);
+    let height = Math.min(600, width / 1.77778);
+
+    let y = d3.scaleLinear()
+              .domain([min, max])
+              .range([height, 0]);
+    
+    let heightPerPx = height / Math.abs(max - min);
+    
+    let x = d3.scaleBand()
+              .domain(data.map(function(d) { return d.periodStart; }))
+              .range([0, width])
+              .padding(0.1);
+
+    document.getElementById('metrics-graph-container').innerHTML = '';
+    let svg = d3.select("#metrics-graph-container")
+                .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    svg.selectAll(".bar")
+        .data(data)
+        .enter()
+        .append("rect")
+          .attr("y", function(d) { return d.data <=0 ? y(0) : (y(0) - Math.abs(d.data * heightPerPx)); })
+          .attr("x", function(d) { return x(d.periodStart); })
+          .attr("height", function(d) { return Math.abs(d.data * heightPerPx); })
+          .attr("width", x.bandwidth());
+
+    // add the x Axis
+    svg.append("g")
+       .attr("transform", "translate(0," + y(0) + ")")
+       .call(d3.axisBottom(x));
+
+    // add the y Axis
+    svg.append("g")
+       .call(d3.axisLeft(y));
+  }
+
   ui_metrics_render = function (chevron) {
     function _add_metric(name, html, exp) {
       container.find('.content.pure-g').append(
@@ -530,7 +631,7 @@ var ui_metrics_render;
     tasks2 = tasks.filter(x => x.priority && x.weight);
   
     let container = _metrics_con;
-  
+
     container
       .find('.title')
       .text(startDate.toLocaleDateString() + ' - ' + endDate.toLocaleDateString());
@@ -570,6 +671,8 @@ var ui_metrics_render;
   
     for (let f in functions)
       _add_metric(f, (functions[f][0] || functions[f])(startDate, endDate));
+
+    _ui_metrics_render_graph();
   
     console.timeEnd('Re-render metrics');
   };
