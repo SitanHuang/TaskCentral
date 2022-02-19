@@ -273,8 +273,16 @@
         <header>
           <div class="actions pad">
             <button class="pure-button"
-              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));ui_metrics_render()">
-              Reset
+              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_TODAY_QUERY));ui_metrics_render()">
+              Daily
+            </button>
+            <button class="pure-button"
+              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_WEEK_QUERY));ui_metrics_render()">
+              Weekly
+            </button>
+            <button class="pure-button"
+              onclick="METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_MONTH_QUERY));ui_metrics_render()">
+              Monthly
             </button>
             <button class="pure-button" onclick="ui_filter_open(METRICS_QUERY, ui_metrics_render)">
               Filter <i class="fa fa-filter"></i>
