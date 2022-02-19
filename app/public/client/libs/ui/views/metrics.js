@@ -147,6 +147,20 @@ var ui_metrics_render;
       days
     ],
 
+    "Rating":
+      (s, e) =>
+        [
+          ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 0.10],
+          ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 0.17],
+          ["Avg. % Get-ahead", x => Math.tanh(x * 1.5) * 0.07],
+          ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5) * 0.10],
+          ["Work Completed % of Total", x => Math.tanh(x * 1.5 - 0.1) * 0.18],
+          ["Time Tracked % Prod. (All)", x => Math.abs(Math.tanh(x / 1.5) * 2) * 0.10],
+          ["Time Tracked % Prod.", x => Math.abs(Math.tanh(x) * 2) * 0.18],
+          ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)) * 0.05],
+          ["Work Net % of Start (All)", x => 0.05 * Math.tanh(-1.2 * x) * 2],
+        ].map(x => x[1]((functions[x[0]][1] || functions[x[0]])(s, e))).reduce((a, b) => (a || 0) + (b || 0), 0).toFixed(2),
+
     "Time Tracked (All)": [
       (s, e) => {
         let time = functions["Time Tracked (All)"][1](s, e) * 3.6e+6;
@@ -530,7 +544,7 @@ var ui_metrics_render;
 
   $('#metrics-select-series').html(
     Object.keys(functions).sort().map(x => `<option value="${x}">${x}</option>`).join("")
-  );
+  ).val('Rating');
   $('#metrics-graph-interval, #metrics-select-series').change(function () { ui_metrics_render() });
 
   function _ui_metrics_render_graph() {
@@ -550,7 +564,7 @@ var ui_metrics_render;
       to.setDate(to.getDate() + interval[2]);
 
       let row = {
-        periodStart: new Date(index).toLocaleDateString(),
+        periodStart: new Date(index).toLocaleDateString("en-US", { year: "2-digit", month: "numeric", day: "numeric" }),
         data: norm(func(index.getTime(), to.getTime()))
       };
 
@@ -564,8 +578,8 @@ var ui_metrics_render;
     console.log(data, min, max)
 
     let margin = { top: 20, right: 30, bottom: 40, left: 30 };
-    let width = Math.min(1024, document.getElementById('metrics-select-series').parentElement.clientWidth - 24);
-    let height = Math.min(600, width / 1.77778);
+    let width = Math.min(data.length * 50, (document.getElementById('metrics-select-series').parentElement.clientWidth - 50) / 1.2);
+    let height = Math.max(300, Math.min(600, width / 1.77778));
 
     let y = d3.scaleLinear()
               .domain([min, max])
@@ -598,7 +612,14 @@ var ui_metrics_render;
     // add the x Axis
     svg.append("g")
        .attr("transform", "translate(0," + y(0) + ")")
-       .call(d3.axisBottom(x));
+       .call(d3.axisBottom(x))
+       .selectAll("text")	
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", function(d) {
+            return "rotate(-65)" 
+            });
 
     // add the y Axis
     svg.append("g")

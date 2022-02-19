@@ -38,3 +38,6 @@
 .graph-container > svg rect {
   fill: var(--app-primary-color);
 }
+.graph-container > svg {
+  zoom: 1.2;
+}
