@@ -7,6 +7,13 @@
   white-space: nowrap;
 }
 
+.metrics > div .info-card .info-action {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
 .metrics .stats {
   padding: 6px 12px;
 }
