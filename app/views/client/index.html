@@ -273,10 +273,10 @@
         <header>
           <div class="actions pad">
             <button class="pure-button"
-              onclick="LOG_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));ui_log_render()">
+              onclick="LOG_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));ui_metrics_render()">
               Reset
             </button>
-            <button class="pure-button" onclick="ui_filter_open(METRICS_QUERY, ui_log_render)">
+            <button class="pure-button" onclick="ui_filter_open(METRICS_QUERY, ui_metrics_render)">
               Filter <i class="fa fa-filter"></i>
             </button>
             <div class="filters-holder"></div>

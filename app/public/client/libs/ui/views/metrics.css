@@ -1,0 +1,8 @@
+.content-container .metrics {
+  background-color: #fafafa;
+}
+
+.metrics header .actions {
+  overflow-x: auto;
+  white-space: nowrap;
+}

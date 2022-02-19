@@ -7,6 +7,7 @@
  *     projects: [], // list or projects (OR filter)
  *     status: [], // OR filter
  *     hidden: null,
+ *     useGantt: false, // use gantt endpoints
  *     due: null,
  *     collect: [
  *       'tasks', // return task entries
@@ -74,7 +75,7 @@ function query_exec(query) {
 
       // a task might fulfill the overall range but
       // not the range of a specific query
-      if (!task_is_overlap(task, q._range))
+      if (!task_is_overlap(task, q._range, q.useGantt))
         continue; // go to next query
 
       // ------- exclusive conditions -------

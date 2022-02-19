@@ -47,6 +47,7 @@ METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));
 var ui_metrics_render;
 {
   let tasks;
+  let tasks2; // those with priority & weight
   let days;
   let hours;
   let startDate;
@@ -110,8 +111,12 @@ var ui_metrics_render;
     endDate = new Date(stamp + diff);
     days = Math.ceil((endDate - startDate) / 8.64e+7);
     hours = Math.ceil((endDate - startDate) / 3.6e+6);
+
+    let query = JSON.parse(JSON.stringify(METRICS_QUERY));
+    query.queries[0].useGantt = true;
   
-    tasks = query_exec(METRICS_QUERY).tasks;
+    tasks = query_exec(query)[0].tasks;
+    tasks2 = tasks.filter(x => x.priority && x.weight);
   
     let container = _metrics_con;
   

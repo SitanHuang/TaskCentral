@@ -154,8 +154,8 @@ function task_get_endpoints(task) {
   ];
 }
 
-function task_is_overlap(task, range) {
-  let e = task_get_endpoints(task);
+function task_is_overlap(task, range, gantt) {
+  let e = gantt ? task_gantt_endpoints(task) : task_get_endpoints(task);
   return (e[0] <= range[1]) && (range[0] <= e[1]);
 }
 
