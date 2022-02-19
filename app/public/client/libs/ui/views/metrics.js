@@ -489,7 +489,7 @@ var ui_metrics_render;
         let w = _query_generate_gantt_periods(tasks2, [start, end - 8.64e+7])
                   .map(x => x.task.weight / 5 * (task_progress_at_stamp(x.task, end) - task_progress_at_stamp(x.task, start)))
                   .reduce((a,b) => a + b, 0) / 100;
-        return w.toFixed(1) + `<br>${(w / days(start, end - 8.64e+7)).toFixed(2)} / day` +
+        return w.toFixed(1) + `<br>${(w / days(start, end)).toFixed(2)} / day` +
                explanation('weight/5 * (delta progress)')
       },
       (start, end) =>
