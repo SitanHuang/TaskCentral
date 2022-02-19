@@ -17,6 +17,13 @@
   white-space: nowrap;
 }
 
+.log daily .info-action {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
 @media screen and (min-width: 480px) {
   .log header .actions {
     overflow-x: auto;

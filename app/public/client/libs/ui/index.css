@@ -4,11 +4,12 @@
   --card-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
 
   --mono-family: 'Roboto Mono', monospace;
+  --default-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--default-family);
   line-height: 1.6;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
@@ -375,17 +376,28 @@ header.stats {
 header.stats stat {
   display: block;
   flex-grow: 1;
+}
+
+.stats stat {
   text-align: center;
   border-right: 1px solid #e3e3e3;
   font-family: var(--mono-family);
 }
 
-header.stats stat:last-of-type {
+.stats stat:last-of-type {
   border: 0;
 }
 
-header.stats stat strong {
+.stats stat strong {
+  text-transform: capitalize;
   font-weight: bolder;
   display: block;
   margin: 0.5em 0;
+}
+
+.stats stat span.explanation {
+  color: grey;
+  display: block;
+  font-family: var(--default-family);
+  padding: 0 0.5em;
 }

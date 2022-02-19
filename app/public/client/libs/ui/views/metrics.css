@@ -1,0 +1,25 @@
+.content-container .metrics {
+  background-color: #fafafa;
+}
+
+.metrics header .actions {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.metrics > div .info-card .info-action {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+.metrics .stats {
+  padding: 6px 12px;
+}
+
+.metrics .stats stat {
+  border-right: 0;
+  border-bottom: 1px solid #e3e3e3;
+  padding-bottom: 5px;
+}

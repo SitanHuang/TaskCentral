@@ -154,8 +154,8 @@ function task_get_endpoints(task) {
   ];
 }
 
-function task_is_overlap(task, range) {
-  let e = task_get_endpoints(task);
+function task_is_overlap(task, range, gantt) {
+  let e = gantt ? task_gantt_endpoints(task) : task_get_endpoints(task);
   return (e[0] <= range[1]) && (range[0] <= e[1]);
 }
 
@@ -203,6 +203,31 @@ function task_gen_readable_log(task) {
   });
   return s;
 }
+
+/*
+ * returns 100% if task is completed after stamp
+ *
+ * if a task is marked as completed before stamp, even if reopened later,
+ * would still return as 100%
+ */
+function task_progress_at_stamp(task, stamp) {
+  let comp = false;
+  let p = 0;
+
+  for (let l of task.log) {
+    if (l.time > stamp)
+      continue;
+
+    if (l.type == 'default' && l.note?.toLowerCase().indexOf('completed') >= 0)
+      comp = true;
+    else if (l.type == 'default' || l.type == 'start')
+      comp = false;
+    else if (!comp && l.type == 'progress' )
+      p = l.progress;
+  }
+  return comp ? 100 : p;
+}
+
 
 function task_update_progress(task, progress) {
   task.progress = Math.max(Math.min(progress, 100), 0);
