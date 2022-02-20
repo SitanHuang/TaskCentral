@@ -149,7 +149,7 @@ var ui_metrics_render;
 
     "Rating":[
       (s, e) =>
-        functions["Rating"][1](s, e) + explanation("40% get-ahead, 35% time tracked, 18% work, 7% tiem per interval"),
+        functions["Rating"][1](s, e) + explanation("40% get-ahead, 35% time tracked, 18% work, 7% time per interval"),
       (s, e) =>
         [
           ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 0.05],
