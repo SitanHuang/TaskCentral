@@ -171,32 +171,32 @@ var ui_metrics_render;
 
     "Time Tracked (All)": [
       (s, e) => {
-        let time = functions["Time Tracked (All)"][1](s, e) * 3.6e+6;
+        let time = functions["Time Tracked (All)"][1](s, e).toFixed(1) * 3.6e+6;
         return `${timeIntervalStringShort(time)} <br> (${(time / (e - s) * 100).toFixed(0)}% tracked)` +
                 explanation('Including weightless & priority-less tasks.');
       },
       (s, e) =>
         (_query_generate_gantt_periods(tasks, [s, e - 8.64e+7])
           .map(x => task_gen_working_periods(x.task, [s, e])
-                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / 3.6e+6).toFixed(1)
+                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / 3.6e+6)
     ],
 
     "Time Tracked % Prod. (All)": [
       (s, e) => 
-        functions["Time Tracked % Prod. (All)"][1](s, e) +
+        functions["Time Tracked % Prod. (All)"][1](s, e).toFixed(1) +
         explanation(`Productive hours = ${PRODUCTIVE_HOURS}hr/day. Including weightless & priority-less tasks.`),
       (s, e) =>
         (_query_generate_gantt_periods(tasks, [s, e - 8.64e+7])
           .map(x => task_gen_working_periods(x.task, [s, e])
-                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / ((e - s) * PRODUCTIVE_HOURS / 24) * 100).toFixed(1)
+                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / ((e - s) * PRODUCTIVE_HOURS / 24) * 100)
     ],
 
     "Time Per Interval (All)": [
       (s, e) =>
-        `${functions["Time Per Interval (All)"][1](s, e)}hr` +
+        `${functions["Time Per Interval (All)"][1](s, e).toFixed(1)}hr` +
                 explanation('Including weightless & priority-less tasks.'),
       (s, e) =>
-        (functions["Time Tracked (All)"][1](s, e) / functions["Intervals (All)"][1](s, e)).toFixed(1)
+        (functions["Time Tracked (All)"][1](s, e) / functions["Intervals (All)"][1](s, e))
     ],
 
     "Intervals (All)": [
@@ -211,10 +211,10 @@ var ui_metrics_render;
 
     "Intervals Per Task (All)": [
       (s, e) =>
-        functions["Intervals Per Task (All)"][1](s, e) +
+        functions["Intervals Per Task (All)"][1](s, e).toFixed(1) +
         explanation('Including weightless & priority-less tasks'),
       (s, e) =>
-        (functions["Intervals (All)"][1](s, e) / functions["Tasks (All)"][1](s, e)).toFixed(1)
+        (functions["Intervals (All)"][1](s, e) / functions["Tasks (All)"][1](s, e))
     ],
 
     "Tasks (All)": [
@@ -357,7 +357,7 @@ var ui_metrics_render;
     ],
     "Avg. Days Get-ahead": [
       (s, e) =>
-        functions["Avg. Days Get-ahead"][1](s, e) +
+        functions["Avg. Days Get-ahead"][1](s, e).toFixed(0) +
         explanation('How many days were tasks done before due date'),
       (s, e) => {
         let tasks = _query_generate_gantt_periods(
@@ -369,7 +369,7 @@ var ui_metrics_render;
                   return midnight(endpoints[0]) == midnight(endpoints[1]) ?
                            0 : // if due on same day as creation, 0% ahead
                            Math.floor((endpoints[1] - midnight(task_completed_stamp(x))) / 8.64e+7);
-                }).reduce((a, b) => a + b, 0) / tasks.length).toFixed(0);
+                }).reduce((a, b) => a + b, 0) / tasks.length);
       }
     ],
     "Avg. % Get-ahead (>1d)": [
@@ -392,7 +392,7 @@ var ui_metrics_render;
     ],
     "Avg. Days Get-ahead (>1d)": [
       (s, e) =>
-        functions["Avg. Days Get-ahead (>1d)"][1](s, e) +
+        functions["Avg. Days Get-ahead (>1d)"][1](s, e).toFixed(0) +
         explanation('How many days were tasks done before due date.  Excluding tasks with 1 day of assigned time'),
       (s, e) => {
         let tasks = _query_generate_gantt_periods(
@@ -405,37 +405,37 @@ var ui_metrics_render;
                            NaN : // if due on same day as creation, skip
                            Math.floor((endpoints[1] - midnight(task_completed_stamp(x))) / 8.64e+7);
                 }).filter(x => !isNaN(x));
-        return (tasks.reduce((a, b) => a + b, 0) / tasks.length).toFixed(0);
+        return (tasks.reduce((a, b) => a + b, 0) / tasks.length);
       }
     ],
 
     "Time Tracked": [
       (s, e) => {
-        let time = functions["Time Tracked"][1](s, e) * 3.6e+6;
+        let time = functions["Time Tracked"][1](s, e).toFixed(1) * 3.6e+6;
         return `${timeIntervalStringShort(time)} <br> (${(time / (e - s) * 100).toFixed(0)}% tracked)`;
       },
       (s, e) =>
         (_query_generate_gantt_periods(tasks2, [s, e - 8.64e+7])
           .map(x => task_gen_working_periods(x.task, [s, e])
-                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / 3.6e+6).toFixed(1)
+                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / 3.6e+6)
     ],
 
     "Time Tracked % Prod.": [
       (s, e) => 
-        functions["Time Tracked % Prod."][1](s, e) +
+        functions["Time Tracked % Prod."][1](s, e).toFixed(1) +
         explanation(`Productive hours = ${PRODUCTIVE_HOURS}hr/day.`),
       (s, e) =>
         (_query_generate_gantt_periods(tasks2, [s, e - 8.64e+7])
           .map(x => task_gen_working_periods(x.task, [s, e])
-                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / ((e - s) * PRODUCTIVE_HOURS / 24) * 100).toFixed(1)
+                      .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / ((e - s) * PRODUCTIVE_HOURS / 24) * 100)
     ],
     
     "Time Per Interval": [
       (s, e) =>
-        `${functions["Time Per Interval"][1](s, e)}hr` +
+        `${functions["Time Per Interval"][1](s, e).toFixed(1)}hr` +
                 explanation('Including weightless & priority-less tasks.'),
       (s, e) =>
-        (functions["Time Tracked"][1](s, e) / functions["Intervals"][1](s, e)).toFixed(1)
+        (functions["Time Tracked"][1](s, e) / functions["Intervals"][1](s, e))
     ],
     
     "Intervals": [
@@ -449,7 +449,7 @@ var ui_metrics_render;
     
     "Intervals Per Task":
       (s, e) =>
-        (functions["Intervals"][1](s, e) / functions["Tasks"](s, e)).toFixed(1),
+        (functions["Intervals"][1](s, e) / functions["Tasks"](s, e)).toFixed(2),
 
     "Tasks": (start, end) =>
       _query_generate_gantt_periods(tasks2, [start, end - 8.64e+7]).length,
