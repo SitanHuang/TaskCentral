@@ -150,11 +150,11 @@ var ui_metrics_render;
     "Rating":
       (s, e) =>
         [
-          ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 0.06],
-          ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 0.18],
+          ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 0.05],
+          ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 0.15],
           ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100) * 0.05],
-          ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 0.12],
-          ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2 * (0.10)],
+          ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 0.15],
+          ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2 * (0.11)],
           ["Time Tracked % Prod. (All)", x => Math.abs(Math.tanh(x / 1.5 / 100) * 2) * 0.10],
           ["Time Tracked % Prod.", x => Math.abs(Math.tanh(x / 100) * 2) * 0.28],
           ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)) * 0.07],
