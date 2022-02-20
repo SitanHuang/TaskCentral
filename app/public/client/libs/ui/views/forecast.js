@@ -68,7 +68,7 @@ function ui_forecast_render() {
   for (let period of periods) {
     let task = period.task;
     let actualFrom = roundDateToNearestDay(period.actualFrom);
-    let actualTo = roundDateToNearestDay(period.actualTo);
+    let actualTo = roundDateToNearestDay(period.to);
     let cappedDays = Math.floor((period.from - actualFrom) / 8.64e+7);
     let days = Math.floor((actualTo - actualFrom) / 8.64e+7) + 1;
     let stressPerDay = ((task.weight) * (task.priority)) / days / 5 / 5;
