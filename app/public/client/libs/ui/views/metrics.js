@@ -147,19 +147,22 @@ var ui_metrics_render;
       days
     ],
 
-    "Rating":
+    "Rating":[
+      (s, e) =>
+        functions["Rating"][1](s, e) + explanation("40% get-ahead, 35% time tracked, 18% work, 7% tiem per interval"),
       (s, e) =>
         [
           ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 0.05],
           ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 0.15],
           ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100) * 0.05],
           ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 0.15],
-          ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2 * (0.11)],
+          ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2 * (0.14)],
           ["Time Tracked % Prod. (All)", x => Math.abs(Math.tanh(x / 1.5 / 100) * 2) * 0.10],
-          ["Time Tracked % Prod.", x => Math.abs(Math.tanh(x / 100) * 2) * 0.28],
+          ["Time Tracked % Prod.", x => Math.abs(Math.tanh(x / 100) * 2) * 0.25],
           ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)) * 0.07],
           ["Work Net % of Start (All)", x => 0.04 * Math.tanh(-1.2 * x / 100) * 2],
-        ].map(x => x[1](norm((functions[x[0]][1] || functions[x[0]])(s, e)) || 0)).reduce((a, b) => (a || 0) + (b || 0), 0).toFixed(2),
+        ].map(x => x[1](norm((functions[x[0]][1] || functions[x[0]])(s, e)) || 0)).reduce((a, b) => (a || 0) + (b || 0), 0).toFixed(2)
+    ],
 
     "Time Tracked (All)": [
       (s, e) => {
