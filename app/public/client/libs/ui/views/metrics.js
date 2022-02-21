@@ -641,6 +641,16 @@ var ui_metrics_render;
 
   function _ui_metrics_render_profile() {
     let con = _metrics_con.find('.profile-con .stat-list').html('');
+    let rating = functions["Rating"][1](startDate, endDate);
+    _metrics_con.find(".profile-con .rating")
+      .text(rating)
+      .css(
+        'color',
+        rating < 0.5 ? '#b32436' : 
+        rating < 0.9 ? '#c4921d' :
+        rating < 1.2 ? '#107a40' : '#68149d'
+      );
+
     for (let x of RATING_FUNCS) {
       // (functions[f][0] || functions[f])(startDate, endDate)
       // x[1](norm((functions[x[0]][1] || functions[x[0]])(s, e)) || 0) * x[2]
@@ -651,8 +661,8 @@ var ui_metrics_render;
       let perc = val * baselinePerc;
 
       let color = val < 0.5 ? '#b32436' : 
-                    val < 0.9 ? '#e3ae08' :
-                      val < 1.2 ? '#06b319' : '#68149d';
+                  val < 0.9 ? '#e3ae08' :
+                  val < 1.2 ? '#06b319' : '#68149d';
       
       con.append(`
         <div class="stat">

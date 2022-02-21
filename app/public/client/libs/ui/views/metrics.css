@@ -128,7 +128,6 @@
   min-width: 1%;
   background-color: #b32436;
   border-radius: inherit;
-  box-shadow: var(--card-shadow);
   display: inline-block;
   overflow: hidden;
 }
