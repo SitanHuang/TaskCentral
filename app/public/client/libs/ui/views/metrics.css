@@ -41,3 +41,104 @@
 .graph-container > svg {
   zoom: 1.2;
 }
+
+.metrics profile-pic {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  border: 5px solid #e3e3e3;
+  background-color: var(--app-primary-color);
+  color: white;
+  font-size: 50px;
+  line-height: 90px;
+  text-align: center;
+}
+
+.metrics .profile {
+  padding: 20px;
+  text-align: center;
+}
+
+.metrics .profile h2 {
+  display: inline-block;
+  margin-left: 1em;
+  line-height: 65px;
+  vertical-align: top;
+}
+
+.metrics .profile-con {
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.metrics .profile-con > .pure-u-1-1:not(:last-child) {
+  border-right: 1px solid #e3e3e3;
+}
+
+.metrics .profile-con .stat {
+  padding: 20px 20px 0;
+}
+
+.metrics .profile-con .stat span {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-top: 8px;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.metrics .profile-con .stat span ex {
+  font-size: 0.6rem;
+  font-weight: normal;
+  padding-left: 0.1em;
+  color: grey;
+}
+
+.metrics .profile-con .stat .progress-con {
+  height: 20px;
+  width: 100%;
+  background-color: #e3e3e3;
+  border-radius: 10px;
+  clear: both;
+  overflow: hidden;
+  position: relative;
+}
+
+.metrics .profile-con > .pure-u-1-1 {
+  padding-bottom: 20px;
+}
+
+.metrics .profile-con .stat num {
+  font-weight: 700;
+  font-size: 32px;
+  float: right;
+  line-height: 1;
+}
+
+/*
+#c43f1d orange
+#107a40 green
+#185abd blue
+#b32436 dark red
+#68149d purple
+*/
+.metrics .profile-con .stat .progress-con .progress {
+  height: inherit;
+  min-width: 1%;
+  background-color: #b32436;
+  border-radius: inherit;
+  box-shadow: var(--card-shadow);
+  display: inline-block;
+  overflow: hidden;
+}
+
+.metrics .profile-con .stat .progress-con > .baseline {
+  position: absolute;
+  top: 0;
+  left: 60%;
+  width: 1px;
+  height: inherit;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}

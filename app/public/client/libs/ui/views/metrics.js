@@ -5,6 +5,9 @@ let _metrics_css_inserted;
 function ui_menu_select_metrics() {
   _metrics_con = $('.content-container > div.metrics');
 
+  _metrics_con.find('.profile h2').text(back.user.name);
+  _metrics_con.find('.profile profile-pic').text(back.user.name[0]);
+
   let target_provider = () => METRICS_QUERY;
   let callback_provider = () => {
     delete target_provider()._increment;
@@ -140,6 +143,18 @@ var ui_metrics_render;
     return Math.ceil((end - start) / 8.64e+7);
   }
 
+  const RATING_FUNCS = [
+    ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4), 0.05],
+    ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4), 0.15],
+    ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100), 0.05],
+    ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100), 0.15],
+    ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2, 0.14],
+    ["Time Tracked % Prod. (All)", x => Math.tanh(x / 1.5 / 100) * 2, 0.10],
+    ["Time Tracked % Prod.", x => Math.tanh(x / 100) * 2, 0.25],
+    ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)), 0.07],
+    ["Work Net % of Start (All)", x => Math.tanh(-1.2 * x / 100) * 2, 0.04],
+  ];
+
   let functions;
   functions = {
     duration: [
@@ -152,19 +167,10 @@ var ui_metrics_render;
         functions["Rating"][1](s, e) + explanation("40% get-ahead, 35% time tracked, 18% work, 7% time per interval"),
       (s, e) =>
         (
-          [
-          ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 0.05],
-          ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 0.15],
-          ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100) * 0.05],
-          ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 0.15],
-          ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2 * (0.14)],
-          ["Time Tracked % Prod. (All)", x => Math.abs(Math.tanh(x / 1.5 / 100) * 2) * 0.10],
-          ["Time Tracked % Prod.", x => Math.abs(Math.tanh(x / 100) * 2) * 0.25],
-          ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)) * 0.07],
-          ["Work Net % of Start (All)", x => 0.04 * Math.tanh(-1.2 * x / 100) * 2],
-          ].map(x => x[1](norm((functions[x[0]][1] || functions[x[0]])(s, e)) || 0))
-           .reduce((a, b) => (a || 0) + (b || 0), 0) -
-           Math.tanh(days(s, e) / 4.5 - 1) * 0.15 + 0.16
+          RATING_FUNCS
+            .map(x => x[1](norm((functions[x[0]][1] || functions[x[0]])(s, e)) || 0) * x[2])
+            .reduce((a, b) => (a || 0) + (b || 0), 0) -
+          Math.tanh(days(s, e) / 4.5 - 1) * 0.15 + 0.16
         )
         .toFixed(2)
     ],
@@ -633,6 +639,37 @@ var ui_metrics_render;
        .call(d3.axisLeft(y));
   }
 
+  function _ui_metrics_render_profile() {
+    let con = _metrics_con.find('.profile-con .stat-list').html('');
+    for (let x of RATING_FUNCS) {
+      // (functions[f][0] || functions[f])(startDate, endDate)
+      // x[1](norm((functions[x[0]][1] || functions[x[0]])(s, e)) || 0) * x[2]
+      let raw = norm((functions[x[0]][1] || functions[x[0]])(startDate, endDate)) || 0;
+      let val = x[1](raw);
+      let weight = x[2];
+      let baselinePerc = 60; // also defined in metrics.css
+      let perc = val * baselinePerc;
+
+      let color = val < 0.5 ? '#b32436' : 
+                    val < 0.9 ? '#e3ae08' :
+                      val < 1.2 ? '#06b319' : '#68149d';
+      
+      con.append(`
+        <div class="stat">
+          <span>${x[0]} <ex>(=${raw.toFixed(2)}, ${(weight * 100).toFixed()}%)</ex></span>
+          <num>${val.toFixed(2)}</num>
+          <div class="progress-con">
+            <div class="progress" style="
+              width: ${perc}%;
+              background-color: ${color};
+            "></div>
+            <div class="baseline" style="${(val > 1.05 || '') && 'background: #e3e3e3;'}"></div>
+          </div>
+        </div>
+      `);
+    }
+  }
+
   ui_metrics_render = function (chevron) {
     function _add_metric(name, html, exp) {
       container.find('.content.pure-g').append(
@@ -701,6 +738,7 @@ var ui_metrics_render;
       _add_metric(f, (functions[f][0] || functions[f])(startDate, endDate));
 
     _ui_metrics_render_graph();
+    _ui_metrics_render_profile();
   
     console.timeEnd('Re-render metrics');
   };
