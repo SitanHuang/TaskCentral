@@ -144,10 +144,10 @@ var ui_metrics_render;
   }
 
   const RATING_FUNCS = [
-    ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4), 0.05],
-    ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4), 0.15],
-    ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100), 0.05],
-    ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100), 0.15],
+    ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.05],
+    ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.15],
+    ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100) * 2, 0.05],
+    ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 2, 0.15],
     ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2, 0.14],
     ["Time Tracked % Prod. (All)", x => Math.tanh(x / 1.5 / 100) * 2, 0.10],
     ["Time Tracked % Prod.", x => Math.tanh(x / 100) * 2, 0.25],
