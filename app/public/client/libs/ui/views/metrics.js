@@ -145,13 +145,13 @@ var ui_metrics_render;
 
   const RATING_FUNCS = [
     // ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.05],
-    ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2, 0.14],
-    ["Work Net % of Start (All)", x => Math.tanh(-1.2 * x / 100) * 2, 0.04],
-    ["Time Tracked % Prod. (All)", x => Math.tanh(x / 1.5 / 100) * 2, 0.10],
-    ["Time Tracked % Prod.", x => Math.tanh(x / 100) * 2, 0.25],
-    ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.20],
+    ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2, 0.18],
+    ["Work Net % of Start (All)", x => Math.tanh(-1.2 * x / 100) * 2, 0.07],
+    ["Time Tracked % Prod. (All)", x => Math.tanh(x / 1.5 / 100) * 2, 0.075],
+    ["Time Tracked % Prod.", x => Math.tanh(x * 1.5 / 100) * 2, 0.225],
+    ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.19],
     // ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100) * 2, 0.05],
-    ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 2, 0.20],
+    ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 2, 0.19],
     ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)), 0.07],
   ];
 
@@ -164,7 +164,7 @@ var ui_metrics_render;
 
     "Rating":[
       (s, e) =>
-        functions["Rating"][1](s, e) + explanation("40% get-ahead, 35% time tracked, 18% work, 7% time per interval"),
+        functions["Rating"][1](s, e) + explanation("38% get-ahead, 30% time tracked, 25% work, 7% time per interval"),
       (s, e) =>
         (
           RATING_FUNCS
