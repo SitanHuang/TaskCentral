@@ -354,10 +354,10 @@ var ui_metrics_render;
                       [s, e - 8.64e+7]);
         return (tasks.map(x => {
                   x = x.task;
-                  let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)];
-                  return midnight(endpoints[0]) == midnight(endpoints[1]) ?
+                  let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)].map(x => roundDateToNearestDay(x).getTime());
+                  return endpoints[0] == endpoints[1] ?
                            0 : // if due on same day as creation, 0% ahead
-                           (endpoints[1] - midnight(task_completed_stamp(x))) / (endpoints[1] - endpoints[0]);
+                           (endpoints[1] - roundDateToNearestDay(task_completed_stamp(x))) / (endpoints[1] - endpoints[0]);
                 }).reduce((a, b) => a + b, 0) * 100 / tasks.length).toFixed(0);
       }
     ],
@@ -388,10 +388,10 @@ var ui_metrics_render;
                       [s, e - 8.64e+7]);
         tasks = tasks.map(x => {
                   x = x.task;
-                  let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)];
-                  return midnight(endpoints[0]) == midnight(endpoints[1]) ?
+                  let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)].map(x => roundDateToNearestDay(x).getTime());
+                  return endpoints[0] == endpoints[1] ?
                            NaN : // if due on same day as creation, skip
-                           (endpoints[1] - midnight(task_completed_stamp(x))) / (endpoints[1] - endpoints[0]);
+                           (endpoints[1] - roundDateToNearestDay(task_completed_stamp(x))) / (endpoints[1] - endpoints[0]);
                 }).filter(x => !isNaN(x));
         return (tasks.reduce((a, b) => a + b, 0) * 100 / tasks.length).toFixed(0);
       }
