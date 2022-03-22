@@ -10,6 +10,18 @@ function _ui_home_detail_update_status_importance(task) {
 
   _home_detail_form.find('textarea[name=log]')
     .val(task_gen_readable_log(task));
+
+  let totalString = timeIntervalString(task.total, 0);
+
+  if (task.total && task.weight && task.progress) {
+    let eta = Math.ceil(task.total / (task.progress / 100) - task.total);
+    eta = timeIntervalStringShort(eta);
+
+    totalString += ` (about ${eta} left)`;
+  }
+
+  _home_detail_form.find('input[name=total]')
+    .val(totalString);
 }
 
 function ui_detail_select_task(task) {
@@ -34,17 +46,6 @@ function ui_detail_select_task(task) {
 
   _ui_home_detail_update_status_importance(task);
 
-  let totalString = timeIntervalString(task.total, 0);
-
-  if (task.total && task.weight && task.progress) {
-    let eta = Math.ceil(task.total / (task.progress / 100) - task.total);
-    eta = timeIntervalStringShort(eta);
-
-    totalString += ` (about ${eta} left)`;
-  }
-
-  _home_detail_form.find('input[name=total]')
-    .val(totalString);
   _home_detail_form.find('input[name=created]')
     .val(new Date(task.created).toLocaleString());
 
