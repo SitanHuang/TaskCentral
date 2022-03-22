@@ -38,7 +38,7 @@ function ui_detail_select_task(task) {
 
   if (task.total && task.weight && task.progress) {
     let eta = Math.ceil(task.total / (task.progress / 100) - task.total);
-    eta = timeIntervalString(eta);
+    eta = timeIntervalStringShort(eta);
 
     totalString += ` (about ${eta} left)`;
   }
