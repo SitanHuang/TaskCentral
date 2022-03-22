@@ -380,7 +380,7 @@ function _ui_home_normal_status(tasks) {
   let due = tasks.filter(x => x.status != 'completed' && x.due);
   let now = timestamp();
   let ready = due.filter(x => !x.earliest || now >= x.earliest).length;
-  let total = tasks.reduce((s, x) => ({ total: s.total + x.total }), { total: 0  }).total;
+  let total = tasks.reduce((s, x) => ({ total: s.total + x.total }), { total: 0 }).total;
   $('#status-bar')
     .text(`A: ${tasks.length} D: ${due.length} R: ${ready} | ${timeIntervalStringShort(total)}`);
 }

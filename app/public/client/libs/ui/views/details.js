@@ -34,8 +34,17 @@ function ui_detail_select_task(task) {
 
   _ui_home_detail_update_status_importance(task);
 
+  let totalString = timeIntervalString(task.total, 0);
+
+  if (task.total && task.weight && task.progress) {
+    let eta = Math.ceil(task.total / (task.progress / 100) - task.total);
+    eta = timeIntervalString(eta);
+
+    totalString += ` (about ${eta} left)`;
+  }
+
   _home_detail_form.find('input[name=total]')
-    .val(timeIntervalString(task.total, 0));
+    .val(totalString);
   _home_detail_form.find('input[name=created]')
     .val(new Date(task.created).toLocaleString());
 
@@ -51,7 +60,7 @@ function ui_detail_select_task(task) {
         delete _selected_task.notes;
       _ui_home_details_signal_changed();
     };
-  
+
   ['weight', 'priority'].forEach(x => {
     _home_detail_form.find('input[name=' + x + ']')
       .val(task[x])[0].onchange = (e) => {
@@ -120,7 +129,7 @@ function ui_home_detail_project_changed(input) {
   }
 
   let $proj = _home_detail_form.find('.project-container .project').html('');
-  
+
   let projects = _home_detail_form.find('.project-container .projects');
   projects.html('');
 
@@ -134,7 +143,7 @@ function ui_home_detail_project_changed(input) {
           ui_home_detail_project_changed(input);
         });
     });
-  
+
   _ui_home_create_add_new_proj_btn(projects, 'ui_home_details_project_callback(this);return false;');
 
   if (proj)
