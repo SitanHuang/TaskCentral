@@ -579,7 +579,7 @@ var ui_metrics_render;
 
       let row = {
         periodStart: new Date(index).toLocaleDateString("en-US", { year: "2-digit", month: "numeric", day: "numeric" }),
-        data: norm(func(index.getTime(), to.getTime()))
+        data: norm(func(index.getTime(), Math.min(endDate, to)))
       };
 
       min = Math.min(row.data, min);
