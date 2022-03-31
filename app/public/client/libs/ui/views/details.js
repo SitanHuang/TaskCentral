@@ -13,7 +13,7 @@ function _ui_home_detail_update_status_importance(task) {
 
   let totalString = timeIntervalString(task.total, 0);
 
-  if (task.total && task.weight && task.progress) {
+  if (task.total && task.progress) {
     let eta = Math.ceil(task.total / (task.progress / 100) - task.total);
     eta = timeIntervalStringShort(eta);
 
