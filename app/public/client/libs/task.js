@@ -242,6 +242,21 @@ function task_update_progress(task, progress) {
   back.set_dirty();
 }
 
+/*
+ * returns total diff (new - old)
+ */
+function task_recalc_total(task) {
+  let ot = task.total;
+
+  let tot = 0;
+  let periods = task_gen_working_periods(task);
+  periods.forEach(x => {
+    tot += x.to - x.from;
+  });
+
+  return (task.total = tot) - ot;
+}
+
 function task_pause(task) {
   task.status = 'default';
   task.log.push({ type: 'default', time: timestamp() });
@@ -279,7 +294,7 @@ function task_completed_stamp(task) {
 /*
  * STA -> DEF
  * STA -> now
- * 
+ *
  * [capRange: [from, to]]
  */
 function task_gen_working_periods(task, capRange) {
@@ -295,7 +310,7 @@ function task_gen_working_periods(task, capRange) {
 
       if (end > start)
         periods.push({ from: start, to: end, task: task });
-      
+
       start = null;
     }
   }
