@@ -155,7 +155,12 @@
               </div>
               <div class="pure-control-group">
                 <label>Time</label>
-                <input type="text" readonly name="total">
+                <div>
+                  <div style="display: flex">
+                    <input type="text" readonly name="total" style="flex-grow: 1">
+                    <input class="pure-button" name="recalc" type="button" value="Recalc">
+                  </div>
+                </div>
               </div>
               <div class="pure-control-group">
                 <label>Status</label>
@@ -380,6 +385,10 @@
         </div>
         <div class="pad">
           <h4>Clean up</h4>
+          <button class="pure-button"
+            onclick="ui_menu_recalc_all()">
+            Recalculate task durations
+          </button>
           <button class="pure-button"
             onclick="ui_menu_cleanup_periods()">
             Remove logs with short durations

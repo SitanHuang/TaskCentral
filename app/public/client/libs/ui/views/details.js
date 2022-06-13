@@ -30,7 +30,7 @@ function ui_detail_select_task(task) {
   _home_detail = _home_con.find('.task-detail').addClass('activated');
   _home_detail_form = _home_detail.find('form');
 
-  _home_detail_form.find('input').val('');
+  _home_detail_form.find('input[type!=button]').val('');
 
   _home_detail_form.find('input[name=name]')
     .val(task.name)[0].onchange = (e) => {
@@ -45,6 +45,18 @@ function ui_detail_select_task(task) {
     .val(task.project);
 
   _ui_home_detail_update_status_importance(task);
+
+  let recalc_btn = _home_detail_form.find('input[name=recalc]')[0];
+  recalc_btn.onclick = () => {
+    let diff = task_recalc_total(task);
+    recalc_btn.value = `Changed by ${timeIntervalStringShort(Math.abs(diff))}`;
+    recalc_btn.onblur = () => {
+      recalc_btn.value = 'Recalc';
+    };
+    _ui_home_detail_update_status_importance(task);
+    if (diff)
+      back.set_dirty();
+  };
 
   _home_detail_form.find('input[name=created]')
     .val(new Date(task.created).toLocaleString());

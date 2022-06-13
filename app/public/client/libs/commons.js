@@ -48,7 +48,7 @@ function timeIntervalString(final, initial) {
   delta -= minutes * 60;
 
   let seconds = (Math.round(delta % 60 * 10) / 10).toFixed(1);
-  return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.padStart(4, '0')}`;
+  return (final - initial < 0 ? '-' : '' ) + `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.padStart(4, '0')}`;
 }
 
 function timeIntervalStringShort(final, initial) {
@@ -56,11 +56,11 @@ function timeIntervalStringShort(final, initial) {
   let delta = Math.abs(final - initial) / 1000;
   let hrs = delta / 3600;
   if (hrs > 1)
-    return hrs.toFixed(1) + 'hr';
+    return (final - initial < 0 ? '-' : '' ) + hrs.toFixed(1) + 'hr';
   let min = delta / 60;
   if (min > 1)
-    return min.toFixed(1) + 'min';
-  return delta.toFixed(1) + 's';
+    return (final - initial < 0 ? '-' : '' ) + min.toFixed(1) + 'min';
+  return (final - initial < 0 ? '-' : '' ) + delta.toFixed(1) + 's';
 }
 
 function onPasteFormatRemovalHandler(elem, e) {
