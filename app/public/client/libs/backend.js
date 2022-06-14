@@ -29,17 +29,17 @@ function Backend() {
                 function (mtime) {
                   that.mtime = mtime;
                   data_init_default();
-  
+
                   window.onfocus = throttle(() => {
                     that.update_mtime().catch(fail).then(
                       function (mtime) {
                         if (that.mtime != mtime) {
                           alert("Remote file changed since last sync! Reloading page for ya...");
-                
+
                           window.onbeforeunload = null;
-                
+
                           location.reload(); // force reload not needed
-                
+
                           reject();
                           return;
                         }
@@ -133,7 +133,7 @@ function Backend() {
 
       if (that.dirty)
         that.update(); // update itself checks for 1 update at a time
-    }, 1000); // check for sync every interval
+    }, 200); // check for sync every interval
     console.log('Started monitoring service.');
   };
 
