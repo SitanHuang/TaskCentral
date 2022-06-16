@@ -23,10 +23,22 @@ function timer_start_task(task) {
 }
 
 function timer_stop_task(task) {
+  task_pause(back.data.tasks[back.data.started]);
+
   // does nothing if unset
   clearInterval(_timer_interval_id);
   $timer_container
+    .removeClass('_hidden')
     .hide();
-  if (_selected_task)
+  if (_selected_task || _ui_menu_current_menu == 'home')
     ui_menu_select_home();
+}
+
+function timer_hide() {
+  $timer_container
+    .addClass('_hidden');
+}
+function timer_unhide() {
+  $timer_container
+    .removeClass('_hidden');
 }

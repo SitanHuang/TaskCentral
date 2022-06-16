@@ -76,7 +76,29 @@ button .fa{
   z-index: 10;
 
   opacity: 0;
-  transition: opacity 300ms ease-out;
+  transition: all 300ms ease-out;
+}
+
+#timer-container._hidden {
+  top: calc(-100vh + 48px + 28px);
+  left: calc(100vw - 48px);
+  border-radius: 24px;
+}
+
+#timer-container .unhide {
+  transform: rotate(45deg);
+  display: none;
+}
+#timer-container._hidden .unhide {
+  cursor: pointer;
+  display: block;
+  transition: none;
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.7em;
+  display: block;
+  color: white;
+  font-size: 24px;
 }
 
 #timer-container name {
@@ -103,9 +125,10 @@ button .fa{
   transition: left 300ms ease-out;
 }
 
-#timer-container pause:active,
+#timer-container pause i:active,
+#timer-container i.unhide:active,
 #timer-container pause.play,
-#timer-container stop:active {
+#timer-container stop i:active {
   color: rgba(0,0,0,0.87);
 }
 

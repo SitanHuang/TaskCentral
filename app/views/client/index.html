@@ -570,10 +570,14 @@
     </div>
 
     <div id="timer-container" oncontextmenu="return false;" style="display: none;">
+      <i class="unhide fa-solid fa-arrow-down" onclick="timer_unhide()"></i>
       <name></name>
       <timer></timer>
-      <stop onclick="task_pause(back.data.tasks[back.data.started]);timer_stop_task(back.data.tasks[back.data.started]);ui_menu_select_home();">
-        <i class="fa fa-stop-circle"></i>
+      <stop>
+        <i class="fa fa-stop-circle" style="margin-right: 1em"
+           onclick="timer_stop_task(back.data.tasks[back.data.started]);"></i>
+        <i class="fa fa-circle-down" style="transform: rotate(-135deg);"
+           onclick="timer_hide();"></i>
       </stop>
     </div>
 

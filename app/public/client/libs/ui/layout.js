@@ -38,7 +38,10 @@ function ui_menu_init() {
   ui_menu_select('home');
 }
 
+let _ui_menu_current_menu;
+
 function ui_menu_select(id) {
+  _ui_menu_current_menu = id;
   $('.top-bar .pure-menu-item').removeClass('pure-menu-selected');
   $('.top-bar .pure-menu-link[data-menu="' + id + '"]')
     .parent().addClass('pure-menu-selected');
