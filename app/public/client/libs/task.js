@@ -190,6 +190,42 @@ function task_start(task) {
   back.set_dirty();
 }
 
+function task_validate_log(log) {
+  let msg = '';
+
+  if (!Array.isArray(log))
+    msg += 'Not an array.\n';
+  
+  for (let i = 0;i < log.length;i++) {
+    let e = log[i];
+
+    if (!(typeof e === 'object' &&
+      !Array.isArray(e) &&
+      e !== null)) {
+      msg += i + 'th element: not an object.\n';
+      continue;
+    }
+
+    // 1970 - 2100
+    if (!(1 < new Date(e.time) && new Date(e.time) < 4102444800000))
+      msg += i + 'th element: "time" property not a valid timestamp within 1970 - 2100.\n';
+    
+    switch (e.type) {
+      case 'start':
+      case 'default':
+        break;
+      case 'progress':
+        if (!(0 <= e.progress && e.progress <= 100))
+          msg += i + 'th element: "progress" property not valid integer from 0-100 for type \'progress\'.\n';
+        break;
+      default:
+        msg += i + 'th element: "type" property not \'start\', \'default\', or \'progress\'.\n';
+    }
+  }
+
+  return msg || null;
+}
+
 function task_gen_readable_log(task) {
   let s = '';
   task.log.forEach(x => {

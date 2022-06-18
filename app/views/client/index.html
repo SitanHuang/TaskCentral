@@ -180,6 +180,17 @@
                 <label>Log</label>
                 <textarea readonly name="log" style="height: 7.5em;font-family: var(--mono-family);"></textarea>
               </div>
+              <div class="pure-control-group">
+                <label></label>
+                <div>
+                  <div style="text-align: right;">
+                    <input style="flex-grow: 1;" type="button" value="Cancel" name="edit-log-cancel" class="pure-button">
+                    <input style="flex-grow: 1;" type="button" value="Edit & Recalc timelog" name="edit-log" class="pure-button">
+                  </div>
+                  <pre style="color: red;overflow: auto;" class="edit-log-errors"></pre>
+                </div>
+              </div>
+              <br>
               <!-- TODO: total time & log -->
             </form-body>
           </form>

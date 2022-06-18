@@ -8,8 +8,54 @@ function _ui_home_detail_update_status_importance(task) {
   _home_detail_form.find('input[name=status]')
     .val(task.status + '; importance=' + task_calc_importance(task).toFixed(2));
 
-  _home_detail_form.find('textarea[name=log]')
+  let log_ta = _home_detail_form.find('textarea[name=log]')
     .val(task_gen_readable_log(task));
+  log_ta[0].readOnly = true;
+
+  _home_detail_form.find('.edit-log-errors').html('');
+
+  let cancelBtn = _home_detail_form.find('input[name="edit-log-cancel"]')
+    .hide();
+  cancelBtn[0].onclick = () => {
+    _ui_home_detail_update_status_importance(task);
+  };
+  
+  _home_detail_form.find('input[name="edit-log"]')
+    .val("Edit & Recalc timelog")[0].onclick = function () {
+    log_ta[0].readOnly = false;
+    log_ta[0].value = JSON.stringify(
+      task.log,
+      (k, v) => (k == 'time' ? `$$$date('${new Date(v).toLocaleString()}')$$$` : v),
+      2
+    ).replace(/"\$\$\$|\$\$\$"/g, '')
+     .replace(/^\[|\]$/gm, '')
+     .replace(/^  /gm, '')
+     .replace(/^  (\{\})/g, '$1');
+
+    log_ta[0].scrollTop = log_ta[0].scrollHeight;
+
+    $(this).val("Submit")[0].onclick = function () {
+      try {
+        function date(x) {
+          return new Date(x).getTime();
+        }
+        let a = eval('[' + log_ta.val() + ']');
+        let msg = task_validate_log(a);
+        if (msg) {
+          _home_detail_form.find('.edit-log-errors').text(msg);  
+          return;
+        }
+
+        task.log = a;
+        _ui_home_detail_update_status_importance(task);
+        _home_detail_form.find('input[name=recalc]')[0].click();
+      } catch (e) {
+        _home_detail_form.find('.edit-log-errors').text(e.stack);
+      }
+    };
+    
+    cancelBtn.show();
+  };
 
   let totalString = timeIntervalString(task.total, 0);
 
