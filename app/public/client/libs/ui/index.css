@@ -320,7 +320,8 @@ p.no-tasks {
 }
 
 .modal__container {
-  max-width: min(90vw, 400px);
+  max-width: min(90vw, 500px);
+  width: 100%;
   padding: 1em;
 }
 

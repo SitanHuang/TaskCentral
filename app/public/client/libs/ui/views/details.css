@@ -67,6 +67,8 @@
 .task-detail .project-container > .projects {
   padding: 2px 0;
   border-top: 1px solid #e3e3e3;
+  max-height: 104px;
+  overflow-y: auto;
 }
 
 #modal-home-mode .modal__container {
