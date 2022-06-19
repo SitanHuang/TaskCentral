@@ -61,13 +61,13 @@
 
   images.forEach(x => {
     let img = new Image();
-    img.src = x;
+    img.src = x + '?releaseDate=' + encodeURIComponent(RELEASE_DATE);
     img.onload = link_onload;
   });
 
   links.forEach(x => {
     var link = document.createElement('link');
-    link.href = x;
+    link.href = x + '?releaseDate=' + encodeURIComponent(RELEASE_DATE);
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.onload = link_onload;

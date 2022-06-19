@@ -1,0 +1,1 @@
+const RELEASE_DATE = 20220618;
