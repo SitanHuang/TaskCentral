@@ -80,9 +80,8 @@ button .fa{
 }
 
 #timer-container._hidden {
-  top: calc(-100vh + 48px + 28px);
-  left: calc(100vw - 48px);
   border-radius: 24px;
+  transform: translate(calc(100% - 48px), calc(-100% + 48px));
 }
 
 #timer-container .unhide {
