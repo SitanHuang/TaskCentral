@@ -140,5 +140,6 @@
   width: 1px;
   height: inherit;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  /* this causes bar to go through date banner */
+  /* z-index: 2; */
 }
