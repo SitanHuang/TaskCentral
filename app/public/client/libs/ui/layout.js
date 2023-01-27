@@ -40,6 +40,14 @@ function ui_menu_init() {
 
 let _ui_menu_current_menu;
 
+/*
+ * some functions may change the style of status bar
+ */
+function ui_statusbar_reset() {
+  $('#status-bar').text('').attr('style', '')
+    .parent().attr('style', '');
+}
+
 function ui_menu_select(id) {
   _ui_menu_current_menu = id;
   $('.top-bar .pure-menu-item').removeClass('pure-menu-selected');
@@ -47,6 +55,8 @@ function ui_menu_select(id) {
     .parent().addClass('pure-menu-selected');
   $('.content-container > div').hide();
   $('.content-container > div.' + id).show();
-  $('#status-bar').text('');
+
+  ui_statusbar_reset();
+
   eval('ui_menu_select_' + id + '()');
 }

@@ -36,6 +36,18 @@ function task_new(override) {
   }, override);
 }
 
+/*
+ * returns milliseconds of estimated time left
+ *
+ * returns -1 if N/A
+ */
+function task_calc_eta(task) {
+  if (task.total && task.progress)
+    return Math.ceil(task.total / (task.progress / 100) - task.total);
+
+  return -1;
+}
+
 function task_calc_importance(task) {
   let now = timestamp();
 
@@ -195,7 +207,7 @@ function task_validate_log(log) {
 
   if (!Array.isArray(log))
     msg += 'Not an array.\n';
-  
+
   for (let i = 0;i < log.length;i++) {
     let e = log[i];
 
@@ -209,7 +221,7 @@ function task_validate_log(log) {
     // 1970 - 2100
     if (!(1 < new Date(e.time) && new Date(e.time) < 4102444800000))
       msg += i + 'th element: "time" property not a valid timestamp within 1970 - 2100.\n';
-    
+
     switch (e.type) {
       case 'start':
       case 'default':

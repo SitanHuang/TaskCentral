@@ -19,7 +19,7 @@ function _ui_home_detail_update_status_importance(task) {
   cancelBtn[0].onclick = () => {
     _ui_home_detail_update_status_importance(task);
   };
-  
+
   _home_detail_form.find('input[name="edit-log"]')
     .val("Edit & Recalc timelog")[0].onclick = function () {
     log_ta[0].readOnly = false;
@@ -42,7 +42,7 @@ function _ui_home_detail_update_status_importance(task) {
         let a = eval('[' + log_ta.val() + ']');
         let msg = task_validate_log(a);
         if (msg) {
-          _home_detail_form.find('.edit-log-errors').text(msg);  
+          _home_detail_form.find('.edit-log-errors').text(msg);
           return;
         }
 
@@ -53,14 +53,14 @@ function _ui_home_detail_update_status_importance(task) {
         _home_detail_form.find('.edit-log-errors').text(e.stack);
       }
     };
-    
+
     cancelBtn.show();
   };
 
   let totalString = timeIntervalString(task.total, 0);
 
   if (task.total && task.progress) {
-    let eta = Math.ceil(task.total / (task.progress / 100) - task.total);
+    let eta = task_calc_eta(task);
     eta = timeIntervalStringShort(eta);
 
     totalString += ` (about ${eta} left)`;

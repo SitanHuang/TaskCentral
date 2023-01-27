@@ -378,11 +378,53 @@ function _ui_home_normal_list_gen(tasks) {
 
 function _ui_home_normal_status(tasks) {
   let due = tasks.filter(x => x.status != 'completed' && x.due);
+
+  let weight_total = 0;
+  let weight_completed = 0;
+
+  let total = 0;
+  let total_eta = 0;
+
   let now = timestamp();
-  let ready = due.filter(x => !x.earliest || now >= x.earliest).length;
-  let total = tasks.reduce((s, x) => ({ total: s.total + x.total }), { total: 0 }).total;
-  $('#status-bar')
-    .text(`A: ${tasks.length} D: ${due.length} R: ${ready} | ${timeIntervalStringShort(total)}`);
+  let ready = 0;
+
+  tasks.forEach(x => {
+    if (x.status != 'completed' && x.weight) {
+      weight_total += x.weight;
+      weight_completed += x.weight * x.progress / 100;
+
+      total += x.total;
+
+      let eta = task_calc_eta(x);
+      if (eta > 0)
+        total_eta += eta;
+
+      if (!x.earliest || now >= x.earliest)
+        ready++;
+    }
+  });
+
+  let perc = weight_completed / weight_total * 100;
+
+  let completed_text = perc ? `, ~${Math.round(perc)}% work done` : '';
+
+  if (perc)
+    $('#status-bar').parent().css(
+      'background-image',
+      `linear-gradient(90deg, rgba(0,0,0,0.1) ${perc}%,
+                              rgba(0,0,0,0.1) ${perc}%,
+                              rgba(0,0,0,0) ${perc}%,
+                              rgba(0,0,0,0) 100%)`
+    );
+
+  // let ready = due.filter(x => !x.earliest || now >= x.earliest).length;
+  // let total = tasks.reduce((s, x) => ({ total: s.total + x.total }), { total: 0 }).total;
+
+  let text = (HOME_MODE == 'ready' ?
+    `R: ${ready}${completed_text} | ${timeIntervalStringShort(total)} recorded, +${timeIntervalStringShort(total_eta)} predicted` :
+    `A: ${tasks.length} D: ${due.length} R: ${ready} | ${timeIntervalStringShort(total)}`);
+
+  $('#status-bar').text(text);
 }
 
 // --------------- default -----------------
@@ -398,6 +440,7 @@ function _ui_home_default_list() {
 
   _ui_home_normal_list_gen(tasks);
 }
+
 // --------------- ready -----------------
 function _ui_home_ready_list() {
   let tasks = _ui_query_filter();

@@ -187,7 +187,10 @@ button .fa{
   line-height: 18px;
   font-size: 0.8rem;
   flex-grow: 100;
+
   white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .bottom-bar .right {
