@@ -31,7 +31,19 @@ function ui_update_sync_status() {
     );
 }
 
+const APP_DEFAULT_PRIMARY_COLOR = '#8F7034';
+
+function ui_update_primaryColor() {
+  document.querySelector(':root').style
+    .setProperty(
+      '--app-primary-color',
+      back?.data?.settings?.primaryColor || APP_DEFAULT_PRIMARY_COLOR
+    );
+}
+
 function ui_menu_init() {
+  ui_update_primaryColor();
+
   $('.top-bar .pure-menu-link').click(function() {
     ui_menu_select(this.dataset.menu);
   });

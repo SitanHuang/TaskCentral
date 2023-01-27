@@ -1,5 +1,11 @@
 let _settings_con;
 
+function ui_menu_settings_reset_primaryColor() {
+  _home_con = $('.content-container > div.settings');
+  _home_con.find('.user-form input[name="app-primary-color"]')
+    .val(APP_DEFAULT_PRIMARY_COLOR).change();
+}
+
 function ui_menu_select_settings() {
   _home_con = $('.content-container > div.settings');
 
@@ -10,6 +16,20 @@ function ui_menu_select_settings() {
   });
 
   let percUsed = Math.round(10000 * back.user.size / back.user.quota * 100) / 10000;
+
+  let color = _home_con.find('.user-form input[name="app-primary-color"]');
+
+  // unbind
+  color[0].onchange = function () {};
+  // set value
+  color.val(back.data.settings.primaryColor || APP_DEFAULT_PRIMARY_COLOR);
+  // bind
+  color[0].onchange = function () {
+    back.data.settings.primaryColor = color.val() || APP_DEFAULT_PRIMARY_COLOR;
+    back.set_dirty();
+
+    ui_update_primaryColor();
+  };
 
   _home_con.find('.user-form input[name="username"]').val(back.user.name);
   _home_con.find('.user-form input[name="permission"]').val(back.user.status);

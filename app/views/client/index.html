@@ -377,6 +377,21 @@
           <form class="pure-form pure-form-aligned user-form pad" style="max-width: 600px;">
             <fieldset>
               <div class="pure-control-group">
+                <label for="aligned-name">Primary color</label>
+                <input type="color" readonly name="app-primary-color"/>
+                <span class="pure-form-message-inline">Synced across all devices.</span><br>
+              </div>
+              <div class="pure-control-group">
+                <label for="aligned-name"></label>
+                <button class="pure-button"
+                  type="button"
+                  onclick="ui_menu_settings_reset_primaryColor()">
+                        Reset to Default
+                </button>
+              </div>
+              <div class="pure-control-group">
+              </div>
+              <div class="pure-control-group">
                 <label for="aligned-name">Username</label>
                 <input type="text" readonly name="username"/>
                 <span class="pure-form-message-inline">Contact site admin to change login.</span>
@@ -397,10 +412,12 @@
         <div class="pad">
           <h4>Clean up</h4>
           <button class="pure-button"
+            type="button"
             onclick="ui_menu_recalc_all()">
             Recalculate task durations
           </button>
           <button class="pure-button"
+            type="button"
             onclick="ui_menu_cleanup_periods()">
             Remove logs with short durations
           </button>

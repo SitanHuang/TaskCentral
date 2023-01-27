@@ -7,6 +7,7 @@ function data_init_default() {
         fontColor: 'white'
       })
     },
+    settings: {},
     tags: {},
     filters: {}, // used by UI to store user-defined query filters
   };
