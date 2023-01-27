@@ -16,6 +16,7 @@ class ClientController < ApplicationController
   end
 
   get '/' do
+    cache_control :public, :must_revalidate, :max_age => 120 # seconds
     send_file "#{settings.root}/views/client/index.html"
   end
 
