@@ -5,6 +5,25 @@ let _home_detail_form;
 function _ui_home_detail_update_status_importance(task) {
   task = _selected_task || task;
 
+  let stepSize = task.steps || 100;
+  let _prog = Math.round((task.progress || 0) / 100 * stepSize);
+
+  _home_detail_form.find('input[name=progress]')
+    .attr('max', stepSize)
+    .val(_prog)[0].onchange = (e) => {
+      if (!_selected_task) return;
+
+      // 0 - something
+      let max = parseInt(e.target.max || 100);
+
+      let progress = parseInt(e.target.value) || null;
+
+      progress = Math.round(progress / max * 100);
+
+      task_update_progress(_selected_task, progress);
+      _ui_home_details_signal_changed();
+    };
+
   _home_detail_form.find('input[name=status]')
     .val(task.status + '; importance=' + task_calc_importance(task).toFixed(2));
 
@@ -76,6 +95,7 @@ function ui_detail_select_task(task) {
   _home_detail = _home_con.find('.task-detail').addClass('activated');
   _home_detail_form = _home_detail.find('form');
 
+  // resets every input
   _home_detail_form.find('input[type!=button]').val('');
 
   _home_detail_form.find('input[name=name]')
@@ -89,6 +109,22 @@ function ui_detail_select_task(task) {
     };
   _home_detail_form.find('input[name=project]')
     .val(task.project);
+
+  _home_detail_form.find('.change-step-size').hide()
+    .find('input').val(task.steps || 100)[0].onchange = (e) => {
+      if (!_selected_task) return false;
+
+      let max = parseInt(e.target.value);
+      if (!(max >= 1 && max <= 100)) return false;
+
+      let progress = Math.round(Math.round(task.progress / (100 / max)) / max * 100);
+
+      task.steps = max;
+
+      // also saves task.steps
+      task_update_progress(_selected_task, progress);
+      _ui_home_details_signal_changed();
+    };
 
   _ui_home_detail_update_status_importance(task);
 
@@ -129,15 +165,6 @@ function ui_detail_select_task(task) {
         _ui_home_details_signal_changed();
       };
   });
-
-  _home_detail_form.find('input[name=progress]')
-    .val(task.progress || 0)[0].onchange = (e) => {
-      if (!_selected_task) return;
-
-      let progress = parseInt(e.target.value) || null;
-      task_update_progress(_selected_task, progress);
-      _ui_home_details_signal_changed();
-    };
 
   let hidden = _home_detail_form.find('input[name=hidden]')[0];
   hidden.checked = task.hidden;

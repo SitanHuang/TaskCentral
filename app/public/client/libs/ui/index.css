@@ -307,6 +307,15 @@ p.no-tasks {
   .pure-form-aligned .pure-control-group > .pure-form-message-inline {
     padding-left: 7em;
   }
+
+  .pure-form-aligned .pure-control-group > .pure-form-message-inline.right {
+    padding-right: 2em;
+  }
+}
+
+.pure-form-aligned .pure-control-group > .pure-form-message-inline.right {
+  width: 100% !important;
+  text-align: right;
 }
 
 .pure-form progress {
