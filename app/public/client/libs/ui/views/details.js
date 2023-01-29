@@ -5,11 +5,14 @@ let _home_detail_form;
 function _ui_home_detail_update_status_importance(task) {
   task = _selected_task || task;
 
-  let stepSize = task.steps || 100;
-  let _prog = Math.round((task.progress || 0) / 100 * stepSize);
+  let steps = task.steps || 100;
+  let _prog = Math.round((task.progress || 0) / 100 * steps);
+
+  _home_detail_form.find('input[name=progress-value-indicator]')
+    .val(`${_prog} / ${steps}`);
 
   _home_detail_form.find('input[name=progress]')
-    .attr('max', stepSize)
+    .attr('max', steps)
     .val(_prog)[0].onchange = (e) => {
       if (!_selected_task) return;
 

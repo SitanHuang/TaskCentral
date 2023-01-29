@@ -32,6 +32,31 @@
   flex: 1;
 }
 
+.task-detail .progress-value-indicator {
+  position: absolute;
+  margin-top: -2em;
+  margin-bottom: 0;
+}
+
+.task-detail .progress-value-indicator > input {
+  color: rgba(0, 0, 0, 0.5) !important;
+  background: none !important;
+  appearance: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+@media only screen and (max-width: 480px) {
+  .task-detail .progress-value-indicator {
+    margin-top: -2.25em;
+  }
+
+  .task-detail .progress-value-indicator > input {
+    font-size: 0.75em;
+  }
+}
+
 .task-detail .textarea {
   display: block;
   white-space: pre-wrap;
