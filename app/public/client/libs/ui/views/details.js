@@ -125,7 +125,7 @@ function ui_detail_select_task(task) {
       task.steps = max;
 
       // also saves task.steps
-      task_update_progress(_selected_task, progress);
+      task_update_progress(_selected_task, progress, `steps=${max}`);
       _ui_home_details_signal_changed();
     };
 

@@ -1,9 +1,9 @@
-const RELEASE_DATE = '20230129R1';
+const RELEASE_DATE = '20230131R1';
 
 const RELEASE_NOTES = `
 
 ########## RELEASE NOTES ##########
-1. Added task progress value & step indicator
+1. Internal changes (task_update_progress() now journals regarding step change)
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString())

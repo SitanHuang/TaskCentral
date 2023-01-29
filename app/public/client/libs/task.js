@@ -277,16 +277,21 @@ function task_progress_at_stamp(task, stamp) {
 }
 
 
-function task_update_progress(task, progress) {
+function task_update_progress(task, progress, note) {
   task.progress = Math.max(Math.min(progress, 100), 0);
 
   let now = timestamp();
 
   // delete nearest 5min progress
   task.log = task.log
-    .filter(x => !(x.type == 'progress' && Math.abs(now - x.time) < 300000));
+    .filter(x => !(x.type == 'progress' && !x.note && Math.abs(now - x.time) < 300000));
 
-  task.log.push({ type: 'progress', time: now, progress: task.progress });
+  let log = { type: 'progress', time: now, progress: task.progress };
+
+  if (note)
+    log.note = note;
+
+  task.log.push(log);
   back.set_dirty();
 }
 
