@@ -30,7 +30,7 @@ function ui_filter_open(target, callback) {
   form.find('input[name=projects]')
     .val(target.projects?.join(', ') || '');
 
-  ['default', 'start', 'completed'].forEach(x => {
+  ['default', 'ready', 'start', 'completed'].forEach(x => {
     form.find('#filter-checkbox-' + x)[0]
       .checked = target.status.indexOf(x) >= 0;
   });
@@ -55,7 +55,7 @@ function _ui_filter_form_to_query() {
   let visibility = form.find('select[name=visibility]').val();
 
   let status = [];
-  ['default', 'start', 'completed'].forEach(x => {
+  ['default', 'ready', 'start', 'completed'].forEach(x => {
     if (form.find('#filter-checkbox-' + x)[0].checked)
       status.push(x);
   });

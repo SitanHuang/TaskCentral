@@ -217,7 +217,7 @@ const HOME_DEFAULT_QUERY = {
 };
 const HOME_READY_QUERY = {
   queries: [{
-    status: ['start', 'default'],
+    status: ['ready', 'start', 'default'],
     hidden: false,
     collect: ['tasks'],
     from: 0,
@@ -451,7 +451,8 @@ function _ui_home_ready_list() {
   // ready: sort by importance algorithm & filter out tasks not ready
   tasks = tasks.sort((a, b) =>
     task_calc_importance(b) - task_calc_importance(a)
-  ).filter(x => x.earliest ? now >= x.earliest : true);
+  );
+  //.filter(x => x.earliest ? now >= x.earliest : true);
 
   _ui_home_normal_status(tasks);
 

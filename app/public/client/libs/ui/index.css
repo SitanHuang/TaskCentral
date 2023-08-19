@@ -439,3 +439,7 @@ header.stats stat {
   font-family: var(--default-family);
   padding: 0 0.5em;
 }
+
+#modal-filter label.pure-checkbox {
+  width: 100%;
+}

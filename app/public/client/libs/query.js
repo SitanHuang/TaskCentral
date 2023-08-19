@@ -24,6 +24,8 @@ function query_exec(query) {
   let _range_min;
   let _range_max;
 
+  let now = timestamp();
+
   // Creating a set so that the first loop can eliminate
   // based on nonoverlapping time
   let tasks = new Set(Object.keys(back.data.tasks));
@@ -37,6 +39,8 @@ function query_exec(query) {
     q.status = q.status || [];
     q.hidden = typeof q.hidden == "boolean" ? q.hidden : null;
     q.due = typeof q.due == "boolean" ? q.due : null;
+
+    q._readyOnly = q.status.includes('ready');
 
     q._range = [q.from, q.to];
 
@@ -109,6 +113,11 @@ function query_exec(query) {
         }
         if (!matched)
           continue;
+
+        // check for ready:
+        // exclude those that aren't ready
+        if (q._readyOnly && (task.earliest ? now < task.earliest : false))
+          continue; 
       }
 
       if (q.projectRegex == 'none') {
