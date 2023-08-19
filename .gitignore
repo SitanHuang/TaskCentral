@@ -6,3 +6,5 @@ credentials.hash
 vendor/**
 **.db
 **.db-journal
+*.log
+*.pid

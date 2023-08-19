@@ -307,8 +307,9 @@ function _ui_home_gen_task_row(task) {
     $row.css(
       'background-image',
       `linear-gradient(90deg, rgba(0,0,0,0.05) ${progress}%,
-                              rgba(0,0,0,0.05) ${progress}%,
-                              rgba(0,0,0,0) ${progress}%,
+                              rgba(0,0,0,0.25) ${progress}%,
+                              rgba(0,0,0,0.25) calc(${progress}% + 1px),
+                              rgba(0,0,0,0) calc(${progress}% + 1px),
                               rgba(0,0,0,0) 100%)`
     );
   }
