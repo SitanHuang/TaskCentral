@@ -4,7 +4,7 @@
 1. [Introduction](#introduction)
 2. [Philosophy](#philosophy)
 3. [Screenshots](#screenshots)
-4. [The Platform](#the-platform)
+4. [The Platform & How to Sign Up](#the-platform)
 
 ## Philosophy
 
