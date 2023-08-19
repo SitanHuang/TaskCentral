@@ -1,12 +1,17 @@
 let _filter_modal;
 let _filter_current_target;
 
+const filter_available_statuses = ['default', 'ready', 'start', 'completed', 'weight'];
+
 /*
  * target: reference to query obj to be changed
  * callback: when filter updates
  */
 function ui_filter_open(target, callback) {
   target = target && target.queries[0];
+
+  target.status = target.status?.length ? target.status : ['default'];
+
   _filter_current_target = target;
 
   _filter_modal = $('#modal-filter');
@@ -30,7 +35,7 @@ function ui_filter_open(target, callback) {
   form.find('input[name=projects]')
     .val(target.projects?.join(', ') || '');
 
-  ['default', 'ready', 'start', 'completed'].forEach(x => {
+  filter_available_statuses.forEach(x => {
     form.find('#filter-checkbox-' + x)[0]
       .checked = target.status.indexOf(x) >= 0;
   });
@@ -55,7 +60,7 @@ function _ui_filter_form_to_query() {
   let visibility = form.find('select[name=visibility]').val();
 
   let status = [];
-  ['default', 'ready', 'start', 'completed'].forEach(x => {
+  filter_available_statuses.forEach(x => {
     if (form.find('#filter-checkbox-' + x)[0].checked)
       status.push(x);
   });

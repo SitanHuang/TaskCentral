@@ -1,9 +1,11 @@
-const RELEASE_DATE = '20230131R1';
+const RELEASE_DATE = '20230818';
 
 const RELEASE_NOTES = `
 
 ########## RELEASE NOTES ##########
-1. Internal changes (task_update_progress() now journals regarding step change)
+1. Implement "Ready" option in Filter UI
+2. Add "Actionable" option in Filter UI
+3. Tweak progress bar look & feel
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString())

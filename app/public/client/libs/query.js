@@ -41,6 +41,7 @@ function query_exec(query) {
     q.due = typeof q.due == "boolean" ? q.due : null;
 
     q._readyOnly = q.status.includes('ready');
+    q._weightOnly = q.status.includes('weight');
 
     q._range = [q.from, q.to];
 
@@ -117,6 +118,11 @@ function query_exec(query) {
         // check for ready:
         // exclude those that aren't ready
         if (q._readyOnly && (task.earliest ? now < task.earliest : false))
+          continue; 
+
+        // check for weight:
+        // exclude those that are weightless
+        if (q._weightOnly && !task.weight)
           continue; 
       }
 
