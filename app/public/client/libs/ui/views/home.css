@@ -57,7 +57,7 @@
     position: fixed;
     top: 0;
     left: 100vw;
-    transition: all 300ms ease-out;
+    transition: all 180ms ease;
   }
 
   .task-detail.activated {
@@ -86,7 +86,7 @@
   border-top: 1px solid #e3e3e3;
   border-bottom: 1px solid #e3e3e3;
   padding: 5px;
-  transition: all 300ms ease-out;
+  transition: all 230ms ease-out;
 
   /* to hide top shadow of .task-list */
   position: relative;
@@ -98,7 +98,7 @@
   width: 100%;
   padding: 5px;
   border-bottom: 1px solid #e3e3e3;
-  transition: all 300ms ease-out;
+  transition: all 180ms ease;
   user-select: none;
 }
 
