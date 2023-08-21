@@ -159,7 +159,7 @@
   flex: 0 0 33px;
   opacity: 0.87;
   border-radius: 100%;
-  transition: all 300ms ease-out;
+  transition: all 180ms ease;
   background-color: transparent;
   /* prevents growing height */
   align-self: flex-start;
