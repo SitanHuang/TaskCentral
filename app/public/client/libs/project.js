@@ -8,7 +8,7 @@ function project_new(obj) {
 }
 
 function project_create_chip(name) {
-  let proj = back.data.projects[name];
+  let proj = back.data.projects[name] || back.data.projects.default;
   let $p = $(document.createElement('project'));
   return $p.css('background-color', proj.color)
            .css('color', proj.fontColor)
