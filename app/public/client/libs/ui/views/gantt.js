@@ -135,7 +135,7 @@ function ui_gantt_render() {
         .css('width', width)
         .css(
           'border-right',
-          dow == 0 || dow == 5 ? '1px solid #e3e3e3' : '0'
+          dow == 0 || dow == 5 ? '1px solid var(--gantt-border-color)' : '0'
         )
         .css('top', 'var(--header-row-height)')
         .css('left', _previousLeft + 1)

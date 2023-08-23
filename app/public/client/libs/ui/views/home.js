@@ -306,11 +306,11 @@ function _ui_home_gen_task_row(task) {
     let progress = (task.progress || 0);
     $row.css(
       'background-image',
-      `linear-gradient(90deg, rgba(0,0,0,0.05) ${progress}%,
-                              rgba(0,0,0,0.25) ${progress}%,
-                              rgba(0,0,0,0.25) calc(${progress}% + 1px),
-                              rgba(0,0,0,0) calc(${progress}% + 1px),
-                              rgba(0,0,0,0) 100%)`
+      `linear-gradient(90deg, var(--task-progress-done-bg) ${progress}%,
+                              var(--task-progress-sep-bg) ${progress}%,
+                              var(--task-progress-sep-bg) calc(${progress}% + 1px),
+                              var(--task-progress-bg) calc(${progress}% + 1px),
+                              var(--task-progress-bg) 100%)`
     );
   }
   if (task == _selected_task)

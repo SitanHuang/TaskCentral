@@ -1,3 +1,8 @@
+body {
+  --gantt-bg: white;
+  --gantt-border-color: #e3e3e3;
+}
+
 .content-container .gantt {
   background-color: #fafafa;
 }
@@ -25,10 +30,10 @@ gantt-graph {
   border-bottom: 1px solid #e3e3e3;
   background-image: repeating-linear-gradient( 
           90deg,
-          #e3e3e3, /* starting at pixel 0 */
-          #e3e3e3 1px, /* White, continuing to pixel 1 */
-          white 1px, /* Transparent beginning at pixel 1 */
-          white var(--gantt-day-width) /* Transparent ending at pixel 40 (39 + 1) */
+          var(--gantt-border-color), /* starting at pixel 0 */
+          var(--gantt-border-color) 1px, /* White, continuing to pixel 1 */
+          var(--gantt-bg) 1px, /* Transparent beginning at pixel 1 */
+          var(--gantt-bg) var(--gantt-day-width) /* Transparent ending at pixel 40 (39 + 1) */
         );
 }
 

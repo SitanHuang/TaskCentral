@@ -24,6 +24,9 @@
     'libs/ui/views/log.css',
     'libs/ui/views/metrics.css',
     'libs/ui/views/forecast.css',
+
+    'libs/ui/themes/index.css',
+    'libs/ui/themes/default-dark/colors.css',
   ];
 
   const images = [

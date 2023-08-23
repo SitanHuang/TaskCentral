@@ -1,0 +1,207 @@
+body {
+  --text-color: rgba(0, 0, 0, 0.87);
+  --body-bg: white;
+
+  --menu-color: #777;
+  --menu-border: 1px solid #e3e3e3;
+  --menu-hover-bg: #eee;
+  --menu-hover-color: var(--menu-color);
+  --menu-selected-bg: transparent;
+
+  --panel-sec-bg: #fafafa;
+
+  --button-color: rgba(0, 0, 0, 0.8);
+  --button-bg: #e6e6e6;
+
+  --input-box-border: #ccc;
+  --input-box-shadow: #ddd;
+  --input-disabled-color: #777;
+  --input-disabled-bg: #eee;
+
+  --text-sec-color: rgba(0, 0, 0, 0.7);
+
+  --task-activated-bg: #e3e3e3;
+  --task-active-bg: #dadada;
+  --task-border: #e3e3e3;
+
+  --graph-bg: var(--body-bg);
+  --graph-border-color: var(--task-border);
+
+  --log-hour-color: #70757a;
+
+  /* overrides gantt.css */
+  --gantt-bg: var(--graph-bg);
+  --gantt-border-color: var(--graph-border-color);
+}
+
+body,
+input,
+.pure-form select,
+textarea,
+.task-detail .textarea {
+  color: var(--text-color);
+  background-color: var(--body-bg);
+}
+
+.pure-form input[readonly],
+.pure-form select[readonly],
+.pure-form textarea[readonly] {
+  background-color: var(--input-disabled-bg);
+  color: var(--input-disabled-color);
+}
+
+#add-form {
+  border-top: var(--menu-border);
+  border-bottom: var(--menu-border);
+}
+
+.top-bar {
+  border-bottom: var(--menu-border);
+}
+
+.pure-menu-link {
+  color: var(--menu-color);
+}
+
+.pure-menu-selected {
+  background-color: var(--menu-selected-bg);
+}
+
+.pure-menu-link:hover {
+  background-color: var(--menu-hover-bg);
+  color: var(--menu-hover-color);
+}
+
+.task-container {
+  background-color: var(--panel-sec-bg);
+}
+
+#add-form .detail-row sub-title,
+.pure-form-message-inline,
+.log daily period time {
+  color: var(--text-sec-color);
+}
+
+.pure-button,
+.modal__btn:not(.modal__btn-primary) {
+  color: var(--button-color);
+  background-color: var(--button-bg);
+}
+
+#add-form.focus-within {
+  background-color: var(--body-bg);
+}
+
+.task-detail.activated {
+  background-color: var(--body-bg);
+}
+
+.home task {
+  background-color: var(--body-bg);
+  border-bottom: 1px solid var(--task-border);
+}
+
+.home task.activated {
+  background-color: var(--task-activated-bg);
+}
+
+.home task:active:not(.child-clicked) {
+  background-color: var(--task-active-bg);
+}
+
+.pure-form input[type="color"],
+.pure-form input[type="date"],
+.pure-form input[type="datetime-local"],
+.pure-form input[type="datetime"],
+.pure-form input[type="email"],
+.pure-form input[type="month"],
+.pure-form input[type="number"],
+.pure-form input[type="password"],
+.pure-form input[type="search"],
+.pure-form input[type="tel"],
+.pure-form input[type="text"],
+.pure-form input[type="time"],
+.pure-form input[type="url"],
+.pure-form input[type="week"],
+.pure-form select,
+.pure-form textarea,
+.task-detail .textarea,
+textarea,
+.pure-form input[readonly],
+.pure-form select[readonly],
+.pure-form textarea[readonly],
+.pure-form input:not([type]) {
+  border: 1px solid var(--input-box-border);
+  box-shadow: inset 0 1px 3px var(--input-box-shadow);
+}
+
+.content-container .gantt,
+.content-container .log,
+.content-container .metrics {
+  background-color: var(--panel-sec-bg);
+}
+
+gantt-header,
+gantt-header date,
+gantt-graph,
+gantt-graph period.overlay span,
+.info-action,
+.info-card,
+.log cal backdrop,
+.metrics > div .info-card .info-action,
+.log daily .info-action,
+.modal__container {
+  color: var(--text-color);
+  background-color: var(--body-bg);
+}
+
+gantt-graph period.overlay,
+.task-detail header > i.fa {
+  color: var(--text-color);
+}
+
+gantt-header date {
+  border-bottom: 1px solid var(--graph-border-color);
+  border-right: 1px solid var(--graph-border-color);
+}
+
+.info-card .info-action:first-child,
+.metrics .graph-actions, .metrics .graph-container,
+.profile-con.pure-g {
+  border-bottom: var(--menu-border);
+}
+
+gantt-header {
+  border-top: var(--menu-border);
+}
+
+.modal__content {
+  color: var(--text-color);
+}
+
+.stats stat,
+.log cal day,
+.metrics .profile-con > .pure-u-1-1:not(:last-child) {
+  border-right: 1px solid var(--graph-border-color);
+}
+
+.log cal .content hour {
+  border-bottom: 1px solid var(--graph-border-color);
+  color: var(--log-hour-color);
+}
+
+.log cal day dow {
+  color: var(--log-hour-color);
+}
+
+.log cal day date {
+  border-bottom: var(--menu-border);
+}
+
+.log cal .content period {
+  border: 1px solid var(--panel-sec-bg);
+}
+
+.task-detail .progress-value-indicator > input {
+  color: var(--text-sec-color) !important;
+}
