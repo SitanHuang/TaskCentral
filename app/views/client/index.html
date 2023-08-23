@@ -392,23 +392,34 @@
               <div class="pure-control-group">
                 <label for="app-primary-color">Primary color</label>
                 <input type="color" readonly name="app-primary-color"/>
-                <span class="pure-form-message-inline">Synced across all devices.</span><br>
-              </div>
-              <div class="pure-control-group">
-                <label for="app-theme">Theme</label>
-                <select name="app-theme" onchange="_theme_dropdown_onchange(this);">
-                  <option value="default">Default</option>
-                  <option value="default-dark">Default (Dark)</option>
-                </select>
-                <span class="pure-form-message-inline">This device only.</span><br>
+                <span class="pure-form-message-inline">Synced across all devices.</span>
               </div>
               <div class="pure-control-group">
                 <label></label>
-                <button class="pure-button"
-                  type="button"
-                  onclick="ui_menu_settings_reset_primaryColor()">
-                        Reset to Default
+                <button class="pure-button" type="button" onclick="ui_menu_settings_reset_primaryColor()">
+                  Reset to Default
                 </button>
+              </div>
+              <div class="pure-control-group">
+                <label for="app-theme">Theme</label>
+                <select name="app-theme" onchange="_theme_settings_onchange(this);">
+                  <option value="default">Default</option>
+                  <option value="default-dark">Default (Dark)</option>
+                </select>
+              </div>
+              <div class="pure-control-group">
+                <label style="vertical-align: top;">Auto Dark Mode</label>
+                <div class="stacked-checkboxes">
+                  <label for="filter-checkbox-use_sys" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-use_sys" onchange="_theme_settings_onchange(this);">
+                    Follow system settings
+                  </label>
+                  <label for="filter-checkbox-use_66" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-use_66" onchange="_theme_settings_onchange(this);">
+                    Follow 6am/6pm schedule
+                  </label>
+                </div>
+                <span class="pure-form-message-inline">This device only.</span><br>
               </div>
               <div class="pure-control-group">
               </div>
@@ -634,39 +645,39 @@
       </stop>
     </div>
 
-    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230823R1"></script>
-    <script src="libs/external/randomColor.min.js?releaseDate=20230823R1"></script>
-    <script src="libs/external/micromodal.min.js?releaseDate=20230823R1"></script>
-    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230823R1"></script>
-    <script src="libs/external/d3.v4.js?releaseDate=20230823R1"></script>
-    <script src="libs/external/d3_timeseries.min.js?releaseDate=20230823R1"></script>
+    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230823R2"></script>
+    <script src="libs/external/randomColor.min.js?releaseDate=20230823R2"></script>
+    <script src="libs/external/micromodal.min.js?releaseDate=20230823R2"></script>
+    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230823R2"></script>
+    <script src="libs/external/d3.v4.js?releaseDate=20230823R2"></script>
+    <script src="libs/external/d3_timeseries.min.js?releaseDate=20230823R2"></script>
 
-    <script src="libs/commons.js?releaseDate=20230823R1"></script>
+    <script src="libs/commons.js?releaseDate=20230823R2"></script>
 
-    <script src="libs/data.js?releaseDate=20230823R1"></script>
-    <script src="libs/task.js?releaseDate=20230823R1"></script>
-    <script src="libs/project.js?releaseDate=20230823R1"></script>
-    <script src="libs/backend.js?releaseDate=20230823R1"></script>
+    <script src="libs/data.js?releaseDate=20230823R2"></script>
+    <script src="libs/task.js?releaseDate=20230823R2"></script>
+    <script src="libs/project.js?releaseDate=20230823R2"></script>
+    <script src="libs/backend.js?releaseDate=20230823R2"></script>
 
-    <script src="libs/fuzzy.js?releaseDate=20230823R1"></script>
-    <script src="libs/query.js?releaseDate=20230823R1"></script>
+    <script src="libs/fuzzy.js?releaseDate=20230823R2"></script>
+    <script src="libs/query.js?releaseDate=20230823R2"></script>
 
-    <script src="libs/ui/filter.js?releaseDate=20230823R1"></script>
+    <script src="libs/ui/filter.js?releaseDate=20230823R2"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/views/gantt.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/views/log.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/views/forecast.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/views/metrics.js?releaseDate=20230823R1"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/views/gantt.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/views/log.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/views/forecast.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/views/metrics.js?releaseDate=20230823R2"></script>
 
-    <script src="libs/ui/layout.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/timer.js?releaseDate=20230823R1"></script>
-    <script src="libs/ui/themes/loader.js?releaseDate=20230823R1"></script>
-    <script src="libs/index.js?releaseDate=20230823R1"></script>
+    <script src="libs/ui/layout.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/timer.js?releaseDate=20230823R2"></script>
+    <script src="libs/ui/themes/loader.js?releaseDate=20230823R2"></script>
+    <script src="libs/index.js?releaseDate=20230823R2"></script>
 
     <!-- lazy loads stylesheets & images -->
-    <script src="libs/ui/css.js?releaseDate=20230823R1"></script>
+    <script src="libs/ui/css.js?releaseDate=20230823R2"></script>
   </body>
 </html>

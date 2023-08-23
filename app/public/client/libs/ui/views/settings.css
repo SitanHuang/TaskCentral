@@ -1,0 +1,5 @@
+@media screen and (min-width: 480px) {
+  .settings .pure-form-aligned .pure-control-group > .stacked-checkboxes > label {
+    width: 100%;
+  }
+}
