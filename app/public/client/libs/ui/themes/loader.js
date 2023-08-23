@@ -2,6 +2,7 @@ const THEMES_KEYS = [
   'default', 'default-dark',
   'solarized', 'solarized-dark',
   'pink', 'pink-dark',
+  'nord', 'nord-dark',
 ];
 
 function _theme_sys_dark() {

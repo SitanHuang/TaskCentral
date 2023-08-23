@@ -1,0 +1,36 @@
+
+body.nord {
+  --text-color: #3B4252;
+  --body-bg: #f8f9fb;
+
+  --menu-color: #4C566A;
+  --menu-border: 1px solid #D8DEE9;
+  --menu-hover-bg: #ECEFF4;
+  --menu-hover-color: #2E3440;
+  --menu-selected-bg: #88C0D0;
+
+  --panel-sec-bg: #D8DEE9;
+
+  --button-color: #4C566A;
+  --button-bg: #ECEFF4;
+
+  --input-box-border: #D8DEE9;
+  --input-box-shadow: transparent;
+  --input-disabled-color: #3B4252;
+  --input-disabled-bg: #D8DEE9;
+
+  --text-sec-color: #4C566A;
+
+  --task-activated-bg: #D8DEE9;
+  --task-active-bg: #E5E9F0;
+  --task-border: #D8DEE9;
+
+  --task-progress-bg: rgba(216, 222, 233, 0);
+  --task-progress-done-bg: rgba(136, 192, 208, 0.15);
+  --task-progress-sep-bg: rgba(136, 192, 208, 0.35);
+
+  --log-hour-color: #BF616A;
+
+  color-scheme: light;
+}
+

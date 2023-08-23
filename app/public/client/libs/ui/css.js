@@ -32,6 +32,8 @@
     'libs/ui/themes/solarized-dark/colors.css',
     'libs/ui/themes/pink/colors.css',
     'libs/ui/themes/pink-dark/colors.css',
+    'libs/ui/themes/nord/colors.css',
+    'libs/ui/themes/nord-dark/colors.css',
   ];
 
   const images = [

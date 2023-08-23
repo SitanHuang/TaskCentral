@@ -1,0 +1,50 @@
+
+body.nord-dark {
+  --text-color: #D8DEE9;
+  --body-bg: #2E3440;
+
+  --menu-color: #D8DEE9;
+  --menu-border: 1px solid #3B4252;
+  --menu-hover-bg: #4C566A;
+  --menu-hover-color: #E5E9F0;
+  --menu-selected-bg: #88C0D0;
+
+  --panel-sec-bg: #3B4252;
+
+  --button-color: #E5E9F0;
+  --button-bg: #4C566A;
+
+  --input-box-border: #4C566A;
+  --input-box-shadow: transparent;
+  --input-disabled-color: #D8DEE9;
+  --input-disabled-bg: #3B4252;
+
+  --text-sec-color: #D8DEE9;
+
+  --task-activated-bg: #3B4252;
+  --task-active-bg: #2E3440;
+  --task-border: #4C566A;
+
+  --task-progress-bg: rgba(46, 52, 64, 0);
+  --task-progress-done-bg: rgba(136, 192, 208, 0.15);
+  --task-progress-sep-bg: rgba(136, 192, 208, 0.35);
+
+  --log-hour-color: #D8DEE9;
+
+  color-scheme: dark;
+}
+
+body.nord-dark .task-detail {
+  background-image: none;
+}
+
+body.nord-dark .modal__overlay {
+  background: rgba(255, 255, 255, 0.4)
+}
+
+body.nord-dark svg *[stroke="#000"] {
+  stroke: #fff;
+}
+body.nord-dark svg *[fill="#000"] {
+  fill: #fff;
+}
