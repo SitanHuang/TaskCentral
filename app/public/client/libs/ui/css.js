@@ -17,7 +17,7 @@
     'libs/ui/d3_timeseries.min.css',
 
     'libs/ui/index.css',
-    
+
     'libs/ui/views/home.css',
     'libs/ui/views/details.css',
     'libs/ui/views/gantt.css',
@@ -28,6 +28,10 @@
 
     'libs/ui/themes/index.css',
     'libs/ui/themes/default-dark/colors.css',
+    'libs/ui/themes/solarized/colors.css',
+    'libs/ui/themes/solarized-dark/colors.css',
+    'libs/ui/themes/pink/colors.css',
+    'libs/ui/themes/pink-dark/colors.css',
   ];
 
   const images = [

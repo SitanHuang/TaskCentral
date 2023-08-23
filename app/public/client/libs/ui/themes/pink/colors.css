@@ -1,0 +1,35 @@
+
+body.pink {
+  --text-color: #333;
+  --body-bg: #FFEFF0;
+
+  --menu-color: #F4A5A9;
+  --menu-border: 1px solid #F5B6C0;
+  --menu-hover-bg: #FFEEF0;
+  --menu-hover-color: #444;
+  --menu-selected-bg: #F7CED1;
+
+  --panel-sec-bg: #F5B6C0;
+
+  --button-color: rgba(0, 0, 0, 0.8);
+  --button-bg: #F7CED1;
+
+  --input-box-border: #F7A8B2;
+  --input-box-shadow: rgba(255, 214, 220, 0.2);
+  --input-disabled-color: #aaa;
+  --input-disabled-bg: #F3E4E6;
+
+  --text-sec-color: rgba(0, 0, 0, 0.6);
+
+  --task-activated-bg: #F5B6C0;
+  --task-active-bg: var(--panel-sec-bg);
+  --task-border: #F7A8B2;
+
+  --task-progress-bg: rgba(255, 214, 220, 0.1);
+  --task-progress-done-bg: rgba(0, 0, 0, 0.15);
+  --task-progress-sep-bg: rgba(0, 0, 0, 0.25);
+
+  --log-hour-color: #F3E4E6;
+
+  color-scheme: light;
+}

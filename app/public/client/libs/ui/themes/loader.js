@@ -1,4 +1,8 @@
-const THEMES_KEYS = [ 'default', 'default-dark' ];
+const THEMES_KEYS = [
+  'default', 'default-dark',
+  'solarized', 'solarized-dark',
+  'pink', 'pink-dark',
+];
 
 function _theme_sys_dark() {
   return !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -35,7 +39,7 @@ function _theme_get_pref() {
       theme_update();
     });
   }
- 
+
   return {
     theme, use_sys, use_66
   }

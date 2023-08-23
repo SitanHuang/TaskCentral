@@ -1,0 +1,55 @@
+
+body.solarized-dark {
+  --text-color: #93a1a1;
+  --body-bg: #002b36;
+
+  --menu-color: #839496;
+  --menu-border: 1px solid #073642;
+  --menu-hover-bg: #eee8d5;
+  --menu-hover-color: #586e75;
+  --menu-selected-bg: #93a1a1;
+
+  --panel-sec-bg: #073642;
+
+  --button-color: #93a1a1;
+  --button-bg: #586e75;
+
+  --input-box-border: #657b83;
+  --input-box-shadow: transparent;
+  --input-disabled-color: #586e75;
+  --input-disabled-bg: #073642;
+
+  --text-sec-color: #839496;
+
+  --task-activated-bg: #073642;
+  --task-active-bg: #002b36;
+  --task-border: #586e75;
+
+  --task-progress-bg: rgba(0, 43, 54, 0);
+  --task-progress-done-bg: rgba(131, 148, 150, 0.15);
+  --task-progress-sep-bg: rgba(131, 148, 150, 0.35);
+
+  --log-hour-color: #93a1a1;
+
+  color-scheme: dark;
+}
+
+body.solarized-dark .task-detail {
+  background-image: none;
+}
+
+body.solarized-dark #add-form {
+  border-top: var(--panel-sec-bg);
+  border-bottom: var(--panel-sec-bg);
+}
+
+body.solarized-dark .modal__overlay {
+  background: rgba(255, 255, 255, 0.4)
+}
+
+body.solarized-dark svg *[stroke="#000"] {
+  stroke: #fff;
+}
+body.solarized-dark svg *[fill="#000"] {
+  fill: #fff;
+}

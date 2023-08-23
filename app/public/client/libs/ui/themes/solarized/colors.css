@@ -1,0 +1,36 @@
+
+body.solarized {
+  --text-color: #586e75;
+  --body-bg: #fdf6e3;
+
+  --menu-color: #657b83;
+  --menu-border: 1px solid #eee8d5;
+  --menu-hover-bg: #93a1a1;
+  --menu-hover-color: #fdf6e3;
+  --menu-selected-bg: #eee8d5;
+
+  --panel-sec-bg: #eee8d5;
+
+  --button-color: #073642;
+  --button-bg: #93a1a1;
+
+  --input-box-border: #839496;
+  --input-box-shadow: transparent;
+  --input-disabled-color: #93a1a1;
+  --input-disabled-bg: #eee8d5;
+
+  --text-sec-color: rgba(101, 123, 131, 0.7);
+
+  --task-activated-bg: #eee8d5;
+  --task-active-bg: #fdf6e3;
+  --task-border: #93a1a1;
+
+  --task-progress-bg: rgba(253, 246, 227, 0);
+  --task-progress-done-bg: rgba(101, 123, 131, 0.15);
+  --task-progress-sep-bg: rgba(101, 123, 131, 0.25);
+
+  --log-hour-color: #839496;
+
+  color-scheme: light;
+}
+

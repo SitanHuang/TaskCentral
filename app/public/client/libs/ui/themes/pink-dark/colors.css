@@ -1,0 +1,55 @@
+
+body.pink-dark {
+  --text-color: #f5f5f5;
+  --body-bg: #2a1b2f;
+
+  --menu-color: #e6bccd;
+  --menu-border: 1px solid #4b3246;
+  --menu-hover-bg: #f7d4e0;
+  --menu-hover-color: rgba(42, 27, 47, 0.87);
+  --menu-selected-bg: #d4a5bc;
+
+  --panel-sec-bg: #573b5a;
+
+  --button-color: rgba(255, 255, 255, 0.8);
+  --button-bg: #815b7e;
+
+  --input-box-border: #6a4968;
+  --input-box-shadow: transparent;
+  --input-disabled-color: #b5a0b7;
+  --input-disabled-bg: #503e56;
+
+  --text-sec-color: rgba(245, 245, 245, 0.7);
+
+  --task-activated-bg: #4e3559;
+  --task-active-bg: #412b4c;
+  --task-border: #5f4369;
+
+  --task-progress-bg: rgba(42, 27, 47, 0);
+  --task-progress-done-bg: rgba(255, 255, 255, 0.15);
+  --task-progress-sep-bg: rgba(255, 255, 255, 0.25);
+
+  --log-hour-color: #e0c1db;
+
+  color-scheme: dark;
+}
+
+body.pink-dark .task-detail {
+  background-image: none;
+}
+
+body.pink-dark #add-form {
+  border-top: var(--panel-sec-bg);
+  border-bottom: var(--panel-sec-bg);
+}
+
+body.pink-dark .modal__overlay {
+  background: rgba(255, 255, 255, 0.4)
+}
+
+body.pink-dark svg *[stroke="#000"] {
+  stroke: #fff;
+}
+body.pink-dark svg *[fill="#000"] {
+  fill: #fff;
+}
