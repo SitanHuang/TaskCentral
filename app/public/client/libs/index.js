@@ -3,8 +3,8 @@ const RELEASE_DATE = '20230823R4';
 const RELEASE_NOTES = `
 
 ########## RELEASE NOTES ##########
-1. Add themes settings
-2. Add "default-dark" theme
+1. Add Pink, Solarized, Nord themes
+2. Add themes settings
 3. Add auto dark mode settings
 `;
 

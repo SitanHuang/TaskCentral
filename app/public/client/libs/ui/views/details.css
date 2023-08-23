@@ -79,7 +79,7 @@
 
 .task-detail .textarea:focus {
   outline: 0;
-  border-color: #129fea;
+  border-color: var(--app-primary-color);
 }
 
 .task-detail .project-container > .project {
