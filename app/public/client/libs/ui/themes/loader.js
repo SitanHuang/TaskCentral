@@ -16,16 +16,6 @@ function _theme_get_pref() {
       theme = localStorage.tc_theme = theme.replace('-dark', '');
   }
 
-  // follow browser dark mode
-  if (use_sys) {
-    _check_dark();
-    // listen for browser dark mode changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      _check_dark();
-      theme_update();
-    });
-  }
-
   // follow 6am - 6pm schedule
   if (use_66) {
     const currentHour = new Date().getHours();
@@ -34,6 +24,16 @@ function _theme_get_pref() {
       theme = localStorage.tc_theme = theme.replace('-dark', '');
     else
       theme = localStorage.tc_theme = theme.replace('-dark', '') + '-dark';
+  }
+
+  // follow browser dark mode
+  if (use_sys) {
+    _check_dark();
+    // listen for browser dark mode changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      _check_dark();
+      theme_update();
+    });
   }
  
   return {

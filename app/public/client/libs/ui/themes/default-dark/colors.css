@@ -43,13 +43,13 @@ body.default-dark #add-form {
   border-bottom: var(--panel-sec-bg);
 }
 
-.modal__overlay {
+body.default-dark .modal__overlay {
   background: rgba(255, 255, 255, 0.4)
 }
 
-svg *[stroke="#000"] {
+body.default-dark svg *[stroke="#000"] {
   stroke: #fff;
 }
-svg *[fill="#000"] {
+body.default-dark svg *[fill="#000"] {
   fill: #fff;
 }
