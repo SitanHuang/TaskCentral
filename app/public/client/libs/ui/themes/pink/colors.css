@@ -3,10 +3,10 @@ body.pink {
   --text-color: #333;
   --body-bg: #FFEFF0;
 
-  --menu-color: #F4A5A9;
+  --menu-color: #444;
   --menu-border: 1px solid #F5B6C0;
   --menu-hover-bg: #FFEEF0;
-  --menu-hover-color: #444;
+  --menu-hover-color: #F4A5A9;
   --menu-selected-bg: #F7CED1;
 
   --panel-sec-bg: #F5B6C0;
