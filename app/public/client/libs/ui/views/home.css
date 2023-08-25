@@ -108,6 +108,10 @@
 
 .home task:last-child {
   border-bottom: none;
+
+  /* fix the weird gap created by task-list's bottom padding */
+  padding-bottom: 6px;
+  margin-bottom: -1px;
 }
 
 .home task primary i.fa-check-square,
