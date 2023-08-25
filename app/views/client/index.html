@@ -23,6 +23,23 @@
     <!-- the only essential css not to lazy load -->
     <link rel="stylesheet" href="libs/ui/splash.css" />
 
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        const errorMessage = [
+          "Oops! A hiccup occurred. Next time you see the admin, tell her that her code sucks!",
+          `Message: ${message}`,
+          `Source: ${source}`,
+          `Line: ${lineno}`,
+          `Column: ${colno}`,
+          `Error object: ${JSON.stringify(error, undefined, 2)}`
+        ].join('\n');
+
+        alert(errorMessage);
+      };
+
+
+    </script>
+
   </head>
   <body>
     <div id="splash">
