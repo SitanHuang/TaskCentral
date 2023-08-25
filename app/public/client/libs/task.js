@@ -77,6 +77,12 @@ function task_snooze(task) {
   back.set_dirty();
 }
 
+function task_unsnooze(task) {
+  delete task.snoozed;
+
+  back.set_dirty();
+}
+
 /*
  * returns milliseconds of estimated time left
  *

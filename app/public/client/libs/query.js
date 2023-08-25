@@ -109,7 +109,7 @@ function query_exec(query) {
       if (q.status.length) {
         let matched = false;
         for (let p of q.status) {
-          if (p == task.status) {
+          if (p == task.status || (p == 'snoozed' && task.snoozed > now)) {
             matched = true;
             break; // only need 1 match
           }

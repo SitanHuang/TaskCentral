@@ -12,12 +12,44 @@
   flex-flow: row nowrap;
 }
 
-.task-detail header > i.fa {
-  flex: 0 0 48px;
-  align-self: flex-start;
-  font-size: 24px;
-  line-height: 48px;
-  text-align: center;
+.task-detail header .pure-button {
+  background: transparent;
+  color: inherit;
+  border-radius: 0;
+  box-shadow: none !important;
+  padding: 10px 0 10px 10px;
+  line-height: 36px;
+}
+
+.task-detail header .pure-button:last-child {
+  padding: 10px 20px;
+}
+
+.task-detail header > div {
+  flex-grow: 1;
+}
+
+.task-detail header .pure-button:not(:last-child) i.fa {
+  padding: 0 calc(0.75em) 0 0.5em;
+  border-right: var(--menu-border);
+  line-height: inherit;
+}
+
+.task-detail header .pure-button i.fa {
+  color: inherit;
+}
+
+.task-detail header .pure-button:hover {
+  background: var(--button-bg);
+  color: var(--button-color);
+  border-radius: 0;
+}
+
+.task-detail header .pure-button:active {
+  filter: brightness(85%);
+}
+
+.task-detail header i.fa {
   cursor: pointer;
   user-select: none;
   color: rgba(0, 0, 0, 0.87);
@@ -28,7 +60,7 @@
 }
 
 .task-detail header > div {
-  display: block  ;
+  display: block;
   flex: 1;
 }
 

@@ -5,6 +5,14 @@ let _home_detail_form;
 function _ui_home_detail_update_status_importance(task) {
   task = _selected_task || task;
 
+  if (task.snoozed > timestamp()) {
+    _home_detail_form.find('header > .snooze').hide();
+    _home_detail_form.find('header > .unsnooze').show();
+  } else {
+    _home_detail_form.find('header > .snooze').show();
+    _home_detail_form.find('header > .unsnooze').hide();
+  }
+
   let steps = task.steps || 100;
   let _prog = Math.round((task.progress || 0) / 100 * steps);
 
@@ -275,4 +283,15 @@ function ui_detail_close() {
   _selected_task = undefined;
   _home_con.find('.task-detail').removeClass('activated');
   _home_task_list.find('task.activated').removeClass('activated');
+}
+
+function ui_detail_snooze() {
+  task_snooze(_selected_task);
+  // ui_detail_close();
+  _ui_home_details_signal_changed();
+}
+
+function ui_detail_unsnooze() {
+  task_unsnooze(_selected_task);
+  _ui_home_details_signal_changed();
 }
