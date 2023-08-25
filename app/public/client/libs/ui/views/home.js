@@ -224,6 +224,23 @@ const HOME_READY_QUERY = {
     to: new Date(2100, 1, 1).getTime()
   }]
 };
+const HOME_ACTIONABLE_QUERY = {
+  queries: [{
+    status: ['ready', 'start', 'default', 'weight'],
+    hidden: false,
+    collect: ['tasks'],
+    from: 0,
+    to: new Date(2100, 1, 1).getTime()
+  }]
+};
+const HOME_SNOOZED_QUERY = {
+  queries: [{
+    status: ['snoozed'],
+    collect: ['tasks'],
+    from: 0,
+    to: new Date(2100, 1, 1).getTime()
+  }]
+};
 const HOME_ALL_QUERY = {
   queries: [{
     status: [],
@@ -446,9 +463,35 @@ function _ui_home_default_list() {
 function _ui_home_ready_list() {
   let tasks = _ui_query_filter();
 
-  let now = timestamp();
-
   // ready: sort by importance algorithm & filter out tasks not ready
+  tasks = tasks.sort((a, b) =>
+    task_calc_importance(b) - task_calc_importance(a)
+  );
+  //.filter(x => x.earliest ? now >= x.earliest : true);
+
+  _ui_home_normal_status(tasks);
+
+  _ui_home_normal_list_gen(tasks);
+}
+// --------------- actionable -----------------
+function _ui_home_actionable_list() {
+  let tasks = _ui_query_filter();
+
+  // ready: sort by importance algorithm & filter out tasks not actionable
+  tasks = tasks.sort((a, b) =>
+    task_calc_importance(b) - task_calc_importance(a)
+  );
+  //.filter(x => x.earliest ? now >= x.earliest : true);
+
+  _ui_home_normal_status(tasks);
+
+  _ui_home_normal_list_gen(tasks);
+}
+// --------------- snoozed -----------------
+function _ui_home_snoozed_list() {
+  let tasks = _ui_query_filter();
+
+  // ready: sort by importance algorithm & filter out tasks not snoozed
   tasks = tasks.sort((a, b) =>
     task_calc_importance(b) - task_calc_importance(a)
   );

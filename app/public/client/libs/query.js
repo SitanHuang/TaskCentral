@@ -42,6 +42,8 @@ function query_exec(query) {
 
     q._readyOnly = q.status.includes('ready');
     q._weightOnly = q.status.includes('weight');
+    q._includeSnoozed = q.status.includes('snoozed');
+    q._includeDefault = q.status.includes('default');
 
     q._range = [q.from, q.to];
 
@@ -112,6 +114,12 @@ function query_exec(query) {
             break; // only need 1 match
           }
         }
+
+        // for case if user is only selecting "snoozed" but not "default":
+        // exclude any task that is not snoozed
+        if (q._includeSnoozed && !(task.snoozed > now) && !q._includeDefault)
+          continue;
+
         if (!matched)
           continue;
 
@@ -124,6 +132,10 @@ function query_exec(query) {
         // exclude those that are weightless
         if (q._weightOnly && !task.weight)
           continue; 
+
+        // check for snoozed exclusion:
+        if (!q._includeSnoozed && task.snoozed > now)
+          continue;
       }
 
       if (q.projectRegex == 'none') {
@@ -134,8 +146,11 @@ function query_exec(query) {
       // TODO: more exclusive conditions....
 
       // ----------- collect -----------
-      if (q.collect.indexOf('tasks') >= 0)
-          data[i].tasks.push(task);
+      if (q.collect.indexOf('tasks') >= 0) {
+        task_run_ontouch_hook(task);
+
+        data[i].tasks.push(task);
+      }
     }
   }
 

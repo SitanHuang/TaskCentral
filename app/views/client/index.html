@@ -542,6 +542,10 @@
                     <input type="checkbox" id="filter-checkbox-weight">
                     Actionable (Excludes weightless tasks)
                   </label>
+                  <label for="filter-checkbox-snoozed" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-snoozed">
+                    Snoozed
+                  </label>
                   <label for="filter-checkbox-start" class="pure-checkbox">
                     <input type="checkbox" id="filter-checkbox-start">
                     Started
@@ -618,6 +622,14 @@
                   <li class="pure-menu-item"
                     onclick="ui_home_mode_select_trigger('ready', HOME_READY_QUERY)">
                     <a href="#" class="pure-menu-link">Ready</a>
+                  </li>
+                  <li class="pure-menu-item"
+                    onclick="ui_home_mode_select_trigger('actionable', HOME_ACTIONABLE_QUERY)">
+                    <a href="#" class="pure-menu-link">Ready and Actionable</a>
+                  </li>
+                  <li class="pure-menu-item"
+                    onclick="ui_home_mode_select_trigger('snoozed', HOME_SNOOZED_QUERY)">
+                    <a href="#" class="pure-menu-link">Snoozed Only</a>
                   </li>
                   <li class="pure-menu-item"
                     onclick="ui_home_mode_select_trigger('all', HOME_ALL_QUERY)">

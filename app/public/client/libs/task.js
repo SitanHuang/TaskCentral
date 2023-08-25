@@ -36,6 +36,47 @@ function task_new(override) {
   }, override);
 }
 
+/**
+ * This function shall be run whenever a task is "touched" by the system for
+ * the purpose of updating certain metadata.
+ *
+ * "touched" defined:
+ *   - when the task is getting to be displayed to the user
+ *   - when the task is updated by the user
+ *
+ * It sets backend to dirty on its own.
+ *
+ * Currently, this is run during:
+ *   - query_exec()
+ *   - task_set()
+ */
+function task_run_ontouch_hook(task) {
+  let dirty = false;
+  const now = timestamp();
+
+  // update snoozed
+  if (task.snoozed < now) {
+    delete task.snoozed;
+    dirty = true;
+  }
+
+  if (dirty)
+    back.set_dirty();
+}
+
+/**
+ * Sets a task as snoozed until tomorrow midnight.
+ */
+function task_snooze(task) {
+  const nextDay = new Date();
+  nextDay.setDate(nextDay.getDate() + 1);
+  nextDay.setHours(0, 0, 0, 0);
+
+  task.snoozed = nextDay.getTime();
+
+  back.set_dirty();
+}
+
 /*
  * returns milliseconds of estimated time left
  *
@@ -80,6 +121,8 @@ function task_calc_importance(task) {
 }
 
 function task_set(task) {
+  task_run_ontouch_hook(task);
+
   back.data.tasks[task.id] = task;
   let proj = task && back.data.projects[task.project];
   if (proj) {

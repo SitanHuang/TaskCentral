@@ -1,7 +1,7 @@
 let _filter_modal;
 let _filter_current_target;
 
-const filter_available_statuses = ['default', 'ready', 'start', 'completed', 'weight'];
+const filter_available_statuses = ['default', 'ready', 'start', 'completed', 'weight', 'snoozed'];
 
 /*
  * target: reference to query obj to be changed
