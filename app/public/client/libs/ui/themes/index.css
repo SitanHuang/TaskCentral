@@ -83,6 +83,15 @@ textarea,
   color: var(--text-sec-color);
 }
 
+#add-form .date-due {
+  border-color: var(--text-color);
+  background-color: var(--body-bg);
+}
+
+#add-form .date-due:after {
+  color: var(--text-color);
+}
+
 .pure-button,
 .modal__btn:not(.modal__btn-primary) {
   color: var(--button-color);
