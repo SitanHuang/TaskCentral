@@ -21,6 +21,7 @@ body {
   --text-sec-color: rgba(0, 0, 0, 0.7);
 
   --task-activated-bg: #e3e3e3;
+  --task-completed-bg: var(--panel-sec-bg);
   --task-active-bg: #dadada;
   --task-border: #e3e3e3;
 
@@ -82,6 +83,15 @@ textarea,
   color: var(--text-sec-color);
 }
 
+#add-form .date-due {
+  border-color: var(--text-color);
+  background-color: var(--body-bg);
+}
+
+#add-form .date-due:after {
+  color: var(--text-color);
+}
+
 .pure-button,
 .modal__btn:not(.modal__btn-primary) {
   color: var(--button-color);
@@ -103,6 +113,10 @@ textarea,
 
 .home task.activated {
   background-color: var(--task-activated-bg);
+}
+
+.home task.completed {
+  background-color: var(--task-completed-bg);
 }
 
 .home task:active:not(.child-clicked) {
