@@ -181,7 +181,10 @@ function _ui_log_render_calendar(stamp, chevron) {
 
   if (!chevron)
     container.find('backdrop period:last-child').each(function () {
-      this.scrollIntoViewIfNeeded();
+      if (isFirefox())
+        this.scrollIntoView();
+      else
+        this.scrollIntoViewIfNeeded();
     });
 
   container.find('.stats num[name=num]')

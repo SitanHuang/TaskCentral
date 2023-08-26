@@ -10,7 +10,7 @@ function ui_menu_select_gantt() {
 
   if (_gantt_mtime != (_gantt_mtime = back.mtime))
     ui_gantt_render();
-  
+
   if (!_gantt_css_inserted) {
     _gantt_css_inserted = true;
     document.head.insertAdjacentHTML(
@@ -68,16 +68,16 @@ function ui_gantt_render() {
   }
 
   let tasks = query_exec(GANTT_QUERY)[0].tasks;
-  
+
   let range = [GANTT_QUERY.queries[0].from, GANTT_QUERY.queries[0].to];
   let [from, to] = range;
   let days = Math.ceil((to - from) / 8.64e+7);
 
   let tracks = query_generate_gantt_tracks(tasks, range);
-  
+
   let today_indicator;
 
-  // =========== create header ===========  
+  // =========== create header ===========
   let _previousLeft = 0;
 
   for (
@@ -95,7 +95,7 @@ function ui_gantt_render() {
     )).getDate();
     // index might not start with first day of month
     let days = maxDays - index.getDate() + 1;
-    
+
     let date = $(document.createElement('date'));
     let width = days * GANTT_DAY_WIDTH;
     date
@@ -104,7 +104,7 @@ function ui_gantt_render() {
       .text(index.toLocaleString('default', { month: 'long' }) +
             ' ' + index.getFullYear())
       .appendTo(header);
-    
+
     for (let day = index.getDate(); day <= maxDays; day++) {
       let date2 = $(document.createElement('date'));
       date2
@@ -113,7 +113,7 @@ function ui_gantt_render() {
         .css('left', _previousLeft + 1)
         .text(day)
         .appendTo(header);
-      
+
       if (isToday(new Date(index.getFullYear(), index.getMonth(), day))) {
         date2.addClass('today');
 
@@ -203,17 +203,17 @@ function ui_gantt_render() {
                                     rgba(0,0,0,0) 100%)`
           );
       }
-      
+
       if (!period.startCapped)
         $p.addClass('start-round');
       if (!period.endCapped)
         $p.addClass('end-round');
-      
+
       let text = $(document.createElement('span'));
       text
         .text(period.task.name.trim())
         .appendTo($p);
-      
+
       let spanWidth = text[0].offsetWidth;
 
       // if containable, repeat
@@ -258,6 +258,7 @@ function ui_gantt_scroll_to_today() {
       0,
       today_indicator.offsetLeft - container[0].clientWidth / 3
     );
-    today_indicator.scrollIntoViewIfNeeded();
+    if (!isFirefox())
+      today_indicator.scrollIntoViewIfNeeded();
   }
 }

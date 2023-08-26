@@ -148,3 +148,8 @@ function humanFileSize(bytes, si=false, dp=1) {
 
   return bytes.toFixed(dp) + ' ' + units[u];
 }
+
+function isFirefox() {
+  return typeof navigator !== 'undefined' && navigator.userAgent.includes('Firefox');
+}
+
