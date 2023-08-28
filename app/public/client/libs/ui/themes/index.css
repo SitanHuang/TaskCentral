@@ -242,6 +242,10 @@ gantt-header {
   border: 1px solid var(--panel-sec-bg);
 }
 
+.log daily period time span {
+  color: var(--text-color);
+}
+
 .task-detail .progress-value-indicator > input {
   color: var(--text-sec-color) !important;
 }
