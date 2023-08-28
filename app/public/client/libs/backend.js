@@ -38,7 +38,10 @@ function Backend() {
 
                           window.onbeforeunload = null;
 
-                          location.reload(); // force reload not needed
+                          if (isFirefox())
+                            location.href = "";
+                          else
+                            location.reload(); // force reload not needed
 
                           reject();
                           return;
