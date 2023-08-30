@@ -25,14 +25,21 @@
   padding: 10px 20px;
 }
 
+.task-detail header .pure-button.left {
+  padding: 10px 10px 10px 20px;
+}
+
 .task-detail header > div {
   flex-grow: 1;
 }
 
 .task-detail header .pure-button:not(:last-child) i.fa {
   padding: 0 calc(0.75em) 0 0.5em;
-  border-right: var(--menu-border);
   line-height: inherit;
+}
+
+.task-detail header .pure-button:not(:last-child):not(.left) i.fa {
+  border-right: var(--menu-border);
 }
 
 .task-detail header .pure-button i.fa {
