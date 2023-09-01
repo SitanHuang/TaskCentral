@@ -10,7 +10,10 @@ const filter_available_statuses = ['default', 'ready', 'start', 'completed', 'we
 function ui_filter_open(target, callback) {
   target = target && target.queries[0];
 
-  target.status = target.status?.length ? target.status : ['default'];
+  // Removed, should query everything, not just default
+  // target.status = target.status?.length ? target.status : ['default'];
+
+  target.status = target.status?.length ? target.status : [];
 
   _filter_current_target = target;
 
