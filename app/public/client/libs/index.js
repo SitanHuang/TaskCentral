@@ -1,9 +1,9 @@
-const RELEASE_DATE = '20230831';
+const RELEASE_DATE = '20230901';
 
 const RELEASE_NOTES = `
 
 ########## RELEASE NOTES ##########
-1.  Fix regression of filter allowing non-selection of status
+1. Add skill groups in Metrics
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString())

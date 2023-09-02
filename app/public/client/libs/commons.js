@@ -2,6 +2,22 @@ function timestamp(a) {
   return (a || new Date()).getTime();
 }
 
+function closestPreviousMonday(date) {
+  date = date || new Date(midnight());
+  const day = date.getDay();
+  const daysToSubtract = (day + 6) % 7;
+  const closestMonday = new Date(date);
+  closestMonday.setDate(date.getDate() - daysToSubtract);
+  return closestMonday.getTime();
+}
+
+function addDateByMonthWeekDay(date, [month, week, day]) {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() + month);
+  result.setDate(result.getDate() + (week * 7 + day));
+  return result;
+}
+
 function midnight(a) {
   let date = new Date((a || new Date()));
   date.setHours(0, 0, 0, 0);

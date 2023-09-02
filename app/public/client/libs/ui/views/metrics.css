@@ -18,6 +18,22 @@
   padding: 6px 12px;
 }
 
+.metrics .profile .rating,
+.metrics .profile .skill {
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-left: 0.4em;
+  word-break: keep-all;
+  display: inline-block;
+}
+
+.metrics .profile .recalibrate.pure-button {
+  padding: 7px 10px;
+  border-radius: 20px;
+  word-break: keep-all;
+  display: inline-block;
+}
+
 .metrics .stats stat {
   border-right: 0;
   border-bottom: 1px solid #e3e3e3;

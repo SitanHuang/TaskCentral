@@ -123,7 +123,10 @@ METRICS_QUERY = JSON.parse(JSON.stringify(METRICS_DEFAULT_QUERY));
 
 PRODUCTIVE_HOURS = 10;
 
+let METRICS_FUNCTIONS;
+
 var ui_metrics_render;
+var ui_metrics_inject_tasks;
 {
   let tasks;
   let tasks2; // those with priority & weight
@@ -156,7 +159,7 @@ var ui_metrics_render;
   ];
 
   let functions;
-  functions = {
+  METRICS_FUNCTIONS = functions = {
     duration: [
       (start, end) => `${days(start, end)} days <br> (${Math.ceil((end - start) / 3.6e+6)} hrs)`,
       days
@@ -639,17 +642,39 @@ var ui_metrics_render;
        .call(d3.axisLeft(y));
   }
 
+  function _ui_metrics_comp_recalibrate() {
+    let msg = comp_rank_calc();
+    if (typeof msg == 'string')
+      alert(msg);
+    else
+      _ui_metrics_render_profile();
+  }
+
   function _ui_metrics_render_profile() {
     let con = _metrics_con.find('.profile-con .stat-list').html('');
     let rating = functions["Rating"][1](startDate, endDate);
-    _metrics_con.find(".profile-con .rating")
-      .text(rating)
-      .css(
-        'color',
+
+    const ratingBg = 
         rating < 0.5 ? '#b32436' : 
         rating < 0.9 ? '#c4921d' :
-        rating < 1.2 ? '#107a40' : '#68149d'
-      );
+        rating < 1.2 ? '#107a40' : '#68149d';
+
+    const rank = comp_get_rank_obj(); 
+
+    _metrics_con.find(".profile-con .rating")
+      .text(rating)
+      .css('background', ratingBg)
+      .css('color', fontColorFromHex(ratingBg.substring(1)));
+    _metrics_con.find(".profile-con .skill")
+      .text(rank.rank)
+      .css('background', rank.color)
+      .css('color', fontColorFromHex(rank.color))
+      .attr('title', COMP_ELO_NAMES.join("\n"));
+
+    if (comp_check_recalc())
+      _metrics_con.find(".profile-con .recalibrate").show();
+    else
+      _metrics_con.find(".profile-con .recalibrate").hide();
 
     for (let x of RATING_FUNCS) {
       // (functions[f][0] || functions[f])(startDate, endDate)
@@ -680,6 +705,11 @@ var ui_metrics_render;
     }
   }
 
+  ui_metrics_inject_tasks = function (query) {
+    tasks = query_exec(query)[0].tasks;
+    tasks2 = tasks.filter(x => x.priority && x.weight);
+  };
+
   ui_metrics_render = function (chevron) {
     function _add_metric(name, html, exp) {
       container.find('.content.pure-g').append(
@@ -702,8 +732,7 @@ var ui_metrics_render;
     query.queries[0].to = endDate.getTime();
     query.queries[0].useGantt = true;
   
-    tasks = query_exec(query)[0].tasks;
-    tasks2 = tasks.filter(x => x.priority && x.weight);
+    ui_metrics_inject_tasks(query);
   
     let container = _metrics_con;
 

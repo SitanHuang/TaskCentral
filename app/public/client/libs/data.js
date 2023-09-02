@@ -10,6 +10,10 @@ function data_init_default() {
     settings: {},
     tags: {},
     filters: {}, // used by UI to store user-defined query filters
+    comp: {
+      rank: undefined,
+      lastUpdated: undefined,
+    }
   };
   back.data = Object.assign(def, back.data);
 }
