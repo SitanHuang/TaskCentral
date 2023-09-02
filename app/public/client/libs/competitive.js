@@ -7,15 +7,15 @@ const COMP_ELO_RANGES = [
   { lower: 0.821, upper: 0.843, color: '#c4921d', rank: "Organizer II" },
   { lower: 0.843, upper: 0.862, color: '#c4921d', rank: "Organizer Elite" },
   { lower: 0.862, upper: 0.881, color: '#2454e5', rank: "Specialist I" },
-  { lower: 0.881, upper: 0.009, color: '#2454e5', rank: "Specialist II" },
+  { lower: 0.881, upper: 0.900, color: '#2454e5', rank: "Specialist II" },
   { lower: 0.900, upper: 0.919, color: '#2454e5', rank: "Specialist III" },
   { lower: 0.919, upper: 0.938, color: '#06b319', rank: "Expert Tasker I" },
   { lower: 0.938, upper: 0.957, color: '#06b319', rank: "Expert Tasker II" },
   { lower: 0.957, upper: 0.979, color: '#06b319', rank: "Elite Strategist I" },
   { lower: 0.979, upper: 1.002, color: '#06b319', rank: "Elite Strategist II" },
-  { lower: 1.002, upper: 1.029, color: '#68149d', rank: "Task Overlord" },
-  { lower: 1.029, upper: 1.063, color: '#68149d', rank: "Supreme Task Overlord" },
-  { lower: 1.063, upper: 1.112, color: '#68149d', rank: "Task Champion" },
+  { lower: 1.002, upper: 1.029, color: '#68149d', rank: "Task Champion" },
+  { lower: 1.029, upper: 1.063, color: '#68149d', rank: "Task Overlord" },
+  { lower: 1.063, upper: 1.112, color: '#68149d', rank: "Supreme Task Overlord" },
   { lower: 1.112, upper: 1.300, color: '#68149d', rank: "Task Paragon" }
 ].map(x => { x.lower -= 0.2; x.upper -= 0.2; return x; });
 
@@ -51,35 +51,50 @@ function comp_check_recalc() {
   * @params today - today's timestamp
   * @params m  - positive value for rate of rank decay for historical data
   * @params p  - number of [month, week, day] that counts as one period
+  * @params a  - period offset for rank decay (no effect for mt=2)
   * @params N  - number of periods
   * @params nM - start date with nearestMonday?
   * @params mW - minimum work per period
   * @params t  - minimum weights for elo to be considered
   *              ex. recommend >1.4 weight for p=daily (about 20 days)
   *
+  * @params mt - method: either 1 or 2 (1/x or exp decay)
+  *
   * @params dry- dry run?
   *
-  * returns error message (undefined if successful)
+  * @returns error message (undefined if successful)
   */
 function comp_rank_calc({
   today = timestamp(),
-  m     = 1.0,
+  m     = 0.9,
   p     = [0, 0, 1], // daily
+  a     = 2,
   N     = 40,
-  mW    = 2,
-  t     = 1.4,
+  mW    = 2.5,
+  t     = 4.0,
   nM    = true,
   dry   = false,
+
+  mt    = 2,
+
+  _debug= false,
 } = {}) {
-  const { weights, elo } = _comp_rank_calc_weights({ today, m, p, N, nM });
+  const { weights, elo } = _comp_rank_calc_weights({ today, m, p, N, nM, mW, a, mt, _debug });
 
   console.log("Elo=", elo, "Weights=", weights, "Rank=", comp_get_rank_obj(elo));
 
-  if (weights < t)
-    return "System does not feel confident to produce a rank from your data."
-  
+  if (weights < t) {
+    if (!dry) {
+      back.data.comp.rank = undefined;
+      back.data.comp.lastUpdated = timestamp();
+
+      back.set_dirty();
+    }
+    return "System does not feel confident to produce a rank from your data.";
+  }
+
   if (elo < 0.1 || elo > 1.8)
-    return "Something doesn't seem right."
+    return "Something doesn't seem right.";
 
   if (dry) return;
 
@@ -89,7 +104,7 @@ function comp_rank_calc({
   back.set_dirty();
 }
 
-function _comp_rank_calc_weights({ today, m, p, N, nM, mW, _debug }) {
+function _comp_rank_calc_weights({ today, m, p, N, nM, mW, a, mt, _debug }) {
   const query = {
     queries: [{
       status: [],
@@ -120,7 +135,7 @@ function _comp_rank_calc_weights({ today, m, p, N, nM, mW, _debug }) {
     let startDate = addDateByMonthWeekDay(nearestMonday, p.map(x => -x * i));
     let endDate = addDateByMonthWeekDay(nearestMonday, p.map(x => -x * (i - 1)));
 
-    let weight = Math.pow(i, -m);
+    let weight = mt == 2 ? Math.pow(m, i) : Math.pow(i + a, -m);
     let score = Number(METRICS_FUNCTIONS["Rating"][1](startDate, endDate)) || 0;
     let work = Number(METRICS_FUNCTIONS["Work All (All)"][1](startDate, endDate)) || 0;
 

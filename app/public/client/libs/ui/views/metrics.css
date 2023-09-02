@@ -25,6 +25,17 @@
   margin-left: 0.4em;
   word-break: keep-all;
   display: inline-block;
+  margin-bottom: 10px;
+}
+
+.metrics .profile .skill-help {
+  cursor: pointer;
+  border-bottom: 1px dashed var(--text-sec-color);
+  padding-bottom: 4px;
+}
+
+.metrics .profile .skill-help:hover {
+  border-bottom: 1px solid var(--text-color);
 }
 
 .metrics .profile .recalibrate.pure-button {

@@ -1,9 +1,10 @@
-const RELEASE_DATE = '20230901';
+const RELEASE_DATE = '20230902';
 
 const RELEASE_NOTES = `
 
 ########## RELEASE NOTES ##########
-1. Add skill groups in Metrics
+1. Fix Skill Group calibration
+2. Add Skill Groups in Metrics
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString())

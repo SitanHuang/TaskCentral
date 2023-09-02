@@ -191,7 +191,7 @@ var ui_metrics_inject_tasks;
     ],
 
     "Time Tracked % Prod. (All)": [
-      (s, e) => 
+      (s, e) =>
         functions["Time Tracked % Prod. (All)"][1](s, e).toFixed(1) +
         explanation(`Productive hours = ${PRODUCTIVE_HOURS}hr/day. Including weightless & priority-less tasks.`),
       (s, e) =>
@@ -430,7 +430,7 @@ var ui_metrics_inject_tasks;
     ],
 
     "Time Tracked % Prod.": [
-      (s, e) => 
+      (s, e) =>
         functions["Time Tracked % Prod."][1](s, e).toFixed(1) +
         explanation(`Productive hours = ${PRODUCTIVE_HOURS}hr/day.`),
       (s, e) =>
@@ -438,7 +438,7 @@ var ui_metrics_inject_tasks;
           .map(x => task_gen_working_periods(x.task, [s, e])
                       .map(x => x.to - x.from).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0) / ((e - s) * PRODUCTIVE_HOURS / 24) * 100)
     ],
-    
+
     "Time Per Interval": [
       (s, e) =>
         `${functions["Time Per Interval"][1](s, e).toFixed(1)}hr` +
@@ -446,7 +446,7 @@ var ui_metrics_inject_tasks;
       (s, e) =>
         (functions["Time Tracked"][1](s, e) / functions["Intervals"][1](s, e))
     ],
-    
+
     "Intervals": [
       (s, e) => {
         let count = functions["Intervals"][1](s, e);
@@ -455,7 +455,7 @@ var ui_metrics_inject_tasks;
       (s, e) =>
         _query_generate_gantt_periods(tasks2, [s, e - 8.64e+7]).map(x => task_gen_working_periods(x.task, [s, e])).flat().length
     ],
-    
+
     "Intervals Per Task":
       (s, e) =>
         (functions["Intervals"][1](s, e) / functions["Tasks"](s, e)).toFixed(2),
@@ -600,9 +600,9 @@ var ui_metrics_inject_tasks;
     let y = d3.scaleLinear()
               .domain([min, max])
               .range([height, 0]);
-    
+
     let heightPerPx = height / Math.abs(max - min);
-    
+
     let x = d3.scaleBand()
               .domain(data.map(function(d) { return d.periodStart; }))
               .range([0, width])
@@ -615,7 +615,7 @@ var ui_metrics_inject_tasks;
                   .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
+
     svg.selectAll(".bar")
         .data(data)
         .enter()
@@ -629,12 +629,12 @@ var ui_metrics_inject_tasks;
     svg.append("g")
        .attr("transform", "translate(0," + y(0) + ")")
        .call(d3.axisBottom(x))
-       .selectAll("text")	
+       .selectAll("text")
         .style("text-anchor", "end")
         .attr("dx", "-.8em")
         .attr("dy", ".15em")
         .attr("transform", function(d) {
-            return "rotate(-65)" 
+            return "rotate(-65)"
             });
 
     // add the y Axis
@@ -646,20 +646,20 @@ var ui_metrics_inject_tasks;
     let msg = comp_rank_calc();
     if (typeof msg == 'string')
       alert(msg);
-    else
-      _ui_metrics_render_profile();
+    // even with a msg, rank can still change (ie. Unranked)
+    _ui_metrics_render_profile();
   }
 
   function _ui_metrics_render_profile() {
     let con = _metrics_con.find('.profile-con .stat-list').html('');
     let rating = functions["Rating"][1](startDate, endDate);
 
-    const ratingBg = 
-        rating < 0.5 ? '#b32436' : 
+    const ratingBg =
+        rating < 0.5 ? '#b32436' :
         rating < 0.9 ? '#c4921d' :
         rating < 1.2 ? '#107a40' : '#68149d';
 
-    const rank = comp_get_rank_obj(); 
+    const rank = comp_get_rank_obj();
 
     _metrics_con.find(".profile-con .rating")
       .text(rating)
@@ -685,10 +685,10 @@ var ui_metrics_inject_tasks;
       let baselinePerc = 60; // also defined in metrics.css
       let perc = val * baselinePerc;
 
-      let color = val < 0.5 ? '#b32436' : 
+      let color = val < 0.5 ? '#b32436' :
                   val < 0.9 ? '#e3ae08' :
                   val < 1.2 ? '#06b319' : '#68149d';
-      
+
       con.append(`
         <div class="stat">
           <span>${x[0]} <ex>(=${raw.toFixed(2)}, ${(weight * 100).toFixed()}%)</ex></span>
@@ -719,11 +719,11 @@ var ui_metrics_inject_tasks;
         </stat>`
       );
     }
-    
+
     console.time('Re-render metrics');
-  
+
     let diff = METRICS_QUERY.queries[0].to - METRICS_QUERY.queries[0].from;
-  
+
     startDate = new Date(METRICS_QUERY.queries[0].from);
     endDate = new Date(METRICS_QUERY.queries[0].to);
 
@@ -731,15 +731,15 @@ var ui_metrics_inject_tasks;
     query.queries[0].from = startDate.getTime();
     query.queries[0].to = endDate.getTime();
     query.queries[0].useGantt = true;
-  
+
     ui_metrics_inject_tasks(query);
-  
+
     let container = _metrics_con;
 
     container
       .find('.title')
       .text(startDate.toLocaleDateString() + ' - ' + endDate.toLocaleDateString());
-  
+
     container.find('.fa.fa-chevron-left')[0].onclick = () => {
       if (METRICS_QUERY._increment) {
         let date = new Date(startDate);
@@ -770,15 +770,15 @@ var ui_metrics_inject_tasks;
         ui_metrics_render(true);
       }
     };
-  
+
     container.find('.content.pure-g').html('');
-  
+
     for (let f in functions)
       _add_metric(f, (functions[f][0] || functions[f])(startDate, endDate));
 
     _ui_metrics_render_graph();
     _ui_metrics_render_profile();
-  
+
     console.timeEnd('Re-render metrics');
   };
 };
