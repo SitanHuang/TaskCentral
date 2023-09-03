@@ -1,8 +1,11 @@
-const RELEASE_DATE = '20230902';
+const RELEASE_DATE = '20230903';
 
 const RELEASE_NOTES = `
 
 ########## RELEASE NOTES ##########
+1. Reworked rank decay algorithm
+
+--------- PREVIOUS NOTES ----------
 1. Fix Skill Group calibration
 2. Add Skill Groups in Metrics
 `;

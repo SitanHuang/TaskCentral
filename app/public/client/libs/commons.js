@@ -3,7 +3,7 @@ function timestamp(a) {
 }
 
 function closestPreviousMonday(date) {
-  date = date || new Date(midnight());
+  date = new Date(date || midnight());
   const day = date.getDay();
   const daysToSubtract = (day + 6) % 7;
   const closestMonday = new Date(date);

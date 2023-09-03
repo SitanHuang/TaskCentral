@@ -27,8 +27,10 @@ function comp_get_rank_obj(elo) {
   if (!elo) return { color: '#373737', rank: "Unranked" };
 
   // Handle cases outside of the defined ELO ranges
-  if (elo < COMP_ELO_RANGES[0].lower) return COMP_ELO_RANGES[0];
-  if (elo >= COMP_ELO_RANGES[COMP_ELO_RANGES.length - 1].upper) return COMP_ELO_RANGES[COMP_ELO_RANGES.length - 1];
+  if (elo < COMP_ELO_RANGES[0].lower)
+    return COMP_ELO_RANGES[0];
+  if (elo >= COMP_ELO_RANGES[COMP_ELO_RANGES.length - 1].upper)
+    return COMP_ELO_RANGES[COMP_ELO_RANGES.length - 1];
 
   // Find the corresponding rank
   for (const range of COMP_ELO_RANGES) {
@@ -42,7 +44,9 @@ function comp_get_rank_obj(elo) {
  * Returns whether rank should be recalculated.
  */
 function comp_check_recalc() {
-  return !(timestamp() - back.data.comp?.lastUpdated < 5.616e+8); // 6.5 days
+  // return !(timestamp() - back.data.comp?.lastUpdated < 5.616e+8); // 6.5 days
+
+  return closestPreviousMonday(back.data.comp?.lastUpdated || -1) < closestPreviousMonday();
 }
 
 /**
