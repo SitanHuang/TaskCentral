@@ -477,6 +477,7 @@ header.stats stat {
   border-color: var(--app-primary-color);
 }
 
-#modal-ui-confirm main.modal__content {
+#modal-ui-dialog main.modal__content {
   margin: 1rem 0.5rem;
+  white-space: pre-wrap;
 }

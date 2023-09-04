@@ -539,18 +539,6 @@
         </div>
       </div>
     </div>
-    <!-- Modal: Confirm -->
-    <div class="modal micromodal-slide" id="modal-ui-confirm">
-      <div class="modal__overlay" tabindex="-1">
-        <div class="modal__container" role="dialog">
-          <main class="modal__content"></main>
-          <footer class="modal__footer" style="text-align: right;">
-            <button type="button" class="modal__btn modal__close" data-micromodal-close>Cancel</button>
-            <button type="button" class="modal__btn modal__btn-primary">OK</button>
-          </footer>
-        </div>
-      </div>
-    </div>
     <!-- Modal: Filter -->
     <div class="modal micromodal-slide" id="modal-filter">
       <div class="modal__overlay" tabindex="-1">
@@ -752,6 +740,20 @@
               </div>
             </main>
           </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal: Dialog (Top-level as always) -->
+    <div class="modal micromodal-slide" id="modal-ui-dialog">
+      <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" role="dialog">
+          <main class="modal__content"></main>
+          <footer class="modal__footer" style="text-align: right;">
+            <button type="button" class="modal__btn modal__close cancel" data-micromodal-close>Cancel</button>
+            <button type="button" class="modal__btn modal__btn-primary">OK</button>
+          </footer>
         </div>
       </div>
     </div>
