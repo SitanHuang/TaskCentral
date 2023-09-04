@@ -476,3 +476,7 @@ header.stats stat {
 .pure-form textarea:focus {
   border-color: var(--app-primary-color);
 }
+
+#modal-ui-confirm main.modal__content {
+  margin: 1rem 0.5rem;
+}

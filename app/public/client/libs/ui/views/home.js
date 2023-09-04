@@ -340,8 +340,8 @@ function _ui_home_gen_task_row(task) {
       ui_menu_select_home();
     });
   $row.find('i.fa-trash')
-    .click(() => {
-      if (confirm('Delete task "' + task.name + '"?')) {
+    .click(async () => {
+      if (await ui_confirm('Delete task "' + task.name + '"?')) {
         task_delete(task);
         // TODO: update details panel
         ui_menu_select_home();
