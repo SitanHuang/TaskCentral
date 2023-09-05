@@ -77,3 +77,6 @@ function _theme_settings_onchange(select) {
 }
 
 theme_update();
+
+// periodically check if 6am/6pm is changed
+setInterval(() => theme_update(), 60 * 1000);
