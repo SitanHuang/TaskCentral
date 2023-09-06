@@ -642,10 +642,60 @@ var ui_metrics_inject_tasks;
        .call(d3.axisLeft(y));
   }
 
+  function _ui_metrics_animate_rankchange(old_rank, new_rank) {
+    if (old_rank.rank == new_rank.rank)
+      return;
+
+    const overlay = document.getElementById("rank-up-overlay");
+    const oldRankElem = document.getElementById("old-rank");
+    const newRankElem = document.getElementById("new-rank");
+    const rankMask = document.getElementById("rank-mask")
+    const arrowElem = document.querySelector("#rank-up-overlay .arrow");
+
+    oldRankElem.style.background = old_rank.color;
+    oldRankElem.style.color = fontColorFromHex(old_rank.color.substring(1));
+    oldRankElem.textContent = old_rank.rank;
+
+    newRankElem.style.background = new_rank.color;
+    newRankElem.style.color = fontColorFromHex(new_rank.color.substring(1));
+    newRankElem.textContent = new_rank.rank;
+
+    // Reset the mask position & arrow opacity
+    rankMask.style.transform = "translateX(0)";
+    arrowElem.style.opacity = "0";
+
+    // Show the overlay
+    overlay.classList.remove("hidden");
+    overlay.classList.remove("fade-out");
+
+    // Delay showing the arrow by 2 seconds
+    setTimeout(() => {
+      arrowElem.style.opacity = "1";
+    }, 2000);
+
+    // Delay the mask animation by 3 seconds
+    setTimeout(() => {
+      rankMask.style.transform = "translateX(-100%)";
+    }, 3000);
+
+    // Apply fade-out effect after 5 seconds
+    setTimeout(() => {
+      overlay.classList.add("fade-out");
+    }, 7000);
+
+    // Hide the overlay after 6 seconds
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+    }, 8000);
+  }
+
   function _ui_metrics_comp_recalibrate() {
-    let msg = comp_rank_calc();
+    const old = comp_get_rank_obj();
+    const msg = comp_rank_calc();
     if (typeof msg == 'string')
-      alert(msg);
+      ui_alert(msg);
+    else
+      _ui_metrics_animate_rankchange(old, comp_get_rank_obj());
     // even with a msg, rank can still change (ie. Unranked)
     _ui_metrics_render_profile();
   }
