@@ -67,17 +67,36 @@ function timeIntervalString(final, initial) {
   return (final - initial < 0 ? '-' : '' ) + `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.padStart(4, '0')}`;
 }
 
-function timeIntervalStringShort(final, initial) {
-  initial = initial || 0;
-  let delta = Math.abs(final - initial) / 1000;
-  let hrs = delta / 3600;
-  if (hrs > 1)
-    return (final - initial < 0 ? '-' : '' ) + hrs.toFixed(1) + 'hr';
-  let min = delta / 60;
-  if (min > 1)
-    return (final - initial < 0 ? '-' : '' ) + min.toFixed(1) + 'min';
-  return (final - initial < 0 ? '-' : '' ) + delta.toFixed(1) + 's';
+function timeIntervalStringShort(final, initial = 0) {
+  let delta = Math.abs(final - initial) / 1000; // Convert to seconds
+  const sign = (final - initial < 0 ? '-' : '');
+
+  const MINUTE = 60;
+  const HOUR = 3600;
+  const DAY = 86400; // 24 hours
+  const WEEK = 604800; // 7 days
+  const MONTH = 2592000; // 30 days
+
+  if (delta >= MONTH) {
+    let months = delta / MONTH;
+    return sign + months.toFixed(1) + 'mo';
+  } else if (delta >= WEEK) {
+    let weeks = delta / WEEK;
+    return sign + weeks.toFixed(1) + 'w';
+  } else if (delta >= DAY) {
+    let days = delta / DAY;
+    return sign + days.toFixed(1) + 'd';
+  } else if (delta >= HOUR) {
+    let hrs = delta / HOUR;
+    return sign + hrs.toFixed(1) + 'hr';
+  } else if (delta >= MINUTE) {
+    let min = delta / MINUTE;
+    return sign + min.toFixed(1) + 'min';
+  }
+
+  return sign + delta.toFixed(1) + 's';
 }
+
 
 function onPasteFormatRemovalHandler(elem, e) {
   if (e.originalEvent && e.originalEvent.clipboardData && e.originalEvent.clipboardData.getData) {

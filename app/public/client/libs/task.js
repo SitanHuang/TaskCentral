@@ -67,12 +67,15 @@ function task_run_ontouch_hook(task) {
 /**
  * Sets a task as snoozed until tomorrow midnight.
  */
-function task_snooze(task) {
-  const nextDay = new Date();
-  nextDay.setDate(nextDay.getDate() + 1);
-  nextDay.setHours(0, 0, 0, 0);
+function task_snooze(task, snooze) {
+  if (!snooze) {
+    const nextDay = new Date();
+    nextDay.setDate(nextDay.getDate() + 1);
+    nextDay.setHours(0, 0, 0, 0);
+    snooze = nextDay.getTime();
+  }
 
-  task.snoozed = nextDay.getTime();
+  task.snoozed = snooze.getTime ? snooze.getTime() : snooze;
 
   back.set_dirty();
 }

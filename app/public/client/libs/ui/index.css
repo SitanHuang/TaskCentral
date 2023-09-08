@@ -481,3 +481,7 @@ header.stats stat {
   margin: 1rem 0.5rem;
   white-space: pre-wrap;
 }
+
+input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}

@@ -26,7 +26,11 @@
 }
 
 .task-detail header .pure-button.left {
-  padding: 10px 10px 10px 20px;
+  padding: 10px 0 10px 20px;
+}
+
+.task-detail header .pure-button.left:not(:first-child) {
+  padding-right: 5px;
 }
 
 .task-detail header > div {
@@ -38,12 +42,33 @@
   line-height: inherit;
 }
 
-.task-detail header .pure-button:not(:last-child):not(.left) i.fa {
+.task-detail header .pure-button:not(:last-child):not(.left:not(:first-child)) i.fa {
   border-right: var(--menu-border);
 }
 
 .task-detail header .pure-button i.fa {
   color: inherit;
+}
+
+.task-detail header .pure-button.datepicker {
+  display: block;
+  overflow: hidden;
+}
+
+.task-detail header .pure-button.datepicker i.fa {
+  position: static;
+  display: inline;
+}
+
+.task-detail header .pure-button.datepicker input {
+  position: absolute;
+  left: calc((100% - 33px) / 2);
+  top: calc((100% - 33px) / 2);
+  width: 33px;
+  height: 33px;
+  opacity: 0;
+  cursor: pointer;
+  transform: scale(10, 3);
 }
 
 .task-detail header .pure-button:hover {
@@ -94,6 +119,12 @@
 
   .task-detail .progress-value-indicator > input {
     font-size: 0.75em;
+  }
+}
+
+@media only screen and (max-width: 410px) {
+  .task-detail header {
+    zoom: 0.95;
   }
 }
 

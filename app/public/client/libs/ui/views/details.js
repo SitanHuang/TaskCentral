@@ -5,12 +5,38 @@ let _home_detail_form;
 function _ui_home_detail_update_status_importance(task) {
   task = _selected_task || task;
 
-  if (task.snoozed > timestamp()) {
+  const now = timestamp();
+
+  if (task.snoozed > now) {
     _home_detail_form.find('header > .snooze').hide();
-    _home_detail_form.find('header > .unsnooze').show();
+    _home_detail_form.find('header > .unsnooze').html(`
+      Unsnooze (${timeIntervalStringShort(task.snoozed - now)} left)
+      <i class="fa fa-bell"></i>
+    `).show().attr('title', new Date(task.snoozed).toLocaleString());
   } else {
     _home_detail_form.find('header > .snooze').show();
     _home_detail_form.find('header > .unsnooze').hide();
+
+    const snoozeDatepicker = document.getElementById('snooze-datetime');
+
+    // default as the previous midnight (so when user selects next midnight,
+    // onchange can be triggered)
+    const defVal = new Date(midnight());
+
+    defVal.setMinutes(defVal.getMinutes() - defVal.getTimezoneOffset());
+    defVal.setMilliseconds(null)
+    defVal.setSeconds(null)
+
+    snoozeDatepicker.onchange = null;
+    snoozeDatepicker.value = defVal.toISOString().slice(0, -1);
+    snoozeDatepicker.onchange = () => {
+      const date = new Date(snoozeDatepicker.value);
+      if (!_selected_task || !(date > now)) return;
+
+      task_snooze(_selected_task, date);
+
+      _ui_home_details_signal_changed();
+    };
   }
 
   let steps = task.steps || 100;
@@ -285,7 +311,7 @@ function ui_detail_close() {
   _home_task_list.find('task.activated').removeClass('activated');
 }
 
-function ui_detail_snooze() {
+function ui_detail_snooze_tomorrow() {
   task_snooze(_selected_task);
   // ui_detail_close();
   _ui_home_details_signal_changed();

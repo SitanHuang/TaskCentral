@@ -671,22 +671,22 @@ var ui_metrics_inject_tasks;
     // Delay showing the arrow by 2 seconds
     setTimeout(() => {
       arrowElem.style.opacity = "1";
-    }, 2000);
+    }, 2050);
 
     // Delay the mask animation by 3 seconds
     setTimeout(() => {
-      rankMask.style.transform = "translateX(-100%)";
-    }, 3000);
+      rankMask.style.transform = "translateX(calc(-100% - 20px))";
+    }, 5000);
 
     // Apply fade-out effect after 5 seconds
     setTimeout(() => {
       overlay.classList.add("fade-out");
-    }, 7000);
+    }, 9000);
 
     // Hide the overlay after 6 seconds
     setTimeout(() => {
       overlay.classList.add("hidden");
-    }, 8000);
+    }, 10000);
   }
 
   function _ui_metrics_comp_recalibrate() {
