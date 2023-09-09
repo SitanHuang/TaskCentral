@@ -67,7 +67,7 @@ function timeIntervalString(final, initial) {
   return (final - initial < 0 ? '-' : '' ) + `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.padStart(4, '0')}`;
 }
 
-function timeIntervalStringShort(final, initial = 0) {
+function timeIntervalStringShort(final, initial = 0, maxLevel = 1) {
   let delta = Math.abs(final - initial) / 1000; // Convert to seconds
   const sign = (final - initial < 0 ? '-' : '');
 
@@ -77,19 +77,19 @@ function timeIntervalStringShort(final, initial = 0) {
   const WEEK = 604800; // 7 days
   const MONTH = 2592000; // 30 days
 
-  if (delta >= MONTH) {
+  if (delta >= MONTH && maxLevel >= 4) {
     let months = delta / MONTH;
     return sign + months.toFixed(1) + 'mo';
-  } else if (delta >= WEEK) {
+  } else if (delta >= WEEK && maxLevel >= 3) {
     let weeks = delta / WEEK;
     return sign + weeks.toFixed(1) + 'w';
-  } else if (delta >= DAY) {
+  } else if (delta >= DAY && maxLevel >= 2) {
     let days = delta / DAY;
     return sign + days.toFixed(1) + 'd';
-  } else if (delta >= HOUR) {
+  } else if (delta >= HOUR && maxLevel >= 1) {
     let hrs = delta / HOUR;
     return sign + hrs.toFixed(1) + 'hr';
-  } else if (delta >= MINUTE) {
+  } else if (delta >= MINUTE && maxLevel >= 0) {
     let min = delta / MINUTE;
     return sign + min.toFixed(1) + 'min';
   }

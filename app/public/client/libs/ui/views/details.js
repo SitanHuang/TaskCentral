@@ -10,7 +10,7 @@ function _ui_home_detail_update_status_importance(task) {
   if (task.snoozed > now) {
     _home_detail_form.find('header > .snooze').hide();
     _home_detail_form.find('header > .unsnooze').html(`
-      Unsnooze (${timeIntervalStringShort(task.snoozed - now)} left)
+      Unsnooze (${timeIntervalStringShort(task.snoozed, now, Infinity)} left)
       <i class="fa fa-bell"></i>
     `).show().attr('title', new Date(task.snoozed).toLocaleString());
   } else {
