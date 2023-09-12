@@ -70,11 +70,11 @@ function comp_check_recalc() {
   */
 function comp_rank_calc({
   today = timestamp(),
-  m     = 0.9,
+  m     = 0.95,
   p     = [0, 0, 1], // daily
   a     = 2,
   N     = 40,
-  mW    = 2.5,
+  mW    = 3.0,
   t     = 4.0,
   nM    = true,
   dry   = false,
