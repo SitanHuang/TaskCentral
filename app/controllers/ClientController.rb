@@ -54,6 +54,9 @@ class ClientController < ApplicationController
   post '/mtime' do
     user = request.env["REMOTE_USER"]
     session[:user] = session[:user] || User[user]
+
+    session[:user].update(last_visited: Time.now.to_i * 1000)
+
     (File.mtime("#{settings.root}/res/storage/#{session[:user].data_path}").to_f*1000).round.to_s
   end
 
@@ -64,6 +67,8 @@ class ClientController < ApplicationController
     tempfile = params[:file][:tempfile]
     user = request.env["REMOTE_USER"]
     session[:user] = session[:user] || User[user]
+
+    session[:user].update(last_updated: Time.now.to_i * 1000)
 
     target_path = "#{settings.root}/res/storage/#{session[:user].data_path}"
 
