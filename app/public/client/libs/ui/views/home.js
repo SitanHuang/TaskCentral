@@ -11,7 +11,6 @@ function ui_menu_select_home() {
   _home_addForm[0].reset();
   _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
   // ^ sliders should automatically go to center
-  _home_addForm.removeClass('focus-within');
 
   if (_selected_task)
     ui_detail_select_task(_selected_task);
@@ -23,8 +22,11 @@ function ui_menu_select_home() {
   let target_provider = () => HOME_QUERY;
   let callback_provider = () => ui_home_update_list;
 
-
   ui_filter_update_holders(target_provider, callback_provider);
+
+  setTimeout(() => {
+    _home_addForm.removeClass('focus-within');
+  }, 1);
 }
 
 // =========================================
@@ -36,8 +38,12 @@ function ui_home_focus_input() {
 }
 
 function ui_home_add_input_focus() {
-  _ui_home_add_update_actions();
-  _home_addForm.addClass('focus-within');
+  // this helps to avoid window.click listener to remove focus-within
+  // after the addClass
+  setTimeout(() => {
+    _ui_home_add_update_actions();
+    _home_addForm.addClass('focus-within');
+  }, 1);
 }
 
 function _ui_home_add_update_actions() {
@@ -162,12 +168,11 @@ async function ui_home_update_project_callback(form) {
   MicroModal.close('modal-home-new-proj');
   window.onpopstate = null;
 
-  _ui_home_add_update_actions();
   if (_home_addForm.find('input[name=project]').val() == oldname)
     _home_addForm.find('input[name=project]').val(name).change();
   ui_home_update_list();
 
-  $('#add-form .input-wrapper input[name=name]').focus();
+  ui_home_focus_input();
 }
 
 function ui_home_add_project_callback(form) {
@@ -187,8 +192,9 @@ function ui_home_add_project_callback(form) {
   MicroModal.close('modal-home-new-proj');
   window.onpopstate = null;
 
-  _ui_home_add_update_actions();
   _home_addForm.find('input[name=project]').val(name).change();
+
+  ui_home_focus_input();
 }
 
 function ui_home_add_project_changed(input) {
