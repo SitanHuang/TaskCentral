@@ -2,6 +2,7 @@ let _home_addForm;
 let _home_con;
 let _home_button;
 let _home_init;
+let _home_proj_form;
 
 function ui_menu_select_home() {
   _home_con = $('.content-container > div.home');
@@ -40,6 +41,8 @@ function ui_home_add_input_focus() {
 }
 
 function _ui_home_add_update_actions() {
+  let detailRow = _home_addForm.find('.detail-row');
+  detailRow.removeClass('edit');
   let projects = _home_addForm.find('.detail-row .projects');
   projects.html('');
 
@@ -49,47 +52,122 @@ function _ui_home_add_update_actions() {
       project_create_chip(x)
         .appendTo(projects)
         .click(() => {
-          _home_addForm.find('input[name=project]').val(x).change();
+          if (detailRow.hasClass('edit'))
+            _ui_home_project_raise_modal('ui_home_update_project_callback(_home_proj_form);', x);
+          else
+            _home_addForm.find('input[name=project]').val(x).change();
         });
     });
 
-    _ui_home_create_add_new_proj_btn(projects, 'ui_home_add_project_callback(this);return false;');
+    _ui_home_create_add_new_proj_btn(projects, 'ui_home_add_project_callback(_home_proj_form);');
+}
+
+function ui_home_add_project_edit() {
+  _home_addForm.find('.detail-row').addClass('edit')
+}
+function ui_home_add_project_cancel_edit() {
+  _home_addForm.find('.detail-row').removeClass('edit')
 }
 
 // reused in details panel
-function _ui_home_create_add_new_proj_btn(projects, onsubmit) {
+function _ui_home_create_add_new_proj_btn(projects, onsubmit, oldname) {
   $('<a class="pure-button flat-always"><i class="fa fa-plus"></i> NEW</a>')
     .click(() => {
-      let $modal = $('#modal-home-new-proj');
-      $modal.find('form').attr('onsubmit', onsubmit + ';return false');
-      $modal.find('input').val('');
-      $modal.find('input[name=color]').val(randomColor());
+      _ui_home_project_raise_modal(onsubmit, oldname);
+    })
+    .appendTo(projects);
+}
 
-      let $colors = $modal.find('.pure-g.colors-container');
-      $colors.html('');
+function _ui_home_project_raise_modal(onsubmit, oldname) {
+  let $modal = $('#modal-home-new-proj');
+  $modal.removeClass(oldname ? 'new-proj' : 'update-proj');
+  $modal.addClass(oldname ? 'update-proj' : 'new-proj');
+  _home_proj_form = $modal.find('form')[0];
+  $modal.find('*[data-micromodal-close]').attr('onclick', 'MicroModal.close("modal-home-new-proj")');
+  $modal.find('form button[type=submit]').attr('onclick', onsubmit + ';return false');
+  $modal.find('input').val('');
+  $modal.find('input[name=color]').val(randomColor());
 
-      for (let i = 0; i < 3 * 5; i++) {
-        let c = randomColor();
-        let div = $(`
+  let project = back.data.projects[oldname];
+  if (project?.color)
+    $modal.find('input[name=color]').val(project.color);
+
+  $modal.find('input[name="old-name"]').val(oldname || '');
+  $modal.find('input[name="name"]').val(oldname || '');
+
+  let $colors = $modal.find('.pure-g.colors-container');
+  $colors.html('');
+
+  for (let i = 0; i < 3 * 5; i++) {
+    let c = randomColor();
+    let div = $(`
         <div class="pure-u-1-5">
           <color style="background-color: ${c}"></color>
         </div>
         `)
-        div.click(() => {
-          $modal.find('input[name=color]').val(c);
-        }).appendTo($colors);
-      }
+    div.click(() => {
+      $modal.find('input[name=color]').val(c);
+    }).appendTo($colors);
+  }
 
-      history.pushState("modal-home-new-proj", null, null);
-      window.onpopstate = function(event) {
-        if (event) {
-          MicroModal.close('modal-home-new-proj');
-          window.onpopstate = null;
-        }
-      };
-      MicroModal.show('modal-home-new-proj');
-    })
-    .appendTo(projects);
+  history.pushState("modal-home-new-proj", null, null);
+  window.onpopstate = function (event) {
+    if (event) {
+      MicroModal.close('modal-home-new-proj');
+      window.onpopstate = null;
+    }
+  };
+  MicroModal.show('modal-home-new-proj');
+}
+
+async function ui_home_update_project_callback(form) {
+  form = $(form);
+  const oldname = form.find('input[name="old-name"]').val().trim();
+  let name = form.find('input[name=name]').val().trim();
+  if (!name) name = null; // new name can be null
+  if (!oldname?.length) return;
+
+  if (oldname == 'default') {
+    ui_alert("Can't modify project `default`.");
+    return;
+  }
+
+  const color = form.find('input[name=color]').val();
+
+  if (name != null) {
+    back.data.projects[name] = project_new({
+      color: color,
+      fontColor: fontColorFromHex(color)
+    });
+  }
+
+  if (oldname != name) {
+    let tasks = query_exec({
+      queries: [{ projects: [oldname], collect: ['tasks'], from: -Infinity, to: Infinity }]
+    })[0].tasks;
+
+    if (!await ui_confirm(`Batch modify ${tasks.length} tasks with ${oldname}?`))
+      return;
+
+    for (let task of tasks) {
+      task.project = name;
+      task_set(task);
+    }
+
+    delete back.data.projects[oldname];
+  }
+
+  back.set_dirty();
+
+  MicroModal.close('modal-home-new-proj');
+  window.onpopstate = null;
+
+  _ui_home_add_update_actions();
+  if (_home_addForm.find('input[name=project]').val() == oldname)
+    _home_addForm.find('input[name=project]').val(name).change();
+  ui_home_update_list();
+
+  $('#add-form .input-wrapper input[name=name]').focus();
 }
 
 function ui_home_add_project_callback(form) {

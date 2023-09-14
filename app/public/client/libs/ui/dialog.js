@@ -29,6 +29,8 @@ async function _ui_raise_dialog({
     closeBtn.onclick = closeModalAndResolve;
 
     function closeModalAndResolve() {
+      MicroModal.close('modal-ui-dialog');
+      
       primaryBtn.onclick = null;
       closeBtn.onclick = null;
 

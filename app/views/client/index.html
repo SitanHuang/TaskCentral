@@ -107,7 +107,11 @@
               </div>
             </div>
             <div class="detail-row">
-              <sub-title>PROJECT</sub-title>
+              <sub-title>
+                PROJECT
+                <i class="fa-solid fa-pen-to-square edit-projects-btn" onclick="ui_home_add_project_edit()"></i>
+                <i class="fa-solid fa-xmark edit-projects-btn" onclick="ui_home_add_project_cancel_edit()"></i>
+              </sub-title>
               <div class="projects"></div>
               <sub-title>PRIORITY</sub-title>
               <input type="range" min="0" max="10" step="1" name="priority">
@@ -526,17 +530,25 @@
     <div class="modal micromodal-slide" id="modal-home-new-proj">
       <div class="modal__overlay" tabindex="-1">
         <div class="modal__container" role="dialog">
-          <form autocomplete="off" onsubmit="" class="pure-form pure-form-stacked">
+          <form autocomplete="off" onsubmit="return false;" class="pure-form pure-form-stacked">
             <header class="modal__header">
-              <h2 class="modal__title" id="modal-home-new-proj-title">
+              <h2 class="modal__title new-proj">
                 New project
+              </h2>
+              <h2 class="modal__title update-proj">
+                Update project
               </h2>
               <button class="modal__close" data-micromodal-close></button>
             </header>
             <main class="modal__content" id="modal-home-new-proj-content">
               <div class="pure-g">
+                <div class="pure-u-1 pure-u-md-2-3 update-proj">
+                  <label for="multi-first-name">Old Name</label>
+                  <input readonly tabindex="-1" type="text" name="old-name" class="pure-u-23-24"/>
+                </div>
                 <div class="pure-u-1 pure-u-md-2-3">
-                  <label for="multi-first-name">Name</label>
+                  <label for="multi-first-name" class="new-proj">Name</label>
+                  <label for="multi-first-name" class="update-proj">New Name</label>
                   <input required type="text" name="name" class="pure-u-23-24" placeholder="ex: 'school.math.hw', 'personal.chores', 'fun.badminton'"/>
                 </div>
                 <div class="pure-u-1 pure-u-md-1-3">
@@ -545,10 +557,16 @@
                 </div>
               </div>
               <div class="pure-g colors-container"></div>
+              <div class="pure-g update-proj">
+                <div class="pure-u-1">
+                  <p> Note: This will move all tasks from project Old Name to project New Name. Project Old Name is then deleted (if the names are different). It is possible to have New Name be empty (no project) or an existing project.</p>
+                </div>
+              </div>
             </main>
             <footer class="modal__footer" style="text-align: right;">
               <button type="clear" class="modal__btn" data-micromodal-close>Cancel</button>
-              <button type="submit" class="modal__btn modal__btn-primary">Add</button>
+              <button type="submit" class="modal__btn modal__btn-primary new-proj">Add</button>
+              <button type="submit" class="modal__btn modal__btn-primary update-proj">Rename/Update</button>
             </footer>
           </form>
         </div>
@@ -800,41 +818,41 @@
       </div>
     </div>
 
-    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230914"></script>
-    <script src="libs/external/randomColor.min.js?releaseDate=20230914"></script>
-    <script src="libs/external/micromodal.min.js?releaseDate=20230914"></script>
-    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230914"></script>
-    <script src="libs/external/d3.v4.js?releaseDate=20230914"></script>
-    <script src="libs/external/d3_timeseries.min.js?releaseDate=20230914"></script>
+    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230914R1"></script>
+    <script src="libs/external/randomColor.min.js?releaseDate=20230914R1"></script>
+    <script src="libs/external/micromodal.min.js?releaseDate=20230914R1"></script>
+    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230914R1"></script>
+    <script src="libs/external/d3.v4.js?releaseDate=20230914R1"></script>
+    <script src="libs/external/d3_timeseries.min.js?releaseDate=20230914R1"></script>
 
-    <script src="libs/commons.js?releaseDate=20230914"></script>
+    <script src="libs/commons.js?releaseDate=20230914R1"></script>
 
-    <script src="libs/data.js?releaseDate=20230914"></script>
-    <script src="libs/task.js?releaseDate=20230914"></script>
-    <script src="libs/project.js?releaseDate=20230914"></script>
-    <script src="libs/backend.js?releaseDate=20230914"></script>
-    <script src="libs/competitive.js?releaseDate=20230914"></script>
+    <script src="libs/data.js?releaseDate=20230914R1"></script>
+    <script src="libs/task.js?releaseDate=20230914R1"></script>
+    <script src="libs/project.js?releaseDate=20230914R1"></script>
+    <script src="libs/backend.js?releaseDate=20230914R1"></script>
+    <script src="libs/competitive.js?releaseDate=20230914R1"></script>
 
-    <script src="libs/fuzzy.js?releaseDate=20230914"></script>
-    <script src="libs/query.js?releaseDate=20230914"></script>
+    <script src="libs/fuzzy.js?releaseDate=20230914R1"></script>
+    <script src="libs/query.js?releaseDate=20230914R1"></script>
 
-    <script src="libs/ui/dialog.js?releaseDate=20230914"></script>
-    <script src="libs/ui/filter.js?releaseDate=20230914"></script>
+    <script src="libs/ui/dialog.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/filter.js?releaseDate=20230914R1"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20230914"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20230914"></script>
-    <script src="libs/ui/views/gantt.js?releaseDate=20230914"></script>
-    <script src="libs/ui/views/log.js?releaseDate=20230914"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20230914"></script>
-    <script src="libs/ui/views/forecast.js?releaseDate=20230914"></script>
-    <script src="libs/ui/views/metrics.js?releaseDate=20230914"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/views/gantt.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/views/log.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/views/forecast.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/views/metrics.js?releaseDate=20230914R1"></script>
 
-    <script src="libs/ui/layout.js?releaseDate=20230914"></script>
-    <script src="libs/ui/timer.js?releaseDate=20230914"></script>
-    <script src="libs/ui/themes/loader.js?releaseDate=20230914"></script>
-    <script src="libs/index.js?releaseDate=20230914"></script>
+    <script src="libs/ui/layout.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/timer.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/themes/loader.js?releaseDate=20230914R1"></script>
+    <script src="libs/index.js?releaseDate=20230914R1"></script>
 
     <!-- lazy loads stylesheets & images -->
-    <script src="libs/ui/css.js?releaseDate=20230914"></script>
+    <script src="libs/ui/css.js?releaseDate=20230914R1"></script>
   </body>
 </html>

@@ -285,3 +285,31 @@
   margin: -1px 0;
 }
 
+#modal-home-new-proj.new-proj .update-proj,
+#modal-home-new-proj.update-proj .new-proj,
+.home .detail-row:not(.edit) .fa-xmark,
+.home .detail-row.edit .fa-pen-to-square {
+  display: none !important;
+}
+
+.home .edit-projects-btn {
+  margin-left: 0.5em;
+  cursor: pointer;
+}
+
+.home .detail-row.edit project {
+  animation: tilt-shaking 0.9s cubic-bezier(0.4, 0.21, 1, 0.04) infinite;
+}
+
+.home .fa-xmark.edit project {
+  animation: tilt-shaking 0.9s cubic-bezier(0.4, 0.21, 1, 0.04) infinite;
+}
+
+@keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  12% { transform: rotate(1deg); }
+  25% { transform: rotate(0eg); }
+  37% { transform: rotate(-1deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}

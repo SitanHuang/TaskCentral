@@ -267,7 +267,7 @@ function ui_home_detail_project_changed(input) {
         });
     });
 
-  _ui_home_create_add_new_proj_btn(projects, 'ui_home_details_project_callback(this);return false;');
+  _ui_home_create_add_new_proj_btn(projects, 'ui_home_details_project_callback(_home_proj_form);return false;');
 
   if (proj)
     project_create_chip(proj)
