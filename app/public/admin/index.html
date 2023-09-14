@@ -30,6 +30,10 @@
     <div class="live-userlist">
       <h1>Live Userlist</h1>
       <button onclick="admin_userlist_start()">Start tracking</button>
+      <label for="freqSlider">Update every x seconds: </label>
+      <input type="number" id="freqSlider" min="1" max="60" value="5">
+      <label for="volumeSlider">Volume: </label>
+      <input type="range" id="volumeSlider" min="1" max="100" value="80">
       <pre class="status"></pre>
       <table class="sortable">
         <thead>
