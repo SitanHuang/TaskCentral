@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Administration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Import the TaskCentral core library -->
+    <script src="client/libs/external/jquery-3.6.0.min.js"></script>
+    <script src="client/libs/commons.js"></script>
+
+    <script src="client/libs/data.js"></script>
+    <script src="client/libs/task.js"></script>
+    <script src="client/libs/project.js"></script>
+    <script src="client/libs/competitive.js"></script>
+
+    <script src="client/libs/fuzzy.js"></script>
+    <script src="client/libs/query.js"></script>
+
+    <!-- Import admin page stuff -->
+
+    <link rel="stylesheet" href="libs/sortable.min.css">
+    <script src="libs/sortable.min.js"></script>
+
+    <script src="libs/commons.js"></script>
+    <script src="libs/live-userlist.js"></script>
+  </head>
+  <body>
+    <div class="live-userlist">
+      <h1>Live Userlist</h1>
+      <button onclick="admin_userlist_start()">Start tracking</button>
+      <pre class="status"></pre>
+      <table class="sortable">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Last Visit</th>
+            <th>Last Write</th>
+            <th>Started</th>
+            <th>S.G.</th>
+            <th>Elo</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </body>
+</html>
+

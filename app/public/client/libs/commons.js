@@ -188,3 +188,8 @@ function isFirefox() {
   return typeof navigator !== 'undefined' && navigator.userAgent.includes('Firefox');
 }
 
+function sanitizeHTMLSafe(str) {
+  const ele = document.createElement('body');
+  ele.innerText = str;
+  return ele.innerHTML;
+}
