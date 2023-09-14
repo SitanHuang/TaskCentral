@@ -577,6 +577,19 @@
                     <input type="checkbox" id="filter-checkbox-default">
                     Default
                   </label>
+                  <label for="filter-checkbox-start" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-start">
+                    Started
+                  </label>
+                  <label for="filter-checkbox-completed" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-completed">
+                    Completed
+                  </label>
+                </div>
+              </div>
+              <div class="pure-control-group">
+                <label style="vertical-align: top;">Modifiers</label>
+                <div class="stacked-checkboxes">
                   <label for="filter-checkbox-ready" class="pure-checkbox">
                     <input type="checkbox" id="filter-checkbox-ready">
                     Ready (Excludes not-ready tasks)
@@ -589,17 +602,9 @@
                     <input type="checkbox" id="filter-checkbox-snoozed">
                     Snoozed
                   </label>
-                  <label for="filter-checkbox-start" class="pure-checkbox">
-                    <input type="checkbox" id="filter-checkbox-start">
-                    Started
-                  </label>
-                  <label for="filter-checkbox-completed" class="pure-checkbox">
-                    <input type="checkbox" id="filter-checkbox-completed">
-                    Completed
-                  </label>
                 </div>
                 <span class="pure-form-message-inline">
-                  queries everything if none selected
+                  queries everything if no status/modifiers are selected
                 </span>
               </div>
               <div class="pure-control-group">
