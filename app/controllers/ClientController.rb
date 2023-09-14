@@ -51,6 +51,25 @@ class ClientController < ApplicationController
     }.to_json
   end
 
+  post '/user/passwd' do
+    user = request.env["REMOTE_USER"]
+    user = session[:user] = session[:user] || User[user]
+
+    new_pswd = params['new_pswd'] || ''
+
+    if new_pswd.length < 10 || new_pswd.length > 30
+      'Password should be at least 10 characters long but not longer than 30.'
+    elsif user.password == new_pswd
+      'New password should not be the same as the previous password.'
+    elsif !(new_pswd =~ /[A-Z]/ && new_pswd =~ /[a-z]/ && new_pswd =~ /\d/ && new_pswd =~ /[^\w\s]/)
+      'Password should contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+    else
+      user.update(password: new_pswd)
+
+     'ok'
+    end
+  end
+
   post '/mtime' do
     user = request.env["REMOTE_USER"]
     session[:user] = session[:user] || User[user]

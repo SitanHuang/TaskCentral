@@ -6,6 +6,23 @@ function ui_menu_settings_reset_primaryColor() {
     .val(APP_DEFAULT_PRIMARY_COLOR).change();
 }
 
+function ui_menu_passwd() {
+  _home_con = $('.content-container > div.settings');
+  const new_pswd = _home_con.find('.user-form input[name="new-password"]').val();
+
+  $.post('user/passwd', { new_pswd }).fail(function () {
+    ui_alert('Failed to reach remote server.');
+  }).done(function (msg) {
+    if (msg == 'ok') {
+      ui_alert('Password updated successfully. You will be logged out shortly.').finally(() => {
+        location.reload();
+      });
+    } else {
+      ui_alert(`Failed to change password: ${msg}`);
+    }
+  });
+}
+
 function ui_menu_select_settings() {
   _home_con = $('.content-container > div.settings');
 
