@@ -477,6 +477,13 @@
               <div class="pure-control-group">
               </div>
               <div class="pure-control-group">
+                <label for="app-pomodoro-time">Pomodoro Time</label>
+                <input type="number" min="5" max="120" step="1" value="25" name="app-pomodoro-time"/>
+                <span class="pure-form-message-inline">Set working minutes for the Pomodoro timer.</span>
+              </div>
+              <div class="pure-control-group">
+              </div>
+              <div class="pure-control-group">
                 <label for="aligned-name">Username</label>
                 <input type="text" readonly name="username"/>
                 <span class="pure-form-message-inline">Contact site admin to change login.</span>
@@ -799,9 +806,12 @@
       <i class="unhide fa-solid fa-arrow-down" onclick="timer_unhide()"></i>
       <name></name>
       <timer></timer>
+      <timer class="pomodoro"></timer>
       <stop>
-        <i class="fa fa-stop-circle" style="margin-right: 1em"
+        <i class="fa fa-stop-circle"
            onclick="timer_stop_task(back.data.tasks[back.data.started]);"></i>
+        <i class="fa fa-stopwatch pomodoro-btn"
+           onclick="timer_pomodoro(this);"></i>
         <i class="fa fa-circle-down" style="transform: rotate(-135deg);"
            onclick="timer_hide();"></i>
       </stop>
@@ -818,41 +828,41 @@
       </div>
     </div>
 
-    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230914R1"></script>
-    <script src="libs/external/randomColor.min.js?releaseDate=20230914R1"></script>
-    <script src="libs/external/micromodal.min.js?releaseDate=20230914R1"></script>
-    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230914R1"></script>
-    <script src="libs/external/d3.v4.js?releaseDate=20230914R1"></script>
-    <script src="libs/external/d3_timeseries.min.js?releaseDate=20230914R1"></script>
+    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230914R2"></script>
+    <script src="libs/external/randomColor.min.js?releaseDate=20230914R2"></script>
+    <script src="libs/external/micromodal.min.js?releaseDate=20230914R2"></script>
+    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230914R2"></script>
+    <script src="libs/external/d3.v4.js?releaseDate=20230914R2"></script>
+    <script src="libs/external/d3_timeseries.min.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/commons.js?releaseDate=20230914R1"></script>
+    <script src="libs/commons.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/data.js?releaseDate=20230914R1"></script>
-    <script src="libs/task.js?releaseDate=20230914R1"></script>
-    <script src="libs/project.js?releaseDate=20230914R1"></script>
-    <script src="libs/backend.js?releaseDate=20230914R1"></script>
-    <script src="libs/competitive.js?releaseDate=20230914R1"></script>
+    <script src="libs/data.js?releaseDate=20230914R2"></script>
+    <script src="libs/task.js?releaseDate=20230914R2"></script>
+    <script src="libs/project.js?releaseDate=20230914R2"></script>
+    <script src="libs/backend.js?releaseDate=20230914R2"></script>
+    <script src="libs/competitive.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/fuzzy.js?releaseDate=20230914R1"></script>
-    <script src="libs/query.js?releaseDate=20230914R1"></script>
+    <script src="libs/fuzzy.js?releaseDate=20230914R2"></script>
+    <script src="libs/query.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/ui/dialog.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/filter.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/dialog.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/filter.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/views/gantt.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/views/log.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/views/forecast.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/views/metrics.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/views/gantt.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/views/log.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/views/forecast.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/views/metrics.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/ui/layout.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/timer.js?releaseDate=20230914R1"></script>
-    <script src="libs/ui/themes/loader.js?releaseDate=20230914R1"></script>
-    <script src="libs/index.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/layout.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/timer.js?releaseDate=20230916"></script>
+    <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
+    <script src="libs/index.js?releaseDate=20230916"></script>
 
     <!-- lazy loads stylesheets & images -->
-    <script src="libs/ui/css.js?releaseDate=20230914R1"></script>
+    <script src="libs/ui/css.js?releaseDate=20230914R2"></script>
   </body>
 </html>

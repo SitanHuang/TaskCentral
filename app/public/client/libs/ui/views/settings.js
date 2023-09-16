@@ -35,6 +35,7 @@ function ui_menu_select_settings() {
   let percUsed = Math.round(10000 * back.user.size / back.user.quota * 100) / 10000;
 
   let color = _home_con.find('.user-form input[name="app-primary-color"]');
+  let pomodoro = _home_con.find('.user-form input[name="app-pomodoro-time"]');
 
   // unbind
   color[0].onchange = function () {};
@@ -46,6 +47,18 @@ function ui_menu_select_settings() {
     back.set_dirty();
 
     ui_update_primaryColor();
+  };
+
+  // unbind
+  pomodoro[0].onchange = function () {};
+  // set value
+  pomodoro.val(back.data.settings.pomodoro || 25);
+  // bind
+  pomodoro[0].onchange = function () {
+    const val = Math.min(Math.max(parseInt(pomodoro.val()), 5), 120) || 25;
+    pomodoro[0].value = val;
+    back.data.settings.pomodoro = val;
+    back.set_dirty();
   };
 
   _home_con.find('.user-form input[name="username"]').val(back.user.name);

@@ -146,7 +146,8 @@ button .fa{
 #timer-container pause i:active,
 #timer-container i.unhide:active,
 #timer-container pause.play,
-#timer-container stop i:active {
+#timer-container stop i:active,
+#timer-container stop i.active {
   color: rgba(0,0,0,0.87);
 }
 
@@ -159,6 +160,11 @@ button .fa{
   text-align: center;
 }
 
+#timer-container stop > *:not(:last-child) {
+  margin-right: calc(min(5vw, 1em));
+  width: 75px;
+}
+
 #timer-container timer {
   font-family: var(--mono-family);
   font-size: 3rem;
@@ -168,6 +174,11 @@ button .fa{
   position: fixed;
   top: calc(50vh - 1em);
   width: 100vw;
+}
+
+#timer-container timer.pomodoro {
+  top: calc(50vh + 0.5em);
+  font-size: 2rem;
 }
 
 .bottom-bar {

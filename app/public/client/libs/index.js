@@ -1,9 +1,9 @@
-const RELEASE_DATE = '20230914R1';
+const RELEASE_DATE = '20230916';
 
 const RELEASE_NOTES = `
 ### RELEASE NOTES ###
-1. Allow users to change password.
-2. Allow renaming projects.
+1. Add user settings to change Pomodoro time interval
+2. Add Pomodoro timer
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
