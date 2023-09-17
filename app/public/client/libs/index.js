@@ -1,9 +1,8 @@
-const RELEASE_DATE = '20230916';
+const RELEASE_DATE = '20230917';
 
 const RELEASE_NOTES = `
 ### RELEASE NOTES ###
-1. Add user settings to change Pomodoro time interval
-2. Add Pomodoro timer
+1. Misc stylesheet changes
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

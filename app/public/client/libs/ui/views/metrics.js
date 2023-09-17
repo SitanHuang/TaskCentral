@@ -651,6 +651,13 @@ var ui_metrics_inject_tasks;
     const newRankElem = document.getElementById("new-rank");
     const rankMask = document.getElementById("rank-mask")
     const arrowElem = document.querySelector("#rank-up-overlay .arrow");
+    const deltaElem = document.querySelector("#rank-up-overlay .arrow .delta");
+
+    const delta = new_rank.index - old_rank.index;
+    deltaElem.textContent = (delta > 0 ? '+' : '') + delta;
+    deltaElem.className = delta > 0 ? 'delta pos' : 'delta neg';
+    deltaElem.style.opacity = '0';
+    deltaElem.style.transition = '';
 
     oldRankElem.style.background = old_rank.color;
     oldRankElem.style.color = fontColorFromHex(old_rank.color.substring(1));
@@ -678,15 +685,18 @@ var ui_metrics_inject_tasks;
       rankMask.style.transform = "translateX(calc(-100% - 20px))";
     }, 5000);
 
-    // Apply fade-out effect after 5 seconds
+    setTimeout(() => {
+      deltaElem.style.transition = 'opacity 300ms ease';
+      deltaElem.style.opacity = '0.9';
+    }, 6500);
+
     setTimeout(() => {
       overlay.classList.add("fade-out");
-    }, 9000);
+    }, 10000);
 
-    // Hide the overlay after 6 seconds
     setTimeout(() => {
       overlay.classList.add("hidden");
-    }, 10000);
+    }, 11000);
   }
 
   function _ui_metrics_comp_recalibrate() {

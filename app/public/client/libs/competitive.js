@@ -17,7 +17,7 @@ const COMP_ELO_RANGES = [
   { lower: 1.029, upper: 1.063, color: '#68149d', rank: "Task Overlord" },
   { lower: 1.063, upper: 1.112, color: '#68149d', rank: "Supreme Task Overlord" },
   { lower: 1.112, upper: 1.300, color: '#68149d', rank: "Task Paragon" }
-].map(x => { x.lower -= 0.2; x.upper -= 0.2; return x; });
+].map((x, i) => { x.lower -= 0.2; x.upper -= 0.2; x.index = i; return x; });
 
 const COMP_ELO_NAMES = COMP_ELO_RANGES.map(x => x.rank);
 
