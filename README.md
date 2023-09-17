@@ -1,16 +1,20 @@
 
-### TaskCentral is a free online platform that manages your TODO list, time tracking, Gantt charts, and more.
+### TaskCentral is a free online platform that manages your project tasks, time tracking, Gantt charts, and more.
 
-1. [Introduction](#introduction)
-2. [Philosophy](#philosophy)
-3. [Screenshots](#screenshots)
-4. [The Platform & How to Sign Up](#the-platform)
+1. [Philosophy](#philosophy)
+2. [Screenshots](#screenshots)
+4. [Sign Up](#the-platform)
 
 ## Philosophy
 
-The user must be able to input task information with **minimal effort and time**. The algorithm is then responsible for calculating the best task to be performed next so that **throughput** is maximized.
+TaskCentral is an opinionated TODO-style platform aiming to **reduce cognitive load** by displaying only relevant tasks at a given moment. Inspired by operating system kernel algorithms, it recommends users what to work on next to **guarantee maximum throughput**.
 
-## Screenshots
+Users input **priority** (task importance), **weight** (work volume), and an earliest possible start date. Instead of an overwhelming list, you receive a concise daily task list.
+
+You can use it as a simple list if you'd like. But it can scale to your workflow: complex query commands, Pomodoro timers, time tracking, productivity graphs, etc. 
+
+### Screenshots
+![Screenshot 0](imgs/0.png)
 ![Screenshot 1](imgs/1.png)
 ![Screenshot 2](imgs/2.png)
 ![Screenshot 3](imgs/3.png)
@@ -18,8 +22,6 @@ The user must be able to input task information with **minimal effort and time**
 ![Screenshot 5](imgs/5.png)
 
 ## The Platform
-Originally, I developed this platform for personal use. Many of my friends have since requested access. This platform is now open to public and eternally free-for-use.
+Originally, I developed this platform for personal use. The platform is open to public and eternally free-for-use. Because I am hosting this with personal funds, I use Google Forms to prevent too many accounts overloading the server. 
 
-I'm too lazy to implement a sign-up page. Please open an issue so that I can get you an account.
-
-Of course, you can always just clone this repo and self-host.
+[Sign Up Here](https://docs.google.com/forms/d/e/1FAIpQLSczc8NBAMxY-9PZbda7xmbfMyiSVn6H3UEaBHoq_7BEegP9kw/viewform?usp=sf_link)
