@@ -10,6 +10,8 @@ Users input **priority** (task importance), **weight** (work volume), and an ear
 
 You can use it as a simple list if you'd like. But it can scale to your workflow: **stress forecast, Pomodoro timers, time tracking, productivity graphs**, etc. 
 
+Interested to trying out? [Sign up here](https://docs.google.com/forms/d/e/1FAIpQLSczc8NBAMxY-9PZbda7xmbfMyiSVn6H3UEaBHoq_7BEegP9kw/viewform?usp=sf_link)
+
 ### Screenshots
 ![Screenshot 0](imgs/0.png)
 ![Screenshot 1](imgs/1.png)
