@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20230917';
+const RELEASE_DATE = '20230917R1';
 
 const RELEASE_NOTES = `
 ### RELEASE NOTES ###
-1. Misc stylesheet changes
+1. Add legends to forecast graph
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

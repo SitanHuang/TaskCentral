@@ -45,10 +45,13 @@ function ui_forecast_render() {
   console.time('Re-render forecast');
 
   let width = window.innerWidth - 50;
-  let height = window.innerHeight - 150;
+  let height = window.innerHeight - 165;
 
   let container = _forecast_con.find('.forecast-container');
-  container.html(`<div id="forecastGraph" style="width: ${width}px;height: ${height}px"></div>`);
+  container.html(`
+  <b> Relative Stress (Red) / Hours Tracked (Grey)</b>
+  <div id="forecastGraph" style="width: ${width}px;height: ${height}px"></div>
+  `);
 
   // if more than 1 year
   if (1 < (FORECAST_QUERY.queries[0].to - FORECAST_QUERY.queries[0].from) / 3.154e+10) {
@@ -61,7 +64,7 @@ function ui_forecast_render() {
 
   let tasks = query_exec(FORECAST_QUERY)[0].tasks;
   let periods = _query_generate_gantt_periods(tasks, range);
-  
+
   let days = Math.ceil((to - from) / 8.64e+7) + 2;
   let stress = Array(days).fill(0).map(() => []);
 
@@ -121,23 +124,23 @@ function ui_forecast_render() {
       }
     }
 
-    data.push({ date: new Date(i), s: sum, t: total });
+    data.push({ date: new Date(i), 'stress level': sum, 'hours spent': total });
   }
 
   let d3 = d3_timeseries()
             .addSerie(
               data,
-              { x:'date', y: 't' },
+              { x:'date', y: 'hours spent' },
               { interpolate: 'monotone', color: '#d5d5d5' }
             )
             .addSerie(
               null,
-              { x:'date', y: 's' },
+              { x:'date', y: 'stress level' },
               { interpolate: 'monotone', color: '#db4437' }
             )
             .width(width)
             .height(height);
-  
+
   d3('#forecastGraph');
   console.timeEnd('Re-render forecast');
 }
