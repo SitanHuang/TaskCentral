@@ -6,7 +6,7 @@
 
 TaskCentral is an opinionated TODO-style platform aiming to **reduce cognitive load** by displaying only relevant tasks at a given moment. Inspired by operating system kernel algorithms, it recommends users what to work on next to **guarantee maximum throughput**.
 
-Users input **priority** (task importance), **weight** (work volume), and an earliest possible start date. Instead of an overwhelming list, you receive a concise daily task list.
+Users input **priority** (task importance), **weight** (work volume), and an earliest possible start date. Instead of an overwhelming list, you receive a concise daily task selection.
 
 You can use it as a simple list if you'd like. But it can scale to your workflow: **stress forecast, Pomodoro timers, time tracking, productivity graphs**, etc. 
 
