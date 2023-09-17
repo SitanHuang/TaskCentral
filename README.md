@@ -12,6 +12,8 @@ You can use it as a simple list if you'd like. But it can scale to your workflow
 
 Interested to trying out? [Sign up here](https://docs.google.com/forms/d/e/1FAIpQLSczc8NBAMxY-9PZbda7xmbfMyiSVn6H3UEaBHoq_7BEegP9kw/viewform?usp=sf_link)
 
+The platform is eternally free.
+
 ### Screenshots
 ![Screenshot 0](imgs/0.png)
 ![Screenshot 1](imgs/1.png)
