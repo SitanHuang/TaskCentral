@@ -1,6 +1,3 @@
-
-### TaskCentral is a free online platform that manages your project tasks, time tracking, Gantt charts, and more.
-
 1. [Philosophy](#philosophy)
 2. [Screenshots](#screenshots)
 4. [Sign Up](#the-platform)
