@@ -1,11 +1,12 @@
-const RELEASE_DATE = '20230917R1';
+const RELEASE_DATE = '20230918';
 
 const RELEASE_NOTES = `
 ### RELEASE NOTES ###
-1. Add legends to forecast graph
+1. Change default modeset to "Ready"
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
+  delete localStorage.home_mode;
   // setTimeout(() => {
   //   if (back.data?.comp?.lastUpdated < 1694556340495) {
   //     back.data.comp.lastUpdated = undefined;
@@ -13,7 +14,7 @@ if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toStr
   //     back.set_dirty();
   //   }
   // }, 1000);
-  ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. Browser cache clear recommended.\n ${RELEASE_NOTES}`);
+  ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
 }
 
 localStorage.last_release = RELEASE_DATE;
