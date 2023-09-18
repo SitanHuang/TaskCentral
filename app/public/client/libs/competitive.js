@@ -94,7 +94,8 @@ function comp_rank_calc({
 
       back.set_dirty();
     }
-    return "System does not feel confident to produce a rank from your data.";
+    return "System does not feel confident to produce a rank from your data. " +
+           "Keep using TaskCentral and come back in a week or two.";
   }
 
   if (elo < 0.1 || elo > 1.8)
