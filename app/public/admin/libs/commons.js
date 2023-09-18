@@ -1,3 +1,7 @@
+let back = {
+  data: {}
+};
+
 function resortTables() {
   const element = document.querySelector('.sortable th[class*=dir-]')
   if (element) {
