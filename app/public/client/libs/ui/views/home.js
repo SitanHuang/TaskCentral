@@ -288,7 +288,7 @@ function ui_home_mode_select_trigger(mode, q) {
 //                Listing
 // =========================================
 
-HOME_MODE = localStorage?.home_mode || 'default';
+HOME_MODE = localStorage?.home_mode || 'ready';
 
 const HOME_DEFAULT_QUERY = {
   queries: [{
@@ -404,14 +404,16 @@ function _ui_home_gen_task_row(task) {
   if (task.status == 'completed') {
     $row.addClass('completed');
   } else {
-    let progress = (task.progress || 0);
+    let progress = task.progress;
     $row.css(
       'background-image',
-      `linear-gradient(90deg, var(--task-progress-done-bg) ${progress}%,
-                              var(--task-progress-sep-bg) ${progress}%,
-                              var(--task-progress-sep-bg) calc(${progress}% + 1px),
-                              var(--task-progress-bg) calc(${progress}% + 1px),
-                              var(--task-progress-bg) 100%)`
+      progress ?
+        `linear-gradient(90deg, var(--task-progress-done-bg) ${progress}%,
+                                var(--task-progress-sep-bg) ${progress}%,
+                                var(--task-progress-sep-bg) calc(${progress}% + 1px),
+                                var(--task-progress-bg) calc(${progress}% + 1px),
+                                var(--task-progress-bg) 100%)` :
+        'none'
     );
   }
   if (task == _selected_task)
