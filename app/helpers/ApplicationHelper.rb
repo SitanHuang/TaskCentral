@@ -2,7 +2,7 @@ module ApplicationHelper
   # For every single request, we check database
   # (if password is changed, user should immediately be logged out)
   def authenticated_user(user, pass, min_status = 1)
-    User.where(username: user, password: pass).where{status >= min_status}.first
+    User.where(username: user, password: pass).where{|u| u.status >= min_status}.first
   end
 
   def halt_unauthorized

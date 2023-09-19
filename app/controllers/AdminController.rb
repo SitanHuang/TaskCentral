@@ -12,7 +12,7 @@ class AdminController < ApplicationController
   end
 
   get '/?' do
-    redirect to('/index.html')
+    send_file "#{settings.root}/views/admin/index.html"
   end
 
   get '/client/*' do |filepath|
