@@ -35,6 +35,8 @@ class AdminController < ApplicationController
           comp: udat["comp"],
           last_updated: user.last_updated,
           last_visited: user.last_visited,
+          quota: user.quota,
+          size: File.size(target_path)
         }
 
         if udat["started"]

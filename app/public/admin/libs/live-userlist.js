@@ -26,6 +26,8 @@ function _admin_userlist_rerender() {
       `;
     }
 
+    const percUsed = data.size / data.quota * 100;
+
     const sg_label = comp_get_rank_obj(data.comp?.rank || false).rank;
 
     html += `
@@ -36,6 +38,8 @@ function _admin_userlist_rerender() {
       ${started}
       <td>${sg_label} - ${data.comp?.lastUpdated ? timeIntervalStringShort(timestamp(), data.comp.lastUpdated, 3) : ''}
       <td data-sort="${data.comp?.rank || -1}">${data.comp?.rank ? Math.round(data.comp.rank * 10000) / 10000 : ''}
+      <td data-sort="${data.size}">${humanFileSize(data.size)} / ${humanFileSize(data.quota)}
+      <td data-sort="${percUsed}">${Math.round(10000 * percUsed) / 10000} %
     `;
   }
 
