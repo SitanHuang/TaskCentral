@@ -32,7 +32,7 @@ function _admin_userlist_rerender() {
 
     html += `
     <tr>
-      <td>${sanitizeHTMLSafe(user.user)}
+      <td><a target="_blank" href="../client/?su=${sanitizeHTMLSafe(user.user)}">${sanitizeHTMLSafe(user.user)}</a>
       <td data-sort="${data.last_visited}">${new Date(data.last_visited).toLocaleString()} (${timeIntervalStringShort(timestamp(), data.last_visited)} ago)
       <td data-sort="${data.last_updated}">${new Date(data.last_updated).toLocaleString()} (${timeIntervalStringShort(timestamp(), data.last_updated)} ago)
       ${started}

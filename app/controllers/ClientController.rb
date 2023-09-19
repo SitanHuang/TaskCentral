@@ -7,8 +7,8 @@ class ClientController < ApplicationController
     set :public_folder, "#{settings.root}/public/client"
   end
 
-  use Rack::Auth::Basic, "Restricted Area" do |username, password|
-    User[username: username, password: password]
+  before do
+    authenticate!(1)
   end
 
   get '' do
@@ -21,9 +21,7 @@ class ClientController < ApplicationController
   end
 
   get '/storage/data' do
-    user = request.env["REMOTE_USER"]
     response.headers['Cache-Control'] = 'no-cache'
-    session[:user] = User[user]
 
     FileUtils.mkdir_p("#{settings.root}/res/storage/#{session[:user].data_dir}")
 
@@ -37,10 +35,9 @@ class ClientController < ApplicationController
   end
 
   post '/user/info' do
-    user = request.env["REMOTE_USER"]
-    user = session[:user] = session[:user] || User[user]
+    user = session[:user]
 
-    data_path = "#{settings.root}/res/storage/#{session[:user].data_path}"
+    data_path = "#{settings.root}/res/storage/#{user.data_path}"
 
     {
       name: user.username,
@@ -52,8 +49,7 @@ class ClientController < ApplicationController
   end
 
   post '/user/passwd' do
-    user = request.env["REMOTE_USER"]
-    user = session[:user] = session[:user] || User[user]
+    user = session[:user]
 
     new_pswd = params['new_pswd'] || ''
 
@@ -71,10 +67,7 @@ class ClientController < ApplicationController
   end
 
   post '/mtime' do
-    user = request.env["REMOTE_USER"]
-    session[:user] = session[:user] || User[user]
-
-    session[:user].update(last_visited: Time.now.to_i * 1000)
+    session[:user].update(last_visited: Time.now.to_i * 1000) unless session[:admin]
 
     (File.mtime("#{settings.root}/res/storage/#{session[:user].data_path}").to_f*1000).round.to_s
   end
@@ -84,10 +77,8 @@ class ClientController < ApplicationController
       halt 400, 'No file detected.'
     end
     tempfile = params[:file][:tempfile]
-    user = request.env["REMOTE_USER"]
-    session[:user] = session[:user] || User[user]
 
-    session[:user].update(last_updated: Time.now.to_i * 1000)
+    session[:user].update(last_updated: Time.now.to_i * 1000) unless session[:admin]
 
     target_path = "#{settings.root}/res/storage/#{session[:user].data_path}"
 

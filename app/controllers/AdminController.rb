@@ -7,8 +7,8 @@ class AdminController < ApplicationController
     set :public_folder, "#{settings.root}/public/admin"
   end
 
-  use Rack::Auth::Basic, "Restricted Area" do |user, pass|
-    User.where(username: user, password: pass).where{status >= 99}.first
+  before do
+    authenticate!(99)
   end
 
   get '/?' do

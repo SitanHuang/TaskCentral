@@ -1,6 +1,9 @@
 function Backend() {
   let that = this;
 
+  let switchUser = new URL(location.href).searchParams.get("su");
+  switchUser = switchUser ? encodeURIComponent(switchUser) : undefined;
+
   let fail = function (jqXHR, textStatus, errorThrown) {
     alert(`Sync failed - （${textStatus}: ${errorThrown}）`);
     window.location.href = 'about:blank';
@@ -18,10 +21,10 @@ function Backend() {
   this.init = function () {
     console.log('Retreiving data');
     let promise = new Promise(function (resolve, reject) {
-      $.post('user/info').fail(fail).done(function (user_data) {
+      $.post('user/info' + (switchUser ? `?su=${switchUser}` : '')).fail(fail).done(function (user_data) {
         that.user = JSON.parse(user_data);
 
-        $.get('storage/data?y=' + new Date().getTime()).fail(fail).done(
+        $.get('storage/data?y=' + new Date().getTime() + (switchUser ? `&su=${switchUser}` : '')).fail(fail).done(
           function (data) {
             try {
               that.data = JSON.parse(data);
@@ -63,7 +66,7 @@ function Backend() {
 
   this.update_mtime = function () {
     let promise = new Promise(function (resolve, reject) {
-      $.post('mtime?y=' + new Date().getTime()).fail(fail).done(
+      $.post('mtime?y=' + new Date().getTime() + (switchUser ? `&su=${switchUser}` : '')).fail(fail).done(
         function (mtime) {
           console.debug('local mtime:server mtime = ' + that.mtime + ':' + mtime);
           resolve(mtime);
@@ -100,13 +103,15 @@ function Backend() {
         let file = new File([ blob ], 'data.json');
         let fd = new FormData();
         fd.append('file', file, 'data.json');
+        if (switchUser)
+          fd.append('su', switchUser);
 
         $.ajax({
             type: "POST",
             url: 'overwrite',
             data: fd,
             processData: false,
-            contentType: false,
+            contentType: false
         }).fail(fail).done(function (response) {
           response = JSON.parse(response);
           if (response.status != "ok") {
