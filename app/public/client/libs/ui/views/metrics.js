@@ -654,7 +654,7 @@ var ui_metrics_inject_tasks;
     const deltaElem = document.querySelector("#rank-up-overlay .arrow .delta");
 
     const delta = new_rank.index - old_rank.index;
-    deltaElem.textContent = (delta > 0 ? '+' : '') + delta;
+    deltaElem.textContent = delta ? ((delta > 0 ? '+' : '') + delta) : '';
     deltaElem.className = delta > 0 ? 'delta pos' : 'delta neg';
     deltaElem.style.opacity = '0';
     deltaElem.style.transition = '';
