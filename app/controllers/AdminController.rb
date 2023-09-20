@@ -11,7 +11,12 @@ class AdminController < ApplicationController
     authenticate!(99)
   end
 
-  get '/?' do
+  # asset paths may not work correctly without the "/"
+  get '' do
+    redirect to('/')
+  end
+
+  get '/' do
     send_file "#{settings.root}/views/admin/index.html"
   end
 

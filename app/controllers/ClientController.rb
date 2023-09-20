@@ -11,6 +11,7 @@ class ClientController < ApplicationController
     authenticate!(1)
   end
 
+  # asset paths may not work correctly without the "/"
   get '' do
     redirect to('/')
   end
