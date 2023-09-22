@@ -4,13 +4,17 @@ let _home_button;
 let _home_init;
 let _home_proj_form;
 
-function ui_menu_select_home() {
+function ui_menu_select_home(_resetForm) {
   _home_con = $('.content-container > div.home');
   _home_addForm = $('#add-form');
+  _home_addForm.find('input[name=name]').unbind('focus');
   _home_button = $('#home-mode-button').text(HOME_MODE);
-  _home_addForm[0].reset();
-  _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
-  // ^ sliders should automatically go to center
+
+  if (_resetForm) {
+    _home_addForm[0].reset();
+    _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
+    // ^ sliders should automatically go to center
+  }
 
   if (_selected_task)
     ui_detail_select_task(_selected_task);
@@ -24,9 +28,15 @@ function ui_menu_select_home() {
 
   ui_filter_update_holders(target_provider, callback_provider);
 
-  setTimeout(() => {
-    _home_addForm.removeClass('focus-within');
-  }, 1);
+  _home_addForm.find('input[name=name]').bind('focus', () => {
+    ui_home_add_input_focus();
+  });
+
+  if (_resetForm) {
+    setTimeout(() => {
+      _home_addForm.removeClass('focus-within');
+    }, 2);
+  }
 }
 
 // =========================================
@@ -258,7 +268,9 @@ function ui_home_add_trigger() {
   });
   task_set(task);
 
-  ui_menu_select_home();
+  _home_addForm.find('input').val('').change(); // to trigger all listeners
+
+  ui_menu_select_home(true);
 }
 
 function ui_home_mode_select() {
