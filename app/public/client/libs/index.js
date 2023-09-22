@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20230921';
+const RELEASE_DATE = '20230922';
 
 const RELEASE_NOTES = `
 ### RELEASE NOTES ###
-1. Fix flickering add form on menu switch
+1. All passwords migrated to bcrypt hashing. Admin will no longer be able to see user passwords.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

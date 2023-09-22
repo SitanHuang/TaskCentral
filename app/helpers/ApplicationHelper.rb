@@ -1,8 +1,14 @@
+require 'bcrypt'
+
 module ApplicationHelper
   # For every single request, we check database
   # (if password is changed, user should immediately be logged out)
   def authenticated_user(user, pass, min_status = 1)
-    User.where(username: user, password: pass).where{|u| u.status >= min_status}.first
+    return session[:user] if session[:user] && session[:user].username == user
+
+    user = User.where(username: user).where{|u| u.status >= min_status}.first
+
+    user if user && BCrypt::Password.new(user.password) == pass
   end
 
   def halt_unauthorized
@@ -23,7 +29,7 @@ module ApplicationHelper
         # Check if request has "su" parameter and user is root
         if params["su"] && !params["su"].empty?
           halt_unauthorized unless session[:admin]
-          
+
           switch_user = User[params["su"]]
 
           halt_unauthorized unless switch_user

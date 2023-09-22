@@ -61,7 +61,10 @@ class ClientController < ApplicationController
     elsif !(new_pswd =~ /[A-Z]/ && new_pswd =~ /[a-z]/ && new_pswd =~ /\d/ && new_pswd =~ /[^\w\s]/)
       'Password should contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
     else
-      user.update(password: new_pswd)
+      encrypted_password = BCrypt::Password.create(new_pswd)
+      user.update(password: encrypted_password)
+
+      session[:user] = nil
 
      'ok'
     end
