@@ -646,7 +646,7 @@ function _ui_query_filter() {
 
 $(window).click(function() {
   if (!$('#modal-home-new-proj').hasClass('is-open'))
-    _home_addForm.removeClass('focus-within');
+    _home_addForm?.removeClass('focus-within');
 });
 
 $('#add-form').click(function(event){

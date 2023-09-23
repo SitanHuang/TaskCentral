@@ -8,16 +8,17 @@ const COMP_ELO_RANGES = [
   { lower: 0.843, upper: 0.862, color: '#c4921d', rank: "Organizer Elite" },
   { lower: 0.862, upper: 0.881, color: '#06b319', rank: "Specialist I" },
   { lower: 0.881, upper: 0.900, color: '#06b319', rank: "Specialist II" },
-  { lower: 0.900, upper: 0.919, color: '#06b319', rank: "Specialist III" },
+  { lower: 0.900, upper: 0.919, color: '#06b319', rank: "Specialist Elite" },
   { lower: 0.919, upper: 0.938, color: '#2454e5', rank: "Expert Tasker I" },
   { lower: 0.938, upper: 0.957, color: '#2454e5', rank: "Expert Tasker II" },
-  { lower: 0.957, upper: 0.979, color: '#2454e5', rank: "Elite Strategist I" },
-  { lower: 0.979, upper: 1.002, color: '#2454e5', rank: "Elite Strategist II" },
-  { lower: 1.002, upper: 1.029, color: '#68149d', rank: "Task Champion" },
-  { lower: 1.029, upper: 1.063, color: '#68149d', rank: "Task Overlord" },
-  { lower: 1.063, upper: 1.112, color: '#68149d', rank: "Supreme Task Overlord" },
-  { lower: 1.112, upper: 1.300, color: '#68149d', rank: "Task Paragon" }
-].map((x, i) => { x.lower -= 0.2; x.upper -= 0.2; x.index = i; return x; });
+  { lower: 0.957, upper: 0.979, color: '#2454e5', rank: "Expert Tasker III" },
+  { lower: 0.979, upper: 1.002, color: '#68149d', rank: "Elite Strategist I" },
+  { lower: 1.002, upper: 1.029, color: '#68149d', rank: "Elite Strategist II" },
+  { lower: 1.029, upper: 1.063, color: '#68149d', rank: "Elite Strategist III" },
+  { lower: 1.063, upper: 1.118, color: '#68149d', rank: "Task Overlord" },
+  { lower: 1.118, upper: 1.190, color: '#68149d', rank: "Task Champion" },
+  { lower: 1.190, upper: 1.300, color: '#68149d', rank: "Task Paragon" }
+].map((x, i) => { x.lower -= 0.15; x.upper -= 0.15; x.index = i; return x; });
 
 const COMP_ELO_NAMES = COMP_ELO_RANGES.map(x => x.rank);
 
