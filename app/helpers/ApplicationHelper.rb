@@ -8,11 +8,12 @@ module ApplicationHelper
 
     user = User.where(username: user).where{|u| u.status >= min_status}.first
 
-    user if user && BCrypt::Password.new(user.password) == pass
+    user if user && user.authenticate(pass)
   end
 
   def halt_unauthorized
     session[:admin] = false
+    
     response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
     throw(:halt, [401, "Unauthorized"])
   end
