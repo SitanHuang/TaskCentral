@@ -92,6 +92,9 @@ class ClientController < ApplicationController
       return "{ \"status\": \"failed\", \"msg\": \"File size #{current_size / 1024} KiB > user quota of #{quota / 1024} KiB\" }"
     end
 
+    # for future diffing purposes
+    FileUtils.cp(target_path, target_path + '.swp')
+
     FileUtils.cp(tempfile.path, target_path)
 
     "{ \"status\": \"ok\", \"quota\":  #{quota}, \"size\": #{current_size}}"
