@@ -15,8 +15,8 @@ const COMP_ELO_RANGES = [
   { lower: 0.979, upper: 1.002, color: '#68149d', rank: "Elite Strategist I" },
   { lower: 1.002, upper: 1.029, color: '#68149d', rank: "Elite Strategist II" },
   { lower: 1.029, upper: 1.063, color: '#68149d', rank: "Elite Strategist III" },
-  { lower: 1.063, upper: 1.118, color: '#68149d', rank: "Task Overlord" },
-  { lower: 1.118, upper: 1.190, color: '#68149d', rank: "Task Champion" },
+  { lower: 1.063, upper: 1.118, color: '#68149d', rank: "Task Champion" },
+  { lower: 1.118, upper: 1.190, color: '#68149d', rank: "Task Legend" },
   { lower: 1.190, upper: 1.300, color: '#68149d', rank: "Task Paragon" }
 ].map((x, i) => { x.lower -= 0.15; x.upper -= 0.15; x.index = i; return x; });
 
