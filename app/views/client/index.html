@@ -71,6 +71,9 @@
           <li class="pure-menu-item">
             <a href="#" data-menu="settings" class="pure-menu-link">User</a>
           </li>
+          <li class="pure-menu-item">
+            <a href="#" data-menu="import" class="pure-menu-link">Import</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -527,6 +530,28 @@
           </button>
         </div>
       </div>
+
+      <div class="import pad" oncontextmenu="return false;">
+        <div class="pad">
+          <h3>Batch Import Tasks</h3>
+          <h4>Instructions</h4>
+          <ol>
+            <li><a href="assets/template.xlsx" target="_blank">Download this Excel template</a></li>
+            <li>Fill out the spreadsheet with your task information. <b>Make sure to use the EXACT formats (ex. MM/DD/YYYY) specified by the example tasks.</b></li>
+            <li>Once you are satisfied, select and copy all cells (Ctrl-A, Ctrl-C).</li>
+            <li>
+              Paste (Ctrl-V) into the text box below:<br>
+              <textarea class="import-data font-mono" style="display: block;width: min(100%, 1024px);min-height: 5em;"></textarea>
+              <br>
+              <button class="pure-button"
+                type="button"
+                onclick="ui_import_tsv()">
+                Import
+              </button>
+            </li>
+          </ol>
+        </div>
+      </div>
     </div>
 
     <div class="bottom-bar" oncontextmenu="return false">
@@ -852,21 +877,22 @@
     <script src="libs/fuzzy.js?releaseDate=20230914R2"></script>
     <script src="libs/query.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/ui/dialog.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/dialog.js?releaseDate=20230924"></script>
     <script src="libs/ui/filter.js?releaseDate=20230914R2"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20230923"></script>
     <script src="libs/ui/views/details.js?releaseDate=20230914R2"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20230914R2"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230914R2"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20230924"></script>
     <script src="libs/ui/views/forecast.js?releaseDate=20230917"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20230917"></script>
+    <script src="libs/ui/views/import.js?releaseDate=20230924R1"></script>
 
     <script src="libs/ui/layout.js?releaseDate=20230914R2"></script>
     <script src="libs/ui/timer.js?releaseDate=20230916"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20230923R2"></script>
+    <script src="libs/index.js?releaseDate=20230924"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20230917"></script>

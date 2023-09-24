@@ -1,16 +1,19 @@
-async function ui_confirm(message="") {
-  return await _ui_raise_dialog({ message, cancel: true });
+async function ui_confirm(message="", opts={}) {
+  return await _ui_raise_dialog(Object.assign({ message, cancel: true }, opts));
 }
 
-async function ui_alert(message = "") {
-  await _ui_raise_dialog({ message, cancel: false });
+async function ui_alert(message = "", opts={}) {
+  await _ui_raise_dialog(Object.assign({ message, cancel: false }, opts));
 }
 
 async function _ui_raise_dialog({
   message = "",
   cancel  = true,
+  wide    = false
   // TODO: input = false
 } = {}) {
+  $("#modal-ui-dialog").toggleClass('wide', !!wide);
+
   $("#modal-ui-dialog .modal__btn.cancel").toggle(!!cancel);
 
   return new Promise(resolve => {
@@ -30,7 +33,7 @@ async function _ui_raise_dialog({
 
     function closeModalAndResolve() {
       MicroModal.close('modal-ui-dialog');
-      
+
       primaryBtn.onclick = null;
       closeBtn.onclick = null;
 

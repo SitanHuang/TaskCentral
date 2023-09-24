@@ -1,14 +1,14 @@
 let _settings_con;
 
 function ui_menu_settings_reset_primaryColor() {
-  _home_con = $('.content-container > div.settings');
-  _home_con.find('.user-form input[name="app-primary-color"]')
+  _settings_con = $('.content-container > div.settings');
+  _settings_con.find('.user-form input[name="app-primary-color"]')
     .val(APP_DEFAULT_PRIMARY_COLOR).change();
 }
 
 function ui_menu_passwd() {
-  _home_con = $('.content-container > div.settings');
-  const new_pswd = _home_con.find('.user-form input[name="new-password"]').val();
+  _settings_con = $('.content-container > div.settings');
+  const new_pswd = _settings_con.find('.user-form input[name="new-password"]').val();
 
   $.post('user/passwd', { new_pswd }).fail(function () {
     ui_alert('Failed to reach remote server.');
@@ -24,7 +24,7 @@ function ui_menu_passwd() {
 }
 
 function ui_menu_select_settings() {
-  _home_con = $('.content-container > div.settings');
+  _settings_con = $('.content-container > div.settings');
 
   zip.configure({
     // our downloaded library is a reduced version
@@ -34,8 +34,8 @@ function ui_menu_select_settings() {
 
   let percUsed = Math.round(10000 * back.user.size / back.user.quota * 100) / 10000;
 
-  let color = _home_con.find('.user-form input[name="app-primary-color"]');
-  let pomodoro = _home_con.find('.user-form input[name="app-pomodoro-time"]');
+  let color = _settings_con.find('.user-form input[name="app-primary-color"]');
+  let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
 
   // unbind
   color[0].onchange = function () {};
@@ -61,13 +61,13 @@ function ui_menu_select_settings() {
     back.set_dirty();
   };
 
-  _home_con.find('.user-form input[name="username"]').val(back.user.name);
-  _home_con.find('.user-form input[name="permission"]').val(back.user.status);
-  _home_con.find('.user-form progress[name="quota"]')
+  _settings_con.find('.user-form input[name="username"]').val(back.user.name);
+  _settings_con.find('.user-form input[name="permission"]').val(back.user.status);
+  _settings_con.find('.user-form progress[name="quota"]')
     .attr("max", back.user.quota)
     .attr("value", back.user.size)
     .text(`${percUsed}%`);
-  _home_con
+  _settings_con
     .find('.user-form span[name="quota"]')
     .text(`${back.user.size} / ${back.user.quota} bytes (${percUsed}% full)`);
 }

@@ -1,11 +1,8 @@
-const RELEASE_DATE = '20230923R1';
+const RELEASE_DATE = '20230924';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Global rank recalibration
-2. Added more ranks to accomodate high elo users.
-3. Adjusted elo bell curve
-4. All passwords migrated to bcrypt hashing. Admin will no longer be able to see user passwords.
+1. Add batch import feature
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
