@@ -284,12 +284,14 @@ function ui_home_mode_select() {
   MicroModal.show('modal-home-mode');
 }
 
-function ui_home_mode_select_trigger(mode, q) {
-  window.onpopstate = null;
-  MicroModal.close('modal-home-mode');
+function ui_home_mode_select_trigger(mode, q, _resetInternal=false) {
+  if (!_resetInternal) {
+    window.onpopstate = null;
+    MicroModal.close('modal-home-mode');
 
-  localStorage.home_mode = mode;
-  localStorage.home_query = JSON.stringify(q);
+    localStorage.home_mode = mode;
+    localStorage.home_query = JSON.stringify(q);
+  }
 
   HOME_QUERY = JSON.parse(JSON.stringify(q)); // clone
   HOME_MODE = mode;

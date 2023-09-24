@@ -87,6 +87,10 @@
               onclick="ui_home_mode_select()">
               default
             </button>
+            <button class="pure-button"
+              onclick="ui_home_mode_select_trigger('ready', HOME_READY_QUERY, true)">
+              Reset
+            </button>
             <button class="pure-button" onclick="ui_filter_open(HOME_QUERY, ui_home_update_list)">
               Filter <i class="fa fa-filter"></i>
             </button>
@@ -593,7 +597,7 @@
               <div class="pure-g colors-container"></div>
               <div class="pure-g update-proj">
                 <div class="pure-u-1">
-                  <p> Note: This will move all tasks from project Old Name to project New Name. Project Old Name is then deleted (if the names are different). It is possible to have New Name be empty (no project) or an existing project.</p>
+                  <p> Note: This will move all tasks from project Old Name to project New Name. Project Old Name is then deleted (if the names are different). It is possible to have New Name be empty (no project) or an existing project. If you want to delete an existing project, rename the project to empty.</p>
                 </div>
               </div>
             </main>
@@ -880,7 +884,7 @@
     <script src="libs/ui/dialog.js?releaseDate=20230924"></script>
     <script src="libs/ui/filter.js?releaseDate=20230914R2"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20230923"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20230924"></script>
     <script src="libs/ui/views/details.js?releaseDate=20230914R2"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20230914R2"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230914R2"></script>
