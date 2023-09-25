@@ -1,8 +1,9 @@
-const RELEASE_DATE = '20230924';
+const RELEASE_DATE = '20230925';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Add batch import feature
+1. Tune Skill Group algorithms
+2. Add batch import feature
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
