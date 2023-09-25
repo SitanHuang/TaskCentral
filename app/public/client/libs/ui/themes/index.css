@@ -207,6 +207,7 @@ gantt-header date {
 .info-card .info-action:first-child,
 .metrics .graph-actions,
 .metrics .graph-container,
+header.stats,
 .profile-con.pure-g {
   border-bottom: var(--menu-border);
 }
