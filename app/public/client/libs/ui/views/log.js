@@ -60,17 +60,17 @@ LOG_QUERY = JSON.parse(JSON.stringify(LOG_DEFAULT_QUERY));
 // date is reset after each render
 // user interaction for each panel
 // shouldn't trigger re-render of the entirety
-function ui_log_render() {
+async function ui_log_render() {
   console.time('Re-render log');
 
-  _ui_log_render_calendar();
+  await _ui_log_render_calendar();
   _ui_log_render_daily_render();
 
   console.timeEnd('Re-render log');
 }
 
 LOG_CAL_HEIGHT = 50 * 24;
-function _ui_log_render_calendar(stamp, chevron) {
+async function _ui_log_render_calendar(stamp, chevron) {
   stamp = stamp || LOG_QUERY.queries[0].from;
   let diff = LOG_QUERY.queries[0].to - LOG_QUERY.queries[0].from;
 
@@ -88,7 +88,7 @@ function _ui_log_render_calendar(stamp, chevron) {
 
   // if more than 1 month
   if (1 < (diff) / 2.592e+9 && ! chevron) {
-    if (!confirm('Calendar panel: Query range is too big. App might freeze. Continue?'))
+    if (!(await ui_confirm(`Calendar panel: Query range is too big (${timeIntervalStringShort(diff, 0, Infinity)}). App might freeze. Continue?`)))
       return false;
   }
 

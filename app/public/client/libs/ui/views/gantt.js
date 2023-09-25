@@ -54,16 +54,18 @@ GANTT_QUERY = JSON.parse(JSON.stringify(GANTT_DEFAULT_QUERY));
 GANTT_DAY_WIDTH = 40; // px
 
 // should only be executed on initial load/query change
-function ui_gantt_render() {
+async function ui_gantt_render() {
   console.time('Re-render gantt');
 
   let container = _gantt_con.find('gantt-container');
   let header = container.find('gantt-header').html('');
   let graph = container.find('gantt-graph').html('');
 
+  const diff = GANTT_QUERY.queries[0].to - GANTT_QUERY.queries[0].from;
+
   // if more than 1 year
-  if (1 < (GANTT_QUERY.queries[0].to - GANTT_QUERY.queries[0].from) / 3.154e+10) {
-    if (!confirm('Query range is too big. App might freeze. Continue?'))
+  if (1 < diff / 3.154e+10) {
+    if (!(await ui_confirm(`Query range is too big (${timeIntervalStringShort(diff, 0, Infinity)}). App might freeze. Continue?`)))
       return false;
   }
 
