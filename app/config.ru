@@ -3,6 +3,10 @@ require 'sequel'
 require 'json'
 require 'tilt/erb'
 
+require 'rufus/scheduler'
+
+$CRON_SCHEDULER = Rufus::Scheduler.new
+
 alias :original_map :map
 def map path, controller
   eval(
@@ -24,7 +28,8 @@ Dir.chdir("#{File.dirname __FILE__}") do
   (Dir.glob('./helpers/*.rb') +
   ['./controllers/ApplicationController.rb'] +
   Dir.glob('./models/*.rb') +
-  Dir.glob('./controllers/*.rb')).each do |file|
+  Dir.glob('./controllers/*.rb') +
+  Dir.glob('./cron/**/*.rb')).each do |file|
     require file
   end
 end

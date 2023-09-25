@@ -24,9 +24,9 @@ class AdminController < ApplicationController
     send_file File.join("#{settings.root}/public/client", filepath)
   end
 
-  post '/userStats' do
-    QUERY_LIMIT = 100 # users
+  QUERY_LIMIT = 100 # number of users
 
+  post '/userStats' do
     data = []
 
     User.where{last_updated > 0}.order(Sequel.desc(:last_updated)).limit(100).each do |user|

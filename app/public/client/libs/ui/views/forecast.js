@@ -41,7 +41,7 @@ FORECAST_QUERY = JSON.parse(JSON.stringify(FORECAST_DEFAULT_QUERY));
 
 
 // should only be executed on initial load/query change
-function ui_forecast_render() {
+async function ui_forecast_render() {
   console.time('Re-render forecast');
 
   let width = window.innerWidth - 50;
@@ -53,9 +53,11 @@ function ui_forecast_render() {
   <div id="forecastGraph" style="width: ${width}px;height: ${height}px"></div>
   `);
 
-  // if more than 1 year
-  if (1 < (FORECAST_QUERY.queries[0].to - FORECAST_QUERY.queries[0].from) / 3.154e+10) {
-    if (!confirm('Query range is too big. App might freeze. Continue?'))
+  const diff = FORECAST_QUERY.queries[0].to - FORECAST_QUERY.queries[0].from;
+
+  // if more than 2 year
+  if (2 < diff / 3.154e+10) {
+    if (!(await ui_confirm(`Query range is too big ${timeIntervalStringShort(diff, 0, Infinity)}. App might freeze. Continue?`)))
       return false;
   }
 
