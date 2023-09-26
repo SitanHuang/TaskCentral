@@ -121,10 +121,20 @@ function task_calc_importance(task) {
   if (task.earliest && now < task.earliest)
     days_left *= 100;
 
+  days_left = Math.pow(days_left, 2);
+
   weight /= days_left;
+
   // 0 is same as null
-  if (task.progress)
-    weight *= Math.max(0.05, (100 - task.progress) / 100);
+  if (task.progress) {
+    const p = Math.max(Math.min(task.progress, 100), 0);
+
+    weight *= (
+      Math.exp(-p / 50) + // exponential decay
+      2 / (104 - p) - // goes back to .60 after 85% progress
+      0.02
+    );
+  }
 
   return weight * priority + priority;
 }
