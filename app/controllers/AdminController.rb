@@ -29,7 +29,22 @@ class AdminController < ApplicationController
   post '/userStats' do
     data = []
 
-    User.where{last_updated > 0}.order(Sequel.desc(:last_updated)).limit(100).each do |user|
+    exclude_regex = params['exclude_users'] || ''
+    include_regex = params['include_users'] || ''
+
+    dataset = User
+      .where{last_updated > 0}
+      .order(Sequel.desc(:last_updated))
+      .limit(100)
+
+    exclude_regex.split(",").each do |x|
+      dataset = dataset.exclude(Sequel.like(:username, x, case_insensitive: true))
+    end
+    include_regex.split(",").each do |x|
+      dataset = dataset.where(Sequel.like(:username, x, case_insensitive: true))
+    end
+
+    dataset.each do |user|
       begin
         target_path = "#{settings.root}/res/storage/#{user.data_path}"
 

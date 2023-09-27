@@ -64,7 +64,13 @@ function _admin_userlist_fetch() {
 
   _admin_userlist_data = null;
 
-  $.post("./userStats", function (data) {
+  $.post(
+    "./userStats",
+    {
+      exclude_users: $('#excludeUsersRegex').val(),
+      include_users: $('#includeUsersRegex').val(),
+    },
+    function (data) {
     if (_admin_userlist_data_raw != data)
       beep();
 
