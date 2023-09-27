@@ -19,7 +19,13 @@ class User < Sequel::Model(:users)
   end
 
   def passwd!(new_pass)
-    self.update(password: BCrypt::Password.create(new_pass))
+    new_pass = if self.is_root?
+      BCrypt::Password.create(new_pass, cost: 12)
+    else
+      # default value for others
+      BCrypt::Password.create(new_pass)
+    end
+    self.update(password: new_pass)
   end
 
   def quota

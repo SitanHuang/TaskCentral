@@ -24,7 +24,6 @@
     <script src="libs/sortable.min.js"></script>
 
     <script src="libs/commons.js"></script>
-    <script src="libs/live-userlist.js"></script>
   </head>
   <body>
     <div class="live-userlist">
@@ -36,7 +35,7 @@
       <input type="range" id="volumeSlider" min="1" max="100" value="80">
       <br>
       <input type="text" id="includeUsersRegex" placeholder="username inclusion wildcards, separated by comma">
-      <input type="text" id="excludeUsersRegex" placeholder="username exclusion wildcards, separated by comma">
+      <input type="text" id="excludeUsersRegex" placeholder="username exclusion wildcards, separated by comma" value="sit%">
       <pre class="status"></pre>
       <table class="sortable">
         <thead>
@@ -54,6 +53,8 @@
         <tbody></tbody>
       </table>
     </div>
+
+    <script src="libs/live-userlist.js"></script>
   </body>
 </html>
 

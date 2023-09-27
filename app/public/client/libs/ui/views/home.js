@@ -371,7 +371,7 @@ const HOME_HIDDEN_QUERY = {
   }]
 };
 
-HOME_QUERY = JSON.parse(localStorage?.home_query || JSON.stringify(HOME_DEFAULT_QUERY));
+HOME_QUERY = JSON.parse(localStorage?.home_query || JSON.stringify(HOME_READY_QUERY));
 
 let _home_task_list;
 

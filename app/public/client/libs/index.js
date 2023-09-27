@@ -1,9 +1,10 @@
-const RELEASE_DATE = '20230927R1';
+const RELEASE_DATE = '20230927R2';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Make home screen datepicker more intuitive.
-2. Fixed performance bottleneck and increased server max concurrent users by 30 times.
+1. Fix "Ready" as default modeset not working for new users
+2. Make home screen datepicker more intuitive.
+3. Fixed performance bottleneck and increased server max concurrent users by 30 times.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

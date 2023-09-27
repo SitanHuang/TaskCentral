@@ -3,6 +3,7 @@ require 'sinatra/static_assets'
 require 'sinatra/url_for'
 require 'sqlite3'
 require 'securerandom'
+require 'bcrypt'
 
 class ApplicationController < Sinatra::Base
   # for image_tag stylesheet_link_tag javascript_script_tag link_to link_favicon_tag
@@ -33,8 +34,14 @@ class ApplicationController < Sinatra::Base
   end
   configure :production do
     set :database, Sequel.connect("sqlite://#{settings.root}/res/production.db", encoding: 'utf8')
+
+    # Let's trade some security for performance here,
+    # we're running a tiny server after all
+    BCrypt::Engine::DEFAULT_COST = 6
   end
   configure :development do
     set :database, Sequel.connect("sqlite://#{settings.root}/res/development.db", encoding: 'utf8')
+
+    BCrypt::Engine::DEFAULT_COST = 1
   end
 end
