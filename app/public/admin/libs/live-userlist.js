@@ -5,6 +5,14 @@ let _admin_userlist_time = null;
 let _admin_userlist_proctime = null;
 let _admin_userlist_intervalid = null;
 
+$('#excludeUsersRegex').val(localStorage.admin_excludeUsersRegex || ''),
+$('#includeUsersRegex').val(localStorage.admin_includeUsersRegex || ''),
+
+$('#excludeUsersRegex, #includeUsersRegex').change(() => {
+  localStorage.admin_excludeUsersRegex = $('#excludeUsersRegex').val();
+  localStorage.admin_includeUsersRegex = $('#includeUsersRegex').val();
+});
+
 function _admin_userlist_rerender() {
   $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago. ${_admin_userlist_proctime}ms`);
 
