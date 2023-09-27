@@ -9,7 +9,7 @@
 
 .metrics > div .info-card .info-action {
   position: sticky;
-  top: 0;
+  top: -1px;
   background: white;
   z-index: 1;
 }
@@ -109,7 +109,7 @@
 
 .metrics .profile-con .stat span {
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 15px;
   font-weight: 600;
   padding-top: 8px;
   padding-bottom: 5px;

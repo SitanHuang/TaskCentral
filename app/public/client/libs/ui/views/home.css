@@ -189,9 +189,29 @@
 }
 
 #add-form .input-row {
-  height: 1.9rem;
+  height: 34px;
   display: flex;
   flex-flow: row nowrap;
+}
+
+#add-form.focus-within .input-row {
+  height: 42px;
+  line-height: 42px;
+}
+
+#add-form .input-row > * {
+  display: block;
+  line-height: 35px;
+  white-space: nowrap;
+  transition: all 230ms ease;
+}
+
+#add-form.focus-within .input-row > * {
+  line-height: 42px;
+}
+
+#add-form.focus-within .input-row {
+  line-height: 42px;
 }
 
 #add-form .input-row > .input-wrapper {
@@ -260,12 +280,6 @@
   text-align: center;
   flex: 0 0 33px;
   opacity: 0.25;
-}
-
-#add-form .input-row > * {
-  display: block;
-  line-height: 35px;
-  white-space: nowrap;
 }
 
 #add-form .date-due {

@@ -19,14 +19,14 @@
 
 .log daily .info-action {
   position: sticky;
-  top: 0;
+  top: -1px;
   background: white;
   z-index: 6;
 }
 
 .log cal .info-action {
   position: sticky;
-  top: 0;
+  top: -1px;
   z-index: 6;
 }
 
