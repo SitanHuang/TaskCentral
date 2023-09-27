@@ -2,9 +2,11 @@
 let _admin_userlist_data_raw = null;
 let _admin_userlist_data = null;
 let _admin_userlist_time = null;
+let _admin_userlist_proctime = null;
+let _admin_userlist_intervalid = null;
 
 function _admin_userlist_rerender() {
-  $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago`);
+  $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago. ${_admin_userlist_proctime}ms`);
 
   if (!Array.isArray(_admin_userlist_data))
     return;
@@ -64,6 +66,7 @@ function _admin_userlist_fetch() {
 
   _admin_userlist_data = null;
 
+  _admin_userlist_proctime = timestamp();
   $.post(
     "./userStats",
     {
@@ -77,6 +80,7 @@ function _admin_userlist_fetch() {
     _admin_userlist_data = JSON.parse(_admin_userlist_data_raw = data);
 
     _admin_userlist_time = timestamp();
+    _admin_userlist_proctime = timestamp() - _admin_userlist_proctime;
 
     _admin_userlist_rerender();
 
@@ -85,7 +89,10 @@ function _admin_userlist_fetch() {
 }
 
 function admin_userlist_start() {
-  setInterval(_admin_userlist_rerender, 593); // prime number
+  if (_admin_userlist_intervalid)
+    clearInterval(_admin_userlist_intervalid);
+
+  _admin_userlist_intervalid = setInterval(_admin_userlist_rerender, 593); // prime number
 
   _admin_userlist_fetch();
 }
