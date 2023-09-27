@@ -23,6 +23,33 @@ class AdminController < ApplicationController
     send_file File.join("#{settings.root}/public/client", filepath)
   end
 
+  post '/addUser' do
+    status = params[:status].to_i
+    username = params[:username]
+    password = params[:password]
+
+    if status >= 1 && status < 99 &&
+      username && !username.empty? &&
+      password && !password.empty?
+
+      return "User exists." if User[username]
+
+      user = User.new
+      user.status = status
+      user.username = username
+      user.password = 'placeholder'
+      user.create = (Time.now.to_f * 1000).to_i
+      user.save
+
+      # convert to bcrypt
+      user.passwd!(password)
+
+      'ok'
+    else
+      throw(:halt, [400, "Invalid fields"])
+    end
+  end
+
   QUERY_LIMIT = 100 # number of users
 
   post '/userStats' do

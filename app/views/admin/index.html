@@ -53,8 +53,16 @@
         <tbody></tbody>
       </table>
     </div>
+    <div class="add-user">
+      <h1>Add user</h1>
+      <input type="text" placeholder="username" id="addUsername">
+      <input type="text" placeholder="password" id="addPassword">
+      <input type="number" step="1" min="1" max="98" placeholder="status" id="addStatus">
+      <button type="button" onclick="admin_add_user_submit()">Add</button>
+    </div>
 
     <script src="libs/live-userlist.js"></script>
+    <script src="libs/add-user.js"></script>
   </body>
 </html>
 
