@@ -216,6 +216,35 @@
   margin-top: 0.4rem;
 }
 
+#add-form .datepicker {
+  transition: all 300ms ease;
+  width: 33px;
+  height: 35px;
+}
+
+#add-form .datepicker > input[type="date"]{
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  bottom: 0;
+}
+
+#add-form.focus-within .datepicker {
+  color: var(--button-color);
+  background-color: var(--button-bg);
+  border-radius: 4px;
+  padding: 5px;
+  display: block;
+  line-height: 40px;
+  height: 42px;
+  width: 44px;
+  margin-right: 2px;
+}
+
+#add-form.focus-within .datepicker:hover {
+  background-image: linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1));
+}
+
 #add-form .input-row > .input-wrapper > input {
   width: 100%;
   padding: 0;

@@ -40,9 +40,10 @@ class AdminController < ApplicationController
     exclude_regex.split(",").each do |x|
       dataset = dataset.exclude(Sequel.like(:username, x, case_insensitive: true))
     end
-    include_regex.split(",").each do |x|
-      dataset = dataset.where(Sequel.like(:username, x, case_insensitive: true))
+    include_conditions = include_regex.split(",").map do |x|
+      Sequel.like(:username, x, case_insensitive: true)
     end
+    dataset = dataset.where(Sequel.|(*include_conditions)) unless include_conditions.empty?
 
     dataset.each do |user|
       begin

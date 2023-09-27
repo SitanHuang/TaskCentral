@@ -248,6 +248,8 @@ button .fa{
 .datepicker {
   position: relative;
   user-select: none;
+  line-height: 35px;
+  cursor: pointer;
 }
 
 .datepicker > i.fa {
@@ -260,7 +262,7 @@ button .fa{
 }
 
 .datepicker > input[type="date"] {
-  position: relative;
+  position: absolute;
   width: 33px;
   height: 33px;
   opacity: 0;

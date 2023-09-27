@@ -16,6 +16,9 @@ function ui_menu_select_home(_resetForm) {
     // ^ sliders should automatically go to center
   }
 
+  // this binds the datepicker click listener
+  ui_home_add_date_changed();
+
   if (_selected_task)
     ui_detail_select_task(_selected_task);
   else if (_home_detail)
@@ -227,7 +230,7 @@ function ui_home_add_project_changed(input) {
 }
 
 function ui_home_add_date_changed(input) {
-  if (!input.value) {
+  if (!input?.value) {
     _ui_home_add_remove_date();
   } else {
     _ui_home_add_show_date();
@@ -235,7 +238,9 @@ function ui_home_add_date_changed(input) {
 }
 
 function _ui_home_add_remove_date() {
-  _home_addForm.find('.datepicker').show();
+  _home_addForm.find('.datepicker').show().unbind('click').bind('click', () => {
+    _home_addForm.find('.datepicker > input[type="date"]')[0].showPicker();
+  });
   _home_addForm.find('.date-due').hide();
 }
 

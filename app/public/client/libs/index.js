@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20230926';
+const RELEASE_DATE = '20230927';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Depreciation of task importance due to progress change is no longer linear; depreciation now accelerates in the beginning but reverses direction towards near-completion. It uses a hybrid heuristic that combines exponential decay and hyperbolic functions to strike a balance between task urgency and concurrency.
+1. Make home screen datepicker more intuitive.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
