@@ -3,7 +3,6 @@ require 'json'
 class ClientController < ApplicationController
   # mapped '/client'
   configure do
-    enable :sessions
     set :public_folder, "#{settings.root}/public/client"
   end
 

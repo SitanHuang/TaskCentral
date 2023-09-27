@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/static_assets'
 require 'sinatra/url_for'
 require 'sqlite3'
+require 'securerandom'
 
 class ApplicationController < Sinatra::Base
   # for image_tag stylesheet_link_tag javascript_script_tag link_to link_favicon_tag
@@ -21,7 +22,9 @@ class ApplicationController < Sinatra::Base
   configure do
     # don't enable logging?
     disable :logging
-    enable :session
+    use Rack::Session::Cookie, :key => 'rack.session',
+                               :path => '/',
+                               :secret => SecureRandom.hex(32)
 
     set :erb, {layout: :'layout/main'}
     set :clean_trace, true

@@ -3,7 +3,6 @@ require 'json'
 class AdminController < ApplicationController
   # mapped '/admin'
   configure do
-    enable :sessions
     set :public_folder, "#{settings.root}/public/admin"
   end
 

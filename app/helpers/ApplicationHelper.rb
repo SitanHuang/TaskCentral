@@ -13,7 +13,7 @@ module ApplicationHelper
 
   def halt_unauthorized
     session[:admin] = false
-    
+
     response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
     throw(:halt, [401, "Unauthorized"])
   end
