@@ -69,7 +69,7 @@ button .fa{
 }
 
 .content-container {
-  height: calc(100vh - 28px - 48px);
+  height: calc(100dvh - 28px - 48px);
   margin-top: 48px;
   width: 100vw;
   overflow-x: hidden;
@@ -95,7 +95,7 @@ button .fa{
 
   background-color: var(--app-primary-color);
   width: 100vw;
-  height: calc(100vh - 28px);
+  height: calc(100dvh - 28px);
   z-index: 100;
 
   opacity: 0;
@@ -176,19 +176,19 @@ button .fa{
   display: block;
   text-align: center;
   position: fixed;
-  top: calc(50vh - 1em);
+  top: calc(50dvh - 1em);
   width: 100vw;
 }
 
 #timer-container timer.pomodoro {
-  top: calc(50vh + 0.5em);
+  top: calc(50dvh + 0.5em);
   font-size: 2rem;
 }
 
 .bottom-bar {
-  position: fixed;
+  /*position: fixed;
   bottom: 0;
-  left: 0;
+  left: 0;*/
 
   background-color: var(--app-primary-color);
   width: 100vw;

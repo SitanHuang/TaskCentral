@@ -8,7 +8,7 @@
   left: 0;
 
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
 
   transition: all 300ms ease-in;
 
@@ -19,7 +19,7 @@
 #splash h1 {
   color: var(--app-primary-color);
   display: block;
-  margin: 40vh auto 0;
+  margin: 40dvh auto 0;
   width: 1em;
   text-align: center;
 }

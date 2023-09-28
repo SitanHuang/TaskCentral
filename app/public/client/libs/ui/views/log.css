@@ -72,7 +72,7 @@
 }
 
 .log cal .backdrop-scroll {
-  max-height: calc(100vh - 312px);
+  max-height: calc(100dvh - 312px);
   overflow-y: auto;
 }
 

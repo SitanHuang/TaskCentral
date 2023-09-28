@@ -24,7 +24,7 @@
   padding: 30px;
   max-width: min(500px, 90%);
   max-width: 500px;
-  max-height: 95vh;
+  max-height: 95dvh;
   border-radius: 4px;
   overflow-y: auto;
   box-sizing: border-box;

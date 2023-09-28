@@ -1,9 +1,9 @@
-const RELEASE_DATE = '20230928';
+const RELEASE_DATE = '20230928R1';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Reworked project editing UI.
-2. Various stylesheet fixes.
+1. Fixed viewport dynamic height issues in mobile.
+2. Reworked project editing UI.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
