@@ -506,3 +506,8 @@ header.stats stat {
 input::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
+
+.center-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
