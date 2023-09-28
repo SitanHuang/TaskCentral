@@ -259,6 +259,7 @@
   height: 42px;
   width: 44px;
   margin-right: 2px;
+  flex-shrink: 0;
 }
 
 #add-form.focus-within .datepicker:hover {
@@ -331,8 +332,34 @@
 #modal-home-new-proj.new-proj .update-proj,
 #modal-home-new-proj.update-proj .new-proj,
 .home .detail-row:not(.edit) .fa-xmark,
+.home .detail-row:not(.edit) project > i,
+.home .detail-row:not(.edit) project > sep,
 .home .detail-row.edit .fa-pen-to-square {
   display: none !important;
+}
+
+.home .detail-row.edit project > i {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 0.4em;
+  font-size: 0.8em;
+}
+.home .detail-row.edit project {
+  padding-right: 0.1em;
+}
+.home .detail-row.edit project > sep {
+  background: white;
+  height: inherit;
+  display: inline-block;
+  width: 1px;
+  opacity: 0.8;
+}
+.home .detail-row.edit project > sep:first-child {
+  margin-left: 0.3em;
+}
+
+.home .detail-row.edit project {
+  cursor: default;
 }
 
 .home .edit-projects-btn {
@@ -340,7 +367,7 @@
   cursor: pointer;
 }
 
-.home .detail-row.edit project {
+/* .home .detail-row.edit project {
   animation: tilt-shaking 0.9s cubic-bezier(0.4, 0.21, 1, 0.04) infinite;
 }
 
@@ -355,4 +382,4 @@
   37% { transform: rotate(-1deg); }
   50% { transform: rotate(0deg); }
   100% { transform: rotate(0deg); }
-}
+} */

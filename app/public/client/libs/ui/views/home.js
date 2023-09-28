@@ -59,23 +59,47 @@ function ui_home_add_input_focus() {
   }, 1);
 }
 
+let _ui_home_add_update_actions_keep_edit = false;
+
 function _ui_home_add_update_actions() {
   let detailRow = _home_addForm.find('.detail-row');
-  detailRow.removeClass('edit');
+
+  if (!_ui_home_add_update_actions_keep_edit)
+    detailRow.removeClass('edit');
+  _ui_home_add_update_actions_keep_edit = false
+
   let projects = _home_addForm.find('.detail-row .projects');
   projects.html('');
 
   Object.keys(back.data.projects)
     .sort((a, b) => back.data.projects[b].lastUsed - back.data.projects[a].lastUsed)
     .forEach(x => {
-      project_create_chip(x)
+      let proj = back.data.projects[x];
+      let chip = project_create_chip(x)
         .appendTo(projects)
         .click(() => {
           if (detailRow.hasClass('edit'))
-            _ui_home_project_raise_modal('ui_home_update_project_callback(_home_proj_form);', x);
+            return;
           else
             _home_addForm.find('input[name=project]').val(x).change();
         });
+      if (x != 'default') {
+        chip
+          .append(`<sep style="background: ${proj.fontColor}">&nbsp;</sep>`)
+          .append($(`<i class="fa-solid fa-gear edit"></i>`).click(() => {
+            _ui_home_project_raise_modal('ui_home_update_project_callback(_home_proj_form);', x);
+          }))
+          .append(`<sep style="background: ${proj.fontColor}">&nbsp;</sep>`)
+          .append($(`<i class="fa-solid fa-trash del"></i>`).click(() => {
+            ui_home_update_project_callback({
+              oldname: x,
+              name: '', // delete
+              color: x.color
+            });
+          }));
+      } else {
+        chip.css('padding-right', '0.3em', 'important');
+      }
     });
 
     _ui_home_create_add_new_proj_btn(projects, 'ui_home_add_project_callback(_home_proj_form);');
@@ -140,52 +164,66 @@ function _ui_home_project_raise_modal(onsubmit, oldname) {
 }
 
 async function ui_home_update_project_callback(form) {
-  form = $(form);
-  const oldname = form.find('input[name="old-name"]').val().trim();
-  let name = form.find('input[name=name]').val().trim();
+  let oldname, name, color;
+
+  if (form instanceof HTMLElement || form instanceof jQuery) {
+    form = $(form);
+    oldname = form.find('input[name="old-name"]').val().trim();
+    name = form.find('input[name=name]').val().trim();
+    color = form.find('input[name=color]').val();
+  } else {
+    oldname = form.oldname;
+    name = form.name;
+    color = form.color;
+  }
+  
   if (!name) name = null; // new name can be null
   if (!oldname?.length) return;
 
-  if (oldname == 'default') {
-    ui_alert("Can't modify project `default`.");
-    return;
-  }
-
-  const color = form.find('input[name=color]').val();
-
-  if (name != null) {
-    back.data.projects[name] = project_new({
-      color: color,
-      fontColor: fontColorFromHex(color)
-    });
-  }
-
-  if (oldname != name) {
-    let tasks = query_exec({
-      queries: [{ projects: [oldname], collect: ['tasks'], from: -Infinity, to: Infinity }]
-    })[0].tasks;
-
-    if (!await ui_confirm(`Batch modify ${tasks.length} tasks with ${oldname}?`))
+  try {
+    if (oldname == 'default') {
+      ui_alert("Can't modify project `default`.");
       return;
-
-    for (let task of tasks) {
-      task.project = name;
-      task_set(task);
     }
 
-    delete back.data.projects[oldname];
+    if (name != null) {
+      back.data.projects[name] = project_new({
+        color: color,
+        fontColor: fontColorFromHex(color)
+      });
+    }
+
+    if (oldname != name) {
+      let tasks = query_exec({
+        queries: [{ projects: [oldname], collect: ['tasks'], from: -Infinity, to: Infinity }]
+      })[0].tasks;
+
+      if (!await ui_confirm(`Batch modify ${tasks.length} tasks with ${oldname}?`))
+        return;
+
+      for (let task of tasks) {
+        task.project = name;
+        task_set(task);
+      }
+
+      delete back.data.projects[oldname];
+    }
+
+    back.set_dirty();
+
+    if ($('#modal-home-new-proj').hasClass('is-open')) {
+      MicroModal.close('modal-home-new-proj');
+      window.onpopstate = null;
+    }
+  } finally {
+    _ui_home_add_update_actions_keep_edit = true;
+  
+    if (_home_addForm.find('input[name=project]').val() == oldname)
+      _home_addForm.find('input[name=project]').val(name).change();
+    ui_home_update_list();
+  
+    ui_home_focus_input();
   }
-
-  back.set_dirty();
-
-  MicroModal.close('modal-home-new-proj');
-  window.onpopstate = null;
-
-  if (_home_addForm.find('input[name=project]').val() == oldname)
-    _home_addForm.find('input[name=project]').val(name).change();
-  ui_home_update_list();
-
-  ui_home_focus_input();
 }
 
 function ui_home_add_project_callback(form) {
@@ -654,6 +692,10 @@ function _ui_query_filter() {
 $(window).click(function() {
   if (!$('#modal-home-new-proj').hasClass('is-open'))
     _home_addForm?.removeClass('focus-within');
+});
+
+$('#modal-home-new-proj').click(function (event) {
+  event.stopPropagation();
 });
 
 $('#add-form').click(function(event){

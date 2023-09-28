@@ -1,8 +1,9 @@
-const RELEASE_DATE = '20230927R4';
+const RELEASE_DATE = '20230928';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Add Cookbook tab
+1. Reworked project editing UI.
+2. Various stylesheet fixes.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
