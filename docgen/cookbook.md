@@ -3,18 +3,79 @@ This document is used for generating the Cookbook section of the TaskCentral UI.
 -->
 *Document is Work in Progress.*
 
+# Getting Started
+
+## Download as Mobile Apps
+TaskCentral was designed to be cross-platform. For example, on Android Chrome,
+you can access TaskCentral, click the top right button, and click *Add to Home Screen*.
+All UI elements are designed to work smoothly with mobile user interactions.
+
+## Create Projects
+In the *Home* tab, clicking on the *Add Task...* text input will reveal a
+button to add projects. Projects are like tags but with the added benefit of
+allowing a hierarchical structure. Filtering allows pattern matching that
+recognizes the "." character as a delimiter of hierarchy. For example:
+
+1. Filtering "school.\*" matches:
+
+  a. school.lecture
+
+  b. school.mse1500.hw
+
+  c. school.mse1500.class project.meetings
+
+  d. abc school 123.def
+
+2. Filtering "school\*" matches all of the above plus:
+
+  a. school
+
+  b. school 123
+
+3. Filtering ".hw\*" matches:
+
+  a. school.mse1500.hw
+
+  b. school.cs1100.hw.123
+
+  c. work.hardware.123
+
+These are helpful since you can change the filtering using the *Filter* button.
+You can then *Save* the filter so that they appear as shortcuts on every tab.
+
+## Importing Tasks
+If you already have a Gantt chart from your project manager, or syllabus from
+a college course, batch importing all tasks for the next few months may be a good idea. There are two ways to do this:
+
+#### Method 1
+Use the *Import* tab and download the template Excel template. If your data
+source already contains tables, just copy-paste and clean up the formatting.
+You can also use Excel formulas to easily set-up recurring tasks.
+
+#### Method 2
+If you know coding, you can copy-paste your data source to ChatGPT (paid
+version is recommended) and tell it to generate the following javascript code
+for each task:
+
+```js
+task_set(task_new({name: 'Name', priority: 5, weight: 5, project: 'Project', earliest: new Date('MM/DD/YYYY').getTime(), due: new Date('MM/DD/YYYY').getTime(), }))
+```
+
+The resulting code can then be pasted into the developer web console.
+
+**Important**: This method requires you manually creating the corresponding *project* before executing.
+
 # Philosophy
 
 ## On Task Scheduling
 
 *Task Scheduling* may be a term often associated with operating systems, but
-its principles deeply resonate with human productivity. Let's delve into the
-nuances:
+its principles deeply resonate with human productivity:
 
 1. **The Illusion of Multitasking**: At its core, task scheduling in computing
    environments, especially for single-core CPUs, is about creating the
    illusion of multiple processes running seamlessly in parallel. Humans, just
-   like these CPUs, thrive under the illusion of multitasking.
+   like these CPUs, can really only work on one task at a time.
 
 2. **Throughput vs. Latency**: *Throughput* signifies the number of tasks or
    actions completed over a sustained duration. It's about quantity and
@@ -46,9 +107,9 @@ to recommend the best possible task for users to work on next:
    This ensures tasks don't become obsolete as they near completion but still
    retain a degree of urgency to push them to the finish line.
 
-## Time Tracking — A Guided Approach
-The essence of time tracking in TaskCentral isn't just about analytical
-insights; it's a compass guiding your focus.
+## On Time Tracking
+The time tracking in TaskCentral isn't just about analytical insights; it's a
+compass guiding your focus.
 
 The ultimate goal is to achieve maximum throughput without compromising on
 latency. But, it's a tricky balance:

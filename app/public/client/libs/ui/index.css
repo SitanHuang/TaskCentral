@@ -511,3 +511,8 @@ input::-webkit-calendar-picker-indicator {
   max-width: 800px;
   margin: 0 auto;
 }
+
+code {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
