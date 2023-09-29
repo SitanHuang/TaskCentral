@@ -27,6 +27,7 @@ class AdminController < ApplicationController
     status = params[:status].to_i
     username = params[:username]
     password = params[:password]
+    email = params[:email] || ''
 
     if status >= 1 && status < 99 &&
       username && !username.empty? &&
@@ -35,6 +36,7 @@ class AdminController < ApplicationController
       return "User exists." if User[username]
 
       user = User.new
+      user.email = email
       user.status = status
       user.username = username
       user.password = 'placeholder'
