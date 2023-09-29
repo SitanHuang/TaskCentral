@@ -1,5 +1,6 @@
 
 let _admin_userlist_data_raw = null;
+let _admin_userlist_data_uptime = null;
 let _admin_userlist_data = null;
 let _admin_userlist_time = null;
 let _admin_userlist_proctime = null;
@@ -14,7 +15,7 @@ $('#excludeUsersRegex, #includeUsersRegex').change(() => {
 });
 
 function _admin_userlist_rerender() {
-  $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago. ${_admin_userlist_proctime}ms`);
+  $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago. ${_admin_userlist_proctime}ms. ${_admin_userlist_data_uptime?.trim()}`);
 
   if (!Array.isArray(_admin_userlist_data))
     return;
@@ -82,18 +83,23 @@ function _admin_userlist_fetch() {
       include_users: $('#includeUsersRegex').val(),
     },
     function (data) {
-    if (_admin_userlist_data_raw != data)
-      beep();
+      data = JSON.parse(data)
+      _admin_userlist_data_uptime = data.uptime;
+      data = JSON.stringify(data.data);
 
-    _admin_userlist_data = JSON.parse(_admin_userlist_data_raw = data);
+      if (_admin_userlist_data_raw != data)
+        beep();
 
-    _admin_userlist_time = timestamp();
-    _admin_userlist_proctime = timestamp() - _admin_userlist_proctime;
+      _admin_userlist_data = JSON.parse(_admin_userlist_data_raw = data);
 
-    _admin_userlist_rerender();
+      _admin_userlist_time = timestamp();
+      _admin_userlist_proctime = timestamp() - _admin_userlist_proctime;
 
-    setTimeout(_admin_userlist_fetch, ($('#freqSlider').val() * 1000) || 5000);
-  });
+      _admin_userlist_rerender();
+
+      setTimeout(_admin_userlist_fetch, ($('#freqSlider').val() * 1000) || 5000);
+    }
+  );
 }
 
 function admin_userlist_start() {

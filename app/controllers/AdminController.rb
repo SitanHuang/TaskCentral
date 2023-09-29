@@ -99,7 +99,7 @@ class AdminController < ApplicationController
       end
     end
 
-    data.to_json
+    { data: data, uptime: `uptime` }.to_json
   end
 
 end
