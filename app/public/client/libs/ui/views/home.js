@@ -69,10 +69,12 @@ function _ui_home_add_update_actions() {
   _ui_home_add_update_actions_keep_edit = false
 
   let projects = _home_addForm.find('.detail-row .projects');
-  projects.html('');
+  projects.html('').removeClass('show-hidden');
 
   Object.keys(back.data.projects)
-    .sort((a, b) => back.data.projects[b].lastUsed - back.data.projects[a].lastUsed)
+    .sort((a, b) =>
+      (!!back.data.projects[a].hidden - !!back.data.projects[b].hidden) || // hidden projects go last
+      (back.data.projects[b].lastUsed - back.data.projects[a].lastUsed))
     .forEach(x => {
       let proj = back.data.projects[x];
       let chip = project_create_chip(x)
@@ -118,7 +120,21 @@ function _ui_home_create_add_new_proj_btn(projects, onsubmit, oldname) {
     .click(() => {
       _ui_home_project_raise_modal(onsubmit, oldname);
     })
-    .appendTo(projects);
+    .appendTo(projects)
+    .css('position', 'relative')
+    .css('top', '-0.3em');
+  $('<a class="pure-button flat-always"><i class="fa fa-eye"></i> SHOW HIDDEN</a>')
+    .click(function () {
+      if (this.textContent.match(/SHOW/))
+        $(this).html(`<i class="fa fa-eye-slash"></i> HIDE HIDDEN`)
+          .parent().addClass('show-hidden');
+      else
+        $(this).html(`<i class="fa fa-eye"></i> SHOW HIDDEN`)
+          .parent().removeClass('show-hidden');
+    })
+    .appendTo(projects)
+    .css('position', 'relative')
+    .css('top', '-0.3em');
 }
 
 function _ui_home_project_raise_modal(onsubmit, oldname) {
@@ -134,6 +150,8 @@ function _ui_home_project_raise_modal(onsubmit, oldname) {
   let project = back.data.projects[oldname];
   if (project?.color)
     $modal.find('input[name=color]').val(project.color);
+
+  $modal.find('input[name="hidden"]')[0].checked = !!project?.hidden;
 
   $modal.find('input[name="old-name"]').val(oldname || '');
   $modal.find('input[name="name"]').val(oldname || '');
@@ -171,12 +189,14 @@ async function ui_home_update_project_callback(form) {
     oldname = form.find('input[name="old-name"]').val().trim();
     name = form.find('input[name=name]').val().trim();
     color = form.find('input[name=color]').val();
+    hidden = form.find('input[name=hidden]')[0].checked;
   } else {
     oldname = form.oldname;
     name = form.name;
     color = form.color;
+    hidden = form.hidden;
   }
-  
+
   if (!name) name = null; // new name can be null
   if (!oldname?.length) return;
 
@@ -186,13 +206,19 @@ async function ui_home_update_project_callback(form) {
       return;
     }
 
+    // if we're not deleting projects:
     if (name != null) {
       back.data.projects[name] = project_new({
         color: color,
-        fontColor: fontColorFromHex(color)
+        fontColor: fontColorFromHex(color),
+        hidden: !!hidden,
+        number: oldname != name ?
+          0 : // if name change, task_set auto increments
+          (back.data.projects[oldname]?.number || 0), // copy number over
       });
     }
 
+    // if name change:
     if (oldname != name) {
       let tasks = query_exec({
         queries: [{ projects: [oldname], collect: ['tasks'], from: -Infinity, to: Infinity }]
@@ -217,11 +243,11 @@ async function ui_home_update_project_callback(form) {
     }
   } finally {
     _ui_home_add_update_actions_keep_edit = true;
-  
+
     if (_home_addForm.find('input[name=project]').val() == oldname)
       _home_addForm.find('input[name=project]').val(name).change();
     ui_home_update_list();
-  
+
     ui_home_focus_input();
   }
 }
