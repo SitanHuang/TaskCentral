@@ -11,3 +11,10 @@ function fzy_compile(q) {
 
   return new RegExp(q, 'i');
 }
+
+function fzy_compile_name(q) {
+  if (q.indexOf('\\v') == 0)
+    return new RegExp(q.substring(2));
+  else
+    return new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+}

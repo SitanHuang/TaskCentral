@@ -7,6 +7,7 @@
  *     projects: [], // list or projects (OR filter)
  *     status: [], // OR filter
  *     hidden: null,
+ *     name: null, // contains or regex
  *     useGantt: false, // use gantt endpoints
  *     due: null,
  *     collect: [
@@ -50,6 +51,7 @@ function query_exec(query) {
     // regex can't be serialized to JSON
     // use underscore to preserve original query
     q._projectRegex = q.projectRegex ? fzy_compile(q.projectRegex) : null;
+    q._nameRegex = q.name ? fzy_compile_name(q.name) : null;
 
     let d = { from: q.from, to: q.to };
     data.push(d);
@@ -126,12 +128,12 @@ function query_exec(query) {
         // check for ready:
         // exclude those that aren't ready
         if (q._readyOnly && (task.earliest ? now < task.earliest : false))
-          continue; 
+          continue;
 
         // check for weight:
         // exclude those that are weightless
         if (q._weightOnly && !task.weight)
-          continue; 
+          continue;
 
         // check for snoozed exclusion:
         if (!q._includeSnoozed && task.snoozed > now)
@@ -141,9 +143,12 @@ function query_exec(query) {
       if (q.projectRegex == 'none') {
         if (task.project)
           continue;
-      } else if (q._projectRegex && !task?.project?.match(q._projectRegex))
+      } else if (q._projectRegex && !task?.project?.match(q._projectRegex)) {
         continue;
-      // TODO: more exclusive conditions....
+      }
+
+      if (q._nameRegex && !task?.name?.match(q._nameRegex))
+        continue;
 
       // ----------- collect -----------
       if (q.collect.indexOf('tasks') >= 0) {

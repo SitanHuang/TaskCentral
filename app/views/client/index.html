@@ -638,6 +638,13 @@
                 </span>
               </div>
               <div class="pure-control-group">
+                <label>Name</label>
+                <input type="text" name="name">
+                <span class="pure-form-message-inline">
+                  queries everything if empty; searches names containing specified text; add "\v" prefix for regex mode
+                </span>
+              </div>
+              <div class="pure-control-group">
                 <label>Selected Projects</label>
                 <input type="text" name="projects" readonly>
                 <span class="pure-form-message-inline">
@@ -685,16 +692,16 @@
                 <label>Visibility</label>
                 <select name="visibility">
                   <option value=""></option>
-                  <option value="hidden">Hidden</option>
-                  <option value="visible">Visible</option>
+                  <option value="hidden">Only Hidden</option>
+                  <option value="visible">Only Visible</option>
                 </select>
               </div>
               <div class="pure-control-group">
                 <label>Due</label>
                 <select name="due">
                   <option value="null"></option>
-                  <option value="true">True</option>
-                  <option value="false">False</option>
+                  <option value="true">Only with due date</option>
+                  <option value="false">Only without due date</option>
                 </select>
               </div>
               <div class="pure-control-group">
@@ -886,11 +893,11 @@
     <script src="libs/backend.js?releaseDate=20230914R2"></script>
     <script src="libs/competitive.js?releaseDate=20230925"></script>
 
-    <script src="libs/fuzzy.js?releaseDate=20230914R2"></script>
-    <script src="libs/query.js?releaseDate=20230914R2"></script>
+    <script src="libs/fuzzy.js?releaseDate=20230930"></script>
+    <script src="libs/query.js?releaseDate=20230930"></script>
 
     <script src="libs/ui/dialog.js?releaseDate=20230924"></script>
-    <script src="libs/ui/filter.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/filter.js?releaseDate=20230930"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20230928"></script>
     <script src="libs/ui/views/details.js?releaseDate=20230914R2"></script>
@@ -904,7 +911,7 @@
     <script src="libs/ui/layout.js?releaseDate=20230914R2"></script>
     <script src="libs/ui/timer.js?releaseDate=20230916"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20230928R1"></script>
+    <script src="libs/index.js?releaseDate=20230930"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20230917"></script>

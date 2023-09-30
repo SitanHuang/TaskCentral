@@ -35,8 +35,14 @@ function ui_filter_open(target, callback) {
 
   form.find('input[name=project]')
     .val(target.projectRegex || '');
-  form.find('input[name=projects]')
-    .val(target.projects?.join(', ') || '');
+
+  form.find('input[name=name]')
+    .val(target.name || '');
+
+  if (target.projects?.length)
+    form.find('input[name=projects]').val(target.projects.join(', ')).parent().show();
+  else
+    form.find('input[name=projects]').parent().hide();
 
   filter_available_statuses.forEach(x => {
     form.find('#filter-checkbox-' + x)[0]
@@ -73,6 +79,7 @@ function _ui_filter_form_to_query() {
     to: task_parse_date_input(form.find('input[name=to]').val()).getTime(),
     hidden: visibility == 'hidden' ? true : (visibility == 'visible' ? false : null),
     projectRegex: form.find('input[name=project]').val() || null,
+    name: form.find('input[name=name]').val() || null,
     status: status,
     due: eval(form.find('select[name=due]').val()),
   };
