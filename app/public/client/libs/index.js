@@ -1,8 +1,9 @@
-const RELEASE_DATE = '20230930';
+const RELEASE_DATE = '20230930R1';
 
 const RELEASE_NOTES = `
  Release notes:
 1. Add Task Name filter.
+2. Add ui_prompt infrastructure.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

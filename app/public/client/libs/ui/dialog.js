@@ -3,29 +3,58 @@ async function ui_confirm(message="", opts={}) {
 }
 
 async function ui_alert(message = "", opts={}) {
-  await _ui_raise_dialog(Object.assign({ message, cancel: false }, opts));
+  return await _ui_raise_dialog(Object.assign({ message, cancel: false }, opts));
+}
+
+async function ui_prompt(message = "", defValue = "", opts={}) {
+  return await _ui_raise_dialog(Object.assign({
+    message,
+    inputVal: defValue,
+    input: "text"
+  }, opts));
 }
 
 async function _ui_raise_dialog({
-  message = "",
-  cancel  = true,
-  wide    = false
-  // TODO: input = false
+  message    = "",
+  cancel     = true,
+  wide       = false,
+  cancelTxt  = "Cancel",
+  okayTxt    = "OK",
+  input      = false, // "text" / "number" / "password"
+  inputPlch  = '',
+  inputVal   = '',
 } = {}) {
   $("#modal-ui-dialog").toggleClass('wide', !!wide);
 
   $("#modal-ui-dialog .modal__btn.cancel").toggle(!!cancel);
 
+  document.querySelector("#modal-ui-dialog .modal__content.text").textContent = message;
+
+  document.querySelector("#modal-ui-dialog .modal__btn-primary").textContent = okayTxt;
+  document.querySelector("#modal-ui-dialog button.cancel").textContent = cancelTxt;
+
+  const inputContainer = document.querySelector("#modal-ui-dialog .modal__content.input");
+  const inputEle = inputContainer.querySelector("input");
+
+  if (input) {
+    inputContainer.style.display = 'block';
+    inputEle.type = input;
+    inputEle.placeholder = inputPlch || '';
+    inputEle.value = inputVal || '';
+  } else {
+    inputContainer.style.display = 'none';
+  }
+
+  MicroModal.show('modal-ui-dialog');
+
+  inputEle.focus({ focusVisible: true });
+
   return new Promise(resolve => {
-    document.querySelector("#modal-ui-dialog .modal__content").textContent = message;
-
-    MicroModal.show('modal-ui-dialog');
-
     const primaryBtn = document.querySelector("#modal-ui-dialog .modal__btn.modal__btn-primary");
     primaryBtn.onclick = function () {
       MicroModal.close('modal-ui-dialog');
 
-      resolve(true);
+      resolve(input ? inputEle.value : true);
     };
 
     const closeBtn = document.querySelector("#modal-ui-dialog .modal__close");
@@ -37,7 +66,7 @@ async function _ui_raise_dialog({
       primaryBtn.onclick = null;
       closeBtn.onclick = null;
 
-      resolve(false);
+      resolve(input ? null : false);
     }
   });
 }

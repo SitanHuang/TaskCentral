@@ -723,7 +723,7 @@
             </main>
             <footer class="modal__footer" style="text-align: right;">
               <button type="clear" class="modal__btn" data-micromodal-close>Cancel</button>
-              <button type="button" onclick="ui_filter_save()" class="modal__btn">Save</button>
+              <button type="button" onclick="ui_filter_save()" class="modal__btn modal__btn-primary">Save</button>
               <button type="submit" class="modal__btn modal__btn-primary">Apply</button>
             </footer>
           </form>
@@ -840,7 +840,10 @@
     <div class="modal micromodal-slide" id="modal-ui-dialog">
       <div class="modal__overlay" tabindex="-1">
         <div class="modal__container" role="dialog">
-          <main class="modal__content"></main>
+          <main class="modal__content text"></main>
+          <main class="modal__content input pure-form">
+            <input type="text" autocomplete="off" class="pure-input-1">
+          </main>
           <footer class="modal__footer" style="text-align: right;">
             <button type="button" class="modal__btn modal__close cancel" data-micromodal-close>Cancel</button>
             <button type="button" class="modal__btn modal__btn-primary">OK</button>
@@ -896,8 +899,8 @@
     <script src="libs/fuzzy.js?releaseDate=20230930"></script>
     <script src="libs/query.js?releaseDate=20230930"></script>
 
-    <script src="libs/ui/dialog.js?releaseDate=20230924"></script>
-    <script src="libs/ui/filter.js?releaseDate=20230930"></script>
+    <script src="libs/ui/dialog.js?releaseDate=20230930R1"></script>
+    <script src="libs/ui/filter.js?releaseDate=20230930R1"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20230928"></script>
     <script src="libs/ui/views/details.js?releaseDate=20230914R2"></script>
@@ -911,7 +914,7 @@
     <script src="libs/ui/layout.js?releaseDate=20230914R2"></script>
     <script src="libs/ui/timer.js?releaseDate=20230916"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20230930"></script>
+    <script src="libs/index.js?releaseDate=20230930R1"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20230917"></script>

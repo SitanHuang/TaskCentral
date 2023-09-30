@@ -498,9 +498,12 @@ header.stats stat {
   max-width: min(90vw, 1024px);
 }
 
-#modal-ui-dialog main.modal__content {
+#modal-ui-dialog main.modal__content.text {
   margin: 1rem 0.5rem;
   white-space: pre-wrap;
+}
+#modal-ui-dialog main.modal__content.input {
+  margin: 0 0.5rem 1rem;
 }
 
 input::-webkit-calendar-picker-indicator {

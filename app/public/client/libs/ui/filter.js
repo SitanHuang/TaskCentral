@@ -85,7 +85,7 @@ function _ui_filter_form_to_query() {
   };
 }
 
-function ui_filter_save() {
+async function ui_filter_save() {
   if (!_filter_current_target) return false;
 
   let form = _filter_modal.find('form');
@@ -93,7 +93,7 @@ function ui_filter_save() {
   // forces html5 check
   if (!form[0].checkValidity()) return false;
 
-  let name = prompt('Enter the name of this custom filter:')?.trim();
+  let name = (await ui_prompt('Enter the name of this custom filter:'))?.trim();
   if (!name) return false;
 
   form[0].onsubmit();
