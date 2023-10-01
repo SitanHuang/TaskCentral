@@ -12,3 +12,5 @@ vendor/**
 
 **/mariadb/**
 **/db.credentials
+
+*/res/mariadb_dump.sql
