@@ -39,11 +39,15 @@ class ApplicationController < Sinatra::Base
     credentials_path = File.expand_path('../../db.credentials', __FILE__)
     credentials = JSON.parse(File.read(credentials_path))
 
-    db_username = URI.encode_www_form_component(credentials['username'])
-    db_password = URI.encode_www_form_component(credentials['password'])
-
-    connection_str = "mysql2://#{db_username}:#{db_password}@localhost/taskcentral"
-    set :database, Sequel.connect(connection_str, encoding: 'utf8')
+    set :database, Sequel.connect(
+      adapter: 'mysql2',
+      host: 'localhost',
+      user: credentials['username'],
+      password: credentials['password'],
+      database: 'taskcentral',
+      preconnect: true,
+      max_connections: 50,
+      encoding: 'utf8')
 
     # set :database, Sequel.connect("sqlite://#{settings.root}/res/production.db", encoding: 'utf8')
 
