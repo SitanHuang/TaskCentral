@@ -9,3 +9,6 @@ vendor/**
 *.log
 *.pid
 **/thin.yml
+
+**/mariadb/**
+**/db.credentials

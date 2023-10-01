@@ -4,6 +4,9 @@ require 'sinatra/url_for'
 require 'sqlite3'
 require 'securerandom'
 require 'bcrypt'
+require 'mysql2'
+require 'json'
+require 'uri'
 
 class ApplicationController < Sinatra::Base
   # for image_tag stylesheet_link_tag javascript_script_tag link_to link_favicon_tag
@@ -21,7 +24,6 @@ class ApplicationController < Sinatra::Base
   set :root, File.expand_path('../../', __FILE__)
 
   configure do
-    # don't enable logging?
     disable :logging
     use Rack::Session::Cookie, :key => 'rack.session',
                                :path => '/',
@@ -33,7 +35,17 @@ class ApplicationController < Sinatra::Base
     set :public_folder, "#{settings.root}/public"
   end
   configure :production do
-    set :database, Sequel.connect("sqlite://#{settings.root}/res/production.db", encoding: 'utf8')
+    # Set up MariaDB connection
+    credentials_path = File.expand_path('../../db.credentials', __FILE__)
+    credentials = JSON.parse(File.read(credentials_path))
+
+    db_username = URI.encode_www_form_component(credentials['username'])
+    db_password = URI.encode_www_form_component(credentials['password'])
+
+    connection_str = "mysql2://#{db_username}:#{db_password}@localhost/taskcentral"
+    set :database, Sequel.connect(connection_str, encoding: 'utf8')
+
+    # set :database, Sequel.connect("sqlite://#{settings.root}/res/production.db", encoding: 'utf8')
 
     # Let's trade some security for performance here,
     # we're running a tiny server after all
