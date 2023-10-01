@@ -5,6 +5,8 @@ require 'tilt/erb'
 
 require 'rufus/scheduler'
 
+puts("YJIT enabled? #{RubyVM::YJIT.enabled?()}")
+
 $CRON_SCHEDULER = Rufus::Scheduler.new
 
 alias :original_map :map
