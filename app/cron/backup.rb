@@ -12,7 +12,7 @@ def cron_backup_res
   escaped_username = Shellwords.escape(credentials['username'])
   escaped_password = Shellwords.escape(credentials['password'])
 
-  dump_command = "mariadb-dump -u #{escaped_username} --password=#{escaped_password} --databases taskcentral > res/mariadb_dump.sql"
+  dump_command = "mariadb-dump -u #{escaped_username} --password=#{escaped_password} --databases taskcentral | gzip -9 > res/mariadb_dump.sql"
 
   rsync_exists = system("command -v rsync >/dev/null 2>&1")
 
