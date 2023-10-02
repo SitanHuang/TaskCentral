@@ -33,6 +33,11 @@ function ui_filter_open(target, callback) {
     return false;
   };
 
+  form.find('input').unbind('keydown').bind('keydown', function (e) {
+    // submit form & prevent modal from closing prematurely on enter
+    e.keyCode === 13 && (e.preventDefault() || form[0].onsubmit());
+  });
+
   form.find('input[name=project]')
     .val(target.projectRegex || '');
 
