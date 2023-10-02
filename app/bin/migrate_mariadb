@@ -1,0 +1,24 @@
+#!/bin/env ruby
+
+require 'json'
+require 'open3'
+require 'uri'
+
+credentials_path = File.expand_path('../../db.credentials', __FILE__)
+credentials = JSON.parse(File.read(credentials_path))
+
+encoded_username = URI.encode_www_form_component(credentials['username'])
+encoded_password = URI.encode_www_form_component(credentials['password'])
+
+database_url = "mysql2://#{encoded_username}:#{encoded_password}@localhost/taskcentral"
+migration_command = "sequel -m res/migrations/ #{database_url}"
+
+puts migration_command
+
+Dir.chdir(File.expand_path('../../', __FILE__)) do
+  if system(migration_command)
+    puts "Migration completed."
+  else
+    puts "Migration failed!"
+  end
+end
