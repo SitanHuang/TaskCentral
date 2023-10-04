@@ -35,6 +35,7 @@ function ui_menu_select_settings() {
   let percUsed = Math.round(10000 * back.user.size / back.user.quota * 100) / 10000;
 
   let color = _settings_con.find('.user-form input[name="app-primary-color"]');
+  let pro = _settings_con.find('#app-pro-mode');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
 
   // unbind
@@ -47,6 +48,21 @@ function ui_menu_select_settings() {
     back.set_dirty();
 
     ui_update_primaryColor();
+  };
+
+  // unbind
+  pro[0].onchange = function () {};
+  // set value
+  pro[0].checked = back.data.settings.proMode || false;
+  // bind
+  pro[0].onchange = function () {
+    if (pro[0].checked)
+      back.data.settings.proMode = true;
+    else
+      delete back.data.settings.proMode;
+    back.set_dirty();
+
+    ui_update_proMode();
   };
 
   // unbind

@@ -1,5 +1,7 @@
 body {
   --text-color: rgba(0, 0, 0, 0.87);
+  --text-sec-color: rgba(0, 0, 0, 0.6);
+
   --body-bg: white;
 
   --menu-color: #777;
@@ -17,8 +19,6 @@ body {
   --input-box-shadow: #ddd;
   --input-disabled-color: #777;
   --input-disabled-bg: #eee;
-
-  --text-sec-color: rgba(0, 0, 0, 0.7);
 
   --task-activated-bg: #e3e3e3;
   --task-completed-bg: var(--panel-sec-bg);

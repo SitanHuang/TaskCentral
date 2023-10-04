@@ -33,6 +33,10 @@ function ui_update_sync_status() {
 
 const APP_DEFAULT_PRIMARY_COLOR = '#8F7034';
 
+function ui_update_proMode() {
+  $(document.body).toggleClass('proMode', back?.data?.settings?.proMode || false)
+}
+
 function ui_update_primaryColor() {
   document.querySelector(':root').style
     .setProperty(
@@ -41,8 +45,12 @@ function ui_update_primaryColor() {
     );
 }
 
+/**
+ * called after css.js readies backend & all other files
+ */
 function ui_menu_init() {
   ui_update_primaryColor();
+  ui_update_proMode();
 
   $('.top-bar .pure-menu-link').click(function() {
     ui_menu_select(this.dataset.menu);

@@ -1,8 +1,9 @@
-const RELEASE_DATE = '20231002';
+const RELEASE_DATE = '20231004';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Fix pressing enter in Filter dialog doesn't work.
+1. Add tooltips
+2. Add Pro Mode to user settings
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

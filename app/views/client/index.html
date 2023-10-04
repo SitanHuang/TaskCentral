@@ -28,8 +28,7 @@
     <script>
       window.onerror = function(message, source, lineno, colno, error) {
         const errorMessage = [
-          "Oops! A hiccup occurred. Next time you see the admin, tell her that her code sucks!",
-          "Also, only Chrome is officially supported. Sorry :(",
+          "Oops! A hiccup occurred.",
           `Message: ${message}`,
           `Source: ${source}`,
           `Line: ${lineno}`,
@@ -173,19 +172,25 @@
                 </div>
               </div>
               <div class="pure-control-group">
-                <label>Priority</label>
+                <label data-tooltip="Priority is the relative importance of the task - ie. the penalty for missing the deadline.">
+                  Priority
+                </label>
                 <input type="range" min="0" max="10" step="1" name="priority">
               </div>
               <div class="pure-control-group">
-                <label>Weight</label>
+                <label data-tooltip="Weight is the relative volume of work expected on the task.">
+                  Weight
+                </label>
                 <input type="range" min="0" max="10" step="1" name="weight">
               </div>
               <div class="pure-control-group">
-                <label>Progress</label>
+                <label data-tooltip="Update this slider to tell the system how much work is left at the current instant. Use the 'Set Maximum Steps' feature to adjust the total number of steps for your progress. You don't need to update the progress to 100% when you mark a task as 'Complete'.">
+                  Progress
+                </label>
                 <input type="range" min="0" max="100" step="1" name="progress">
                 <a class="pure-form-message-inline right" href=""
                   onclick="$('.task-detail .change-step-size').slideToggle(200, 'swing'); return false;">
-                  Change step count
+                  Set Maximum Steps
                 </a>
               </div>
               <div class="pure-control-group progress-value-indicator">
@@ -198,15 +203,21 @@
                   oninput="validity.valid||(value='');"/>
               </div>
               <div class="pure-control-group">
-                <label>Due</label>
+                <label data-tooltip="Latest possible due date without penalty.">
+                  Due
+                </label>
                 <input type="date" name="due">
               </div>
               <div class="pure-control-group">
-                <label>Earliest</label>
+                <label data-tooltip="Theoretically earliest possible date that a task may be started.">
+                  Earliest
+                </label>
                 <input type="date" name="earliest">
               </div>
               <div class="pure-control-group">
-                <label>Until</label>
+                <label data-tooltip="Date after which the task is no longer relevant.">
+                  Until
+                </label>
                 <input type="date" name="until">
               </div>
               <div class="pure-control-group">
@@ -488,6 +499,16 @@
                 <span class="pure-form-message-inline">This device only.</span><br>
               </div>
               <div class="pure-control-group">
+                <label for="app-pro-mode" style="vertical-align: top;">Pro mode</label>
+                <div class="stacked-checkboxes">
+                  <label for="app-pro-mode" class="pure-checkbox">
+                    <input type="checkbox" id="app-pro-mode">
+                    Hide all UI tooltips and hints
+                  </label>
+                </div>
+                <span class="pure-form-message-inline">Synced across all devices.</span>
+              </div>
+              <div class="pure-control-group">
               </div>
               <div class="pure-control-group">
                 <label for="app-pomodoro-time">Pomodoro Time</label>
@@ -609,7 +630,7 @@
                 </div>
               </div>
               <div class="pure-g colors-container"></div>
-              <div class="pure-g update-proj">
+              <div class="pure-g update-proj proMode-hide">
                 <div class="pure-u-1">
                   <p> Note: This will move all tasks from project Old Name to project New Name. Project Old Name is then deleted (if the names are different). It is possible to have New Name be empty (no project) or an existing project. If you want to delete an existing project, rename the project to empty.</p>
                 </div>
@@ -639,21 +660,21 @@
               <div class="pure-control-group">
                 <label>Project</label>
                 <input type="text" name="project">
-                <span class="pure-form-message-inline">
+                <span class="pure-form-message-inline proMode-hide">
                   "none" for tasks without project; pattern match available, ex: "school..hw", "school.*", "(school*|personal*)"; add "\v" prefix for regex mode
                 </span>
               </div>
               <div class="pure-control-group">
                 <label>Name</label>
                 <input type="text" name="name">
-                <span class="pure-form-message-inline">
+                <span class="pure-form-message-inline proMode-hide">
                   queries everything if empty; searches names containing specified text; add "\v" prefix for regex mode
                 </span>
               </div>
               <div class="pure-control-group">
                 <label>Selected Projects</label>
                 <input type="text" name="projects" readonly>
-                <span class="pure-form-message-inline">
+                <span class="pure-form-message-inline proMode-hide">
                   to change, reset filter
                 </span>
               </div>
@@ -690,7 +711,7 @@
                     Snoozed
                   </label>
                 </div>
-                <span class="pure-form-message-inline">
+                <span class="pure-form-message-inline proMode-hide">
                   queries everything if no status/modifiers are selected
                 </span>
               </div>
@@ -713,14 +734,14 @@
               <div class="pure-control-group">
                 <label>From</label>
                 <input type="date" name="from">
-                <span class="pure-form-message-inline">
+                <span class="pure-form-message-inline proMode-hide">
                   min(min(created, earliest || created), END)
                 </span>
               </div>
               <div class="pure-control-group">
                 <label>To</label>
                 <input type="date" name="to">
-                <span class="pure-form-message-inline">
+                <span class="pure-form-message-inline proMode-hide">
                   max(max(now, due || until), START)
                 </span>
               </div>
@@ -912,20 +933,21 @@
     <script src="libs/ui/views/details.js?releaseDate=20230930R2"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20230924"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20231004"></script>
     <script src="libs/ui/views/forecast.js?releaseDate=20230924"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20230917"></script>
     <script src="libs/ui/views/import.js?releaseDate=20230924R1"></script>
 
-    <script src="libs/ui/layout.js?releaseDate=20230914R2"></script>
+    <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20230916"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20231002"></script>
+    <script src="libs/index.js?releaseDate=20231004"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20230917"></script>
 
     <!-- lazy load non-essential stuff-->
+    <script src="libs/ui/tooltips.js?releaseDate=20231004R2"></script>
     <script src="libs/ui/cookbook.js?releaseDate=20230927R3"></script>
   </body>
 </html>
