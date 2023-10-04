@@ -2,15 +2,14 @@ require 'open3'
 require 'shellwords'
 
 def cron_backup_res
+  return unless ENV['DB_USERNAME']
+
   current_file_folder = File.dirname(__FILE__)
   src = "#{current_file_folder}/../res"
   dst = "#{current_file_folder}/../res.swp"
 
-  credentials_path = File.expand_path('../../db.credentials', __FILE__)
-  credentials = JSON.parse(File.read(credentials_path))
-
-  escaped_username = Shellwords.escape(credentials['username'])
-  escaped_password = Shellwords.escape(credentials['password'])
+  escaped_username = Shellwords.escape(ENV['DB_USERNAME'])
+  escaped_password = Shellwords.escape(ENV['DB_PASSWORD'])
 
   dump_command = "mariadb-dump -u #{escaped_username} --password=#{escaped_password} --databases taskcentral | gzip -9 > res/mariadb_dump.sql"
 

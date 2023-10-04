@@ -6,7 +6,7 @@ require 'securerandom'
 require 'bcrypt'
 require 'mysql2'
 require 'json'
-require 'uri'
+require 'dotenv'
 
 class ApplicationController < Sinatra::Base
   # for image_tag stylesheet_link_tag javascript_script_tag link_to link_favicon_tag
@@ -36,14 +36,14 @@ class ApplicationController < Sinatra::Base
   end
   configure :production do
     # Set up MariaDB connection
-    credentials_path = File.expand_path('../../db.credentials', __FILE__)
-    credentials = JSON.parse(File.read(credentials_path))
+    credentials_path = File.expand_path('../../db.env', __FILE__)
+    Dotenv.load(credentials_path)
 
     set :database, Sequel.connect(
       adapter: 'mysql2',
       host: 'localhost',
-      user: credentials['username'],
-      password: credentials['password'],
+      user: ENV['DB_USERNAME'],
+      password: ENV['DB_PASSWORD'],
       database: 'taskcentral',
       preconnect: true,
       max_connections: 50,
