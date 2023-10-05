@@ -1,9 +1,12 @@
-const RELEASE_DATE = '20231004';
+const RELEASE_DATE = '20231004R2';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Add tooltips
-2. Add Pro Mode to user settings
+1. Global Skill Group recalibration
+2. Improved Skill Group tooltip
+3. Tuned Skill Group algorithm
+4. Add tooltips
+5. Add Pro Mode to user settings
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

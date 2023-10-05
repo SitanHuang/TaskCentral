@@ -143,12 +143,14 @@ function _comp_rank_calc_weights({ today, m, p, N, nM, mW, a, mt, _debug }) {
 
     let weight = mt == 2 ? Math.pow(m, i) : Math.pow(i + a, -m);
     let score = Number(METRICS_FUNCTIONS["Rating"][1](startDate, endDate)) || 0;
-    let work = Number(METRICS_FUNCTIONS["Work All (All)"][1](startDate, endDate)) || 0;
+    let work = Number(METRICS_FUNCTIONS["Work Left at Start"][1](startDate, endDate)) || 0;
+
+    weight *= Math.log(work + 1);
 
     if (score <= 0.1)
-      weight *= 0.1;
+      weight *= 0.05;
     if (work <= mW)
-      weight *= 0.1;
+      weight *= 0.05;
 
     if (_debug && score > 0.1 && work > mW)
       debug += score + '\n';
