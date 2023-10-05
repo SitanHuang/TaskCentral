@@ -184,7 +184,7 @@
                 <input type="range" min="0" max="10" step="1" name="weight">
               </div>
               <div class="pure-control-group">
-                <label data-tooltip="Update this slider to tell the system how much work is left at the current instant. Use the 'Set Maximum Steps' feature to adjust the total number of steps for your progress. You don't need to update the progress to 100% when you mark a task as 'Complete'.">
+                <label data-tooltip="Update this slider to tell the system how much work is left at the current instant. Use the 'Set Maximum Steps' feature to adjust the total number of steps for your progress. When a task is marked as 'Complete', the progress at the instant of completion is assumed to be 100%.">
                   Progress
                 </label>
                 <input type="range" min="0" max="100" step="1" name="progress">
@@ -209,7 +209,7 @@
                 <input type="date" name="due">
               </div>
               <div class="pure-control-group">
-                <label data-tooltip="Theoretically earliest possible date that a task may be started.">
+                <label data-tooltip="Theoretically earliest possible date that a task may be started. If left empty, this value is internally assumed to be the task creation time.">
                   Earliest
                 </label>
                 <input type="date" name="earliest">
@@ -463,7 +463,7 @@
               <div class="pure-control-group">
                 <label for="app-primary-color">Primary color</label>
                 <input type="color" readonly name="app-primary-color"/>
-                <span class="pure-form-message-inline">Synced across all devices.</span>
+                <span class="pure-form-message-inline proMode-hide">Synced across all devices.</span>
               </div>
               <div class="pure-control-group">
                 <label></label>
@@ -496,7 +496,7 @@
                     Follow 6am/6pm schedule
                   </label>
                 </div>
-                <span class="pure-form-message-inline">This device only.</span><br>
+                <span class="pure-form-message-inline proMode-hide">This device only.</span><br>
               </div>
               <div class="pure-control-group">
                 <label for="app-pro-mode" style="vertical-align: top;">Pro mode</label>
@@ -506,21 +506,21 @@
                     Hide all UI tooltips and hints
                   </label>
                 </div>
-                <span class="pure-form-message-inline">Synced across all devices.</span>
+                <span class="pure-form-message-inline proMode-hide">Synced across all devices.</span>
               </div>
               <div class="pure-control-group">
               </div>
               <div class="pure-control-group">
                 <label for="app-pomodoro-time">Pomodoro Time</label>
                 <input type="number" min="5" max="120" step="1" value="25" name="app-pomodoro-time"/>
-                <span class="pure-form-message-inline">Set working minutes for the Pomodoro timer.</span>
+                <span class="pure-form-message-inline proMode-hide">Set working minutes for the Pomodoro timer.</span>
               </div>
               <div class="pure-control-group">
               </div>
               <div class="pure-control-group">
                 <label for="aligned-name">Username</label>
                 <input type="text" readonly name="username"/>
-                <span class="pure-form-message-inline">Contact site admin to change login.</span>
+                <span class="pure-form-message-inline proMode-hide">Contact site admin to change login.</span>
               </div>
               <div class="pure-control-group">
                 <label for="aligned-name">New Password</label>
@@ -535,7 +535,7 @@
               <div class="pure-control-group">
                 <label for="aligned-email">Storage Level</label>
                 <input type="text" readonly name="permission" />
-                <span class="pure-form-message-inline">Contact site admin to upgrade.</span>
+                <span class="pure-form-message-inline proMode-hide">Contact site admin to upgrade.</span>
               </div>
               <div class="pure-control-group">
                 <label for="aligned-email">Quota</label>
