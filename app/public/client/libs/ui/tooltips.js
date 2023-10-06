@@ -1,5 +1,5 @@
-function ui_tooltips_init() {
-  $('label[data-tooltip]').each(function () {
+function ui_tooltips_init(body=$(document.body)) {
+  body.find('*[data-tooltip]').each(function () {
     const label = $(this);
     const span = $('<span/>').text(label.text());
 

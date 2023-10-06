@@ -537,14 +537,14 @@ code {
   white-space: pre-wrap;
 }
 
-body:not(.proMode) label[data-tooltip] span,
+body:not(.proMode) *[data-tooltip] span,
 .help-tooltip {
   border-bottom: 1px dashed var(--text-sec-color);
   cursor: pointer;
   transition: all 300ms ease;
 }
 
-body:not(.proMode) label[data-tooltip] span:hover,
+body:not(.proMode) *[data-tooltip] span:hover,
 .help-tooltip:hover {
   border-bottom-style: solid;
   border-bottom-color: var(--text-color);
@@ -552,8 +552,4 @@ body:not(.proMode) label[data-tooltip] span:hover,
 
 body.proMode .proMode-hide {
   display: none;
-}
-
-.metrics .profile .help-tooltip {
-  padding-bottom: 4px;
 }

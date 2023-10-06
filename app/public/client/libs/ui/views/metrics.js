@@ -148,14 +148,14 @@ var ui_metrics_inject_tasks;
 
   const RATING_FUNCS = [
     // ["Avg. Days Get-ahead", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.05],
-    ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2, 0.18],
-    ["Work Net % of Start (All)", x => Math.tanh(-1.2 * x / 100) * 2, 0.07],
-    ["Time Tracked % Prod. (All)", x => Math.tanh(x / 1.5 / 100) * 2, 0.075],
-    ["Time Tracked % Prod.", x => Math.tanh(x * 1.5 / 100) * 2, 0.225],
-    ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.19],
+    ["Work Completed % of Total", x => Math.tanh(x / 100 * 1.5 - 0.1) * 2, 0.18, "The percentage of work completed out of the total amount of work in a given period, excluding tasks with priority=0 or weight=0. Work completed is calculated at the instant of the end of the period as weights * change in progress."],
+    ["Work Net % of Start (All)", x => Math.tanh(-1.2 * x / 100) * 2, 0.07, "The percentage of work at the end of a given period relative to the work at the beginning of the same period. Usually, this number is the same as 'Work Completed % of Total' for period=Day. Work completed is calculated at the instant of the end of the period as weights * change in progress."],
+    ["Time Tracked % Prod. (All)", x => Math.tanh(x / 1.5 / 100) * 2, 0.075, "Productive Hours is defined here as 10 hours per day. This metric is derived from the total time tracked in a given period as a percent of the Productive Hours."],
+    ["Time Tracked % Prod.", x => Math.tanh(x * 1.5 / 100) * 2, 0.225, "Productive Hours is defined here as 10 hours per day. This metric is derived from the total time tracked in a given period as a percent of the Productive Hours, excluding tasks with priority=0 or weight=0."],
+    ["Avg. Days Get-ahead (>1d)", x => Math.tanh((x - 3) / 7 + 0.4) * 2, 0.19, "The average number of days that a task (with >1 Gantt-period) is marked as Complete before the due date. Gantt-period of a task is shown as the endpoints of a task in the Gantt tab."],
     // ["Avg. % Get-ahead", x => Math.tanh(x * 1.5 / 100) * 2, 0.05],
-    ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 2, 0.19],
-    ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)), 0.07],
+    ["Avg. % Get-ahead (>1d)", x => Math.tanh(x * 1.5 / 100) * 2, 0.19, "The percentage of number of days that a task (with >1 Gantt-period) is marked as Complete before the due date out of the number of days of the task's Gantt-period. Gantt-period of a task is shown as the endpoints of a task in the Gantt tab."],
+    ["Time Per Interval", x => (1.3 - Math.abs(Math.tanh((x - 0.55) * 2) * 1.6)), 0.07, "Excluding tasks with priority=0 or weight=0, how close was the average time per tracked interval (defined by a Start-Stop cycle) to the average human optimal concentration time (about 30min)."],
   ];
 
   let functions;
@@ -751,7 +751,8 @@ var ui_metrics_inject_tasks;
 
       con.append(`
         <div class="stat">
-          <span>${x[0]} <ex>(=${raw.toFixed(2)}, ${(weight * 100).toFixed()}%)</ex></span>
+          <span data-tooltip="${x[3]}">${x[0]}</span>
+          <span><ex data-tooltip="=(actual value of the metric), (weighting coefficient in the Period Rating formula)%">(=${raw.toFixed(2)}, ${(weight * 100).toFixed()}%)</ex></span>
           <num>${val.toFixed(2)}</num>
           <div class="progress-con">
             <div class="progress" style="
@@ -763,6 +764,8 @@ var ui_metrics_inject_tasks;
         </div>
       `);
     }
+
+    ui_tooltips_init(con);
   }
 
   ui_metrics_inject_tasks = function (query) {
