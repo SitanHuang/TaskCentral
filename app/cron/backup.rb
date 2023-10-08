@@ -18,7 +18,7 @@ def cron_backup_res
   if rsync_exists
     command = "rsync -a #{src}/ #{dst}/"
   else
-    command = "cp -r #{src}/ #{dst}/"
+    command = "cp -r --preserve=all #{src}/ #{dst}/"
   end
 
   puts Time.now
