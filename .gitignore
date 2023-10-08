@@ -1,5 +1,5 @@
 **/storage/**
-Gemfile.lock
+*.lock
 *.out
 credentials.hash
 **.swp
@@ -16,3 +16,14 @@ vendor/**
 */res/mariadb_dump.sql
 
 **/*.env
+
+*.env
+
+debug/
+target/
+
+Cargo.lock
+
+**/*.rs.bk
+
+*.pdb

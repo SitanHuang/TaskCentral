@@ -1,3 +1,6 @@
+*Migration in progress: Project is migrating to Rust implementation. For the
+stable, currently running production code, check out branch "master-ruby-impl"*
+
 1. [Philosophy](#philosophy)
 2. [Screenshots](#screenshots)
 4. [Sign Up](#the-platform)
@@ -8,7 +11,7 @@ TaskCentral is an opinionated TODO-style platform aiming to **reduce cognitive l
 
 Users input **priority** (task importance), **weight** (work volume), and an earliest possible start date. Instead of an overwhelming list, you receive a concise daily task selection.
 
-You can use it as a simple list if you'd like. But it can scale to your workflow: **stress forecast, Pomodoro timers, time tracking, productivity graphs**, etc. 
+You can use it as a simple list if you'd like. But it can scale to your workflow: **stress forecast, Pomodoro timers, time tracking, productivity graphs**, etc.
 
 Interested to trying out? [Sign up here](https://docs.google.com/forms/d/e/1FAIpQLSczc8NBAMxY-9PZbda7xmbfMyiSVn6H3UEaBHoq_7BEegP9kw/viewform?usp=sf_link)
 
@@ -23,6 +26,6 @@ The platform is eternally free.
 ![Screenshot 5](imgs/5.png)
 
 ## The Platform
-Originally, I developed this platform for personal use. The platform is open to public and eternally free-for-use. Because I am hosting this with personal funds, I use Google Forms to prevent too many accounts overloading the server. 
+Originally, I developed this platform for personal use. The platform is open to public and eternally free-for-use. Because I am hosting this with personal funds, I use Google Forms to prevent too many accounts overloading the server.
 
 [Sign Up Here](https://docs.google.com/forms/d/e/1FAIpQLSczc8NBAMxY-9PZbda7xmbfMyiSVn6H3UEaBHoq_7BEegP9kw/viewform?usp=sf_link)

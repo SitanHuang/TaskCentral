@@ -1,5 +1,0 @@
-#!/bin/env bash
-
-cd "$(dirname "$0")"/..
-
-thin stop -P thin.pid

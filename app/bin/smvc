@@ -1,5 +1,0 @@
-#!/usr/local/bin/bundle exec ruby
-
-Dir.chdir(File.dirname(__FILE__) + '/..') do
-  system("bundle exec rackup -p 4567 -s thin #{ARGV.join(' ')}")
-end

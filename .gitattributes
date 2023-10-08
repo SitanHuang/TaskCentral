@@ -1,3 +1,4 @@
 * linguist-vendored
 *.rb linguist-vendored=false
+*.rs linguist-vendored=false
 *.md linguist-vendored=false
