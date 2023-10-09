@@ -3,7 +3,7 @@ use axum::{
     extract::{DefaultBodyLimit, State, Multipart},
     http::{StatusCode},
     response::IntoResponse,
-    Form
+    Form,
 };
 use tower_sessions::Session;
 use diesel_async::*;
@@ -11,6 +11,8 @@ use diesel::prelude::*;
 use serde::Deserialize;
 use serde_json::json;
 use std::path::Path;
+use rand::Rng;
+use rand::distributions::Alphanumeric;
 
 use crate::middleware::client_area::{self, *};
 use crate::schema::users::dsl::*;
@@ -143,7 +145,7 @@ impl ClientController {
         use tokio::fs::{self, File};
         use tokio::io::AsyncWriteExt;
 
-        // first argument has to be "file"
+        // first multipart field has to be "file"
         let mut field = multipart.next_field().await
             .map_err(|_| StatusCode::BAD_REQUEST)?
             .ok_or(StatusCode::BAD_REQUEST)?;
@@ -154,7 +156,12 @@ impl ClientController {
         }
 
         // write to temp file
-        let tmp_path = ucontext.su_data_path_app.clone() + ".tmp";
+        let random_suffix: String = rand::thread_rng()
+            .sample_iter(&Alphanumeric)
+            .take(4)
+            .map(char::from)
+            .collect();
+        let tmp_path = format!("{}.{}.tmp", &ucontext.su_data_path_app, random_suffix);
         let mut file = File::create(&tmp_path).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
@@ -178,6 +185,11 @@ impl ClientController {
             }).to_string());
         }
 
+        // create .swp
+        fs::copy(
+            &ucontext.su_data_path_app,
+            ucontext.su_data_path_app.clone() + ".swp"
+        ).await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         // now we move file
         fs::copy(&tmp_path, &ucontext.su_data_path_app).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;

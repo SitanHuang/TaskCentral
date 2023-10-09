@@ -32,7 +32,7 @@ recognizes the "." character as a delimiter of hierarchy. For example:
 
   b. school 123
 
-3. Filtering ".hw\*" matches:
+3. Filtering "..hw\*" matches:
 
   a. school.mse1500.hw
 

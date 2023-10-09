@@ -15,6 +15,7 @@ impl Controller for IndexController {
             .route("/", get(Self::index))
             .route("/register", get(Self::index))
             .route("/client", get(Self::to_client))
+            .route("/admin", get(Self::to_admin))
             .fallback_service(ServeDir::new(format!("{app_root}/public")))
     }
 }
@@ -26,5 +27,9 @@ impl IndexController {
 
     async fn to_client() -> Redirect {
         Redirect::to("/client/")
+    }
+
+    async fn to_admin() -> Redirect {
+        Redirect::to("/admin/")
     }
 }

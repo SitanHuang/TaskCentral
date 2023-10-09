@@ -11,7 +11,10 @@ use crate::{
     middleware::client_area::{*}
 };
 
-#[derive(Queryable, AsChangeset, Selectable, Identifiable, Debug, Deserialize, Serialize)]
+#[derive(
+    Queryable, AsChangeset, Insertable, Selectable, Identifiable,
+    Debug, Deserialize, Serialize
+)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::mysql::Mysql))]
 #[diesel(primary_key(username))]

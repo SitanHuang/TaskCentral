@@ -1,3 +1,5 @@
+pub mod functions;
+
 use deadpool::Runtime;
 use deadpool::managed::{Object, PoolConfig, Timeouts};
 
@@ -6,7 +8,6 @@ use diesel_async::pooled_connection::AsyncDieselConnectionManager;
 use diesel_async::pooled_connection::deadpool::Pool;
 
 pub type Connection = AsyncMysqlConnection;
-//pub type Pool = diesel_async::pooled_connection::deadpool::Pool<Connection>;
 
 #[derive(Debug)]
 pub enum DBError {

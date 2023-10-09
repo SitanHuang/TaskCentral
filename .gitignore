@@ -3,6 +3,7 @@
 *.out
 credentials.hash
 **.swp
+**/*.swp
 vendor/**
 **.db
 **.db-journal
@@ -28,4 +29,4 @@ Cargo.lock
 
 *.pdb
 
-app/
+app/res/storage/

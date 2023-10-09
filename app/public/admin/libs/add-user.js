@@ -5,7 +5,7 @@ function admin_add_user_submit() {
   const email = $('#addEmail').val();
 
   const fail = function (jqXHR, textStatus, errorThrown) {
-    alert(`Sync failed - （${textStatus}: ${errorThrown}）`);
+    alert(`Sync failed - (${textStatus}: ${errorThrown} - ${jqXHR.responseText})`);
   }
 
   $.ajax({

@@ -90,7 +90,9 @@ let mut headers = HeaderMap::new();
 
 #[inline]
 pub fn unauthorized() -> Response {
-    unauthorized_realm("Client Area")
+    // let's not make people type in their passwords again
+    // just because we moved to rust
+    unauthorized_realm("Restricted Area")
 }
 
 #[inline(always)]
