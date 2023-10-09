@@ -2,7 +2,7 @@ function Backend() {
   let that = this;
 
   let switchUser = new URL(location.href).searchParams.get("su");
-  switchUser = switchUser ? encodeURIComponent(switchUser) : undefined;
+  this.su = switchUser = switchUser ? encodeURIComponent(switchUser) : undefined;
 
   let fail = function (jqXHR, textStatus, errorThrown) {
     alert(`Sync failed - （${textStatus}: ${errorThrown}）`);
@@ -108,7 +108,7 @@ function Backend() {
 
         $.ajax({
             type: "POST",
-            url: 'overwrite',
+            url: 'overwrite' + (switchUser ? `?su=${switchUser}` : ''),
             data: fd,
             processData: false,
             contentType: false

@@ -13,14 +13,14 @@ use serde::{Deserialize, Serialize};
 use crate::controllers::app_controller::{Router, SharedState};
 use crate::models::users::User;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct SwitchUserQuery {
     su: String
 }
 
 pub const USER_CONTEXT_KEY: &str = "ukey";
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct UserContext {
     pub user: String,
     pub su: String,
@@ -44,8 +44,8 @@ where
         let session = Session::from_request_parts(req, state).await?;
         let state = Arc::from_ref(state);
 
-        if let Ok(Some((ucontext, user))) = User::su_from_session(&state, &session).await {
-            Ok(UserContextWithUserExtractor(ucontext, user))
+        if let Ok(Some((ucontext, su))) = User::su_from_session(&state, &session).await {
+            Ok(UserContextWithUserExtractor(ucontext, su))
         } else {
             Err((StatusCode::UNAUTHORIZED, "User session no longer valid."))
         }
@@ -108,7 +108,16 @@ pub async fn client_area<B>(
 
         if let Ok(Some(ucontext)) = session.get::<UserContext>(USER_CONTEXT_KEY) {
             // already logged in
-            if ucontext.user == uname {
+            if let Some(Query(su)) = &su_query {
+                // su hasn't changed
+                if ucontext.user == uname && su.su == ucontext.su {
+                    return next.run(request).await;
+                }
+            } else if ucontext.user == uname && ucontext.su == uname {
+                // no su param and no su in ucontext
+                // (if there's no su but ucontext.su is switched, then we need
+                // to revalidate, basically sending admin back to admin's own
+                // account)
                 return next.run(request).await;
             }
         }
@@ -125,12 +134,12 @@ pub async fn client_area<B>(
                     root: user.is_root(),
                 };
 
-                if let Some(su) = su_query {
+                if let Some(Query(su)) = su_query {
                     if !user.is_root() {
                         return unauthorized();
                     }
 
-                    match User::get_by_uname(&state, &su.0.su).await {
+                    match User::get_by_uname(&state, &su.su).await {
                         // db error
                         Err(_) => return (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error.").into_response(),
                         // user not found
@@ -144,7 +153,7 @@ pub async fn client_area<B>(
                 }
 
                 session.insert(USER_CONTEXT_KEY, ucontext)
-                       .expect("Could not serialize ucontext.");
+                    .expect("Could not serialize ucontext.");
 
                 next.run(request).await
             }
@@ -160,3 +169,4 @@ pub fn wrap_router(router: Router, state: SharedState) -> Router {
         middleware::from_fn_with_state(state, client_area)
     )
 }
+

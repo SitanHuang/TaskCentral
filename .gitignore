@@ -27,3 +27,5 @@ Cargo.lock
 **/*.rs.bk
 
 *.pdb
+
+app/

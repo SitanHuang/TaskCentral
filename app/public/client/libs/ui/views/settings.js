@@ -10,7 +10,10 @@ function ui_menu_passwd() {
   _settings_con = $('.content-container > div.settings');
   const new_pswd = _settings_con.find('.user-form input[name="new-password"]').val();
 
-  $.post('user/passwd', { new_pswd }).fail(function () {
+  $.post(
+      'user/passwd' + (back.su ? `?su=${back.su}` : ''),
+      { new_pswd }
+  ).fail(function () {
     ui_alert('Failed to reach remote server.');
   }).done(function (msg) {
     if (msg == 'ok') {

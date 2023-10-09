@@ -1,8 +1,9 @@
 use axum::{
     routing::{get, post},
-    extract::{DefaultBodyLimit, State, Query, Multipart},
+    extract::{DefaultBodyLimit, State, Multipart},
     http::{StatusCode},
     response::IntoResponse,
+    Form
 };
 use tower_sessions::Session;
 use diesel_async::*;
@@ -36,7 +37,7 @@ impl Controller for ClientController {
 }
 
 #[derive(Deserialize)]
-pub struct NewPasswordQuery {
+pub struct NewPasswordForm {
     new_pswd: String
 }
 
@@ -68,12 +69,12 @@ impl ClientController {
     }
 
     async fn user_passwd(
-        pswd_query: Query<NewPasswordQuery>,
         State(state): State<SharedState>,
         session: Session,
-        UserContextWithUserExtractor(_, mut su): UserContextWithUserExtractor
+        UserContextWithUserExtractor(_, mut su): UserContextWithUserExtractor,
+        Form(pswd_query): Form<NewPasswordForm>,
     ) -> Result<String, StatusCode> {
-        let new_pswd = pswd_query.0.new_pswd;
+        let new_pswd = pswd_query.new_pswd;
 
         if let Err(msg) = su.validate_newpasswd(&new_pswd) {
             return Ok(msg);
