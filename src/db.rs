@@ -30,6 +30,12 @@ impl DBContext {
     }
 
     pub fn init() -> Self {
+        // used by cron:
+        std::env::var("DB_USERNAME")
+            .expect("Environment variable DB_USERNAME is not set!");
+        std::env::var("DB_PASSWORD")
+            .expect("Environment variable DB_PASSWORD is not set!");
+
         let db_url = std::env::var("DB_URL")
             .expect("Environment variable DB_URL is not set!");
         let timeout = std::env::var("DB_TIMEOUT_MS")

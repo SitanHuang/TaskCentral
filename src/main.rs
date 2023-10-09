@@ -10,11 +10,14 @@ mod models;
 mod db;
 mod schema;
 
+mod cron;
+
 use controllers::app_controller::Controller;
 use controllers::index_controller::IndexController;
 use controllers::client_controller::ClientController;
 use controllers::admin_controller::AdminController;
 use middleware::charset::append_charset_utf8;
+use cron::backup::cron_backup_res;
 use config::AppContext;
 
 use std::sync::Arc;
@@ -26,11 +29,13 @@ use axum::{
     http::StatusCode
 };
 
-
 use tower::ServiceBuilder;
-use tower_sessions::{SessionManagerLayer, MokaStore};
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use tower_http::trace::TraceLayer;
+use tower_sessions::{SessionManagerLayer, MokaStore};
+
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+use tokio_cron_scheduler::{JobScheduler, Job};
 
 #[tokio::main(flavor = "multi_thread")] // defaults to number of cpus
 async fn main() {
@@ -66,7 +71,17 @@ async fn main() {
         app = app.layer(TraceLayer::new_for_http());
     }
 
-    let app = app.with_state(shared_state);
+    // cron jobs:
+    let sched = JobScheduler::new().await.unwrap();
+
+    let _ = cron_backup_res(&shared_state);
+
+    let app = app.with_state(shared_state.clone());
+
+    // 7 AM UTC = 2 AM CT
+    sched.add(Job::new("0 7 * * * *", move |_, _| {
+        let _ =cron_backup_res(&shared_state);
+    }).unwrap()).await.unwrap();
 
     axum::Server::bind(&bind.parse().unwrap())
         .serve(app.into_make_service())
