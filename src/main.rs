@@ -83,6 +83,8 @@ async fn main() {
         let _ =cron_backup_res(&shared_state);
     }).unwrap()).await.unwrap();
 
+    sched.start().await.unwrap();
+
     axum::Server::bind(&bind.parse().unwrap())
         .serve(app.into_make_service())
         .await

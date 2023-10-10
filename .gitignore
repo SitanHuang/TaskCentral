@@ -30,3 +30,4 @@ Cargo.lock
 *.pdb
 
 app/res/storage/
+app/res/mariadb_dump*

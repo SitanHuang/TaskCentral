@@ -103,6 +103,10 @@ function _ui_home_detail_update_status_importance(task) {
         }
 
         task.log = a;
+        // we can't just rely on recalc.onclick() to set it dirty,
+        // sometimes changing timetsamp of progress doesn't trigger upload
+        back.set_dirty();
+
         _ui_home_detail_update_status_importance(task);
         _home_detail_form.find('input[name=recalc]')[0].click();
       } catch (e) {
