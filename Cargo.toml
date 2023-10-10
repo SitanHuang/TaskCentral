@@ -12,6 +12,7 @@ async-trait = "0.1.73"
 axum = { version = "0.6.20", features = ["default", "headers", "http1", "http2", "macros", "multipart", "query"] }
 bcrypt = "0.15.0"
 chrono = "0.4.31"
+clap = { version = "4.4.6", features = ["string", "env", "derive"] }
 # Limited by diesel-async to 0.9.5
 deadpool = { version = "0.9.5", features = ["managed", "rt_tokio_1", "rt_async-std_1", "serde"] }
 diesel = { version = "2.1.3", features = ["mysql_backend"] }

@@ -22,6 +22,8 @@ use config::AppContext;
 
 use std::sync::Arc;
 
+use clap::Parser;
+
 use axum::{
     error_handling::HandleErrorLayer,
     BoxError,
@@ -37,9 +39,17 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use tokio_cron_scheduler::{JobScheduler, Job};
 
+#[derive(Parser, Debug)]
+struct Args {
+    /// Path to .env file
+    #[arg(short, long, default_value="production.env")]
+    config: String,
+}
+
 #[tokio::main(flavor = "multi_thread")] // defaults to number of cpus
 async fn main() {
-    let context = AppContext::init();
+    let args = Args::parse();
+    let context = AppContext::init(&args.config);
 
     let bind = context.get_bind();
     let session_store_size = context.get_session_store_size();

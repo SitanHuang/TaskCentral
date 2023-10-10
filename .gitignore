@@ -18,7 +18,7 @@ vendor/**
 
 **/*.env
 
-*.env
+production.env
 
 debug/
 target/

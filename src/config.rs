@@ -18,8 +18,8 @@ impl AppContext {
        &self.db
     }
 
-    pub fn init() -> Self {
-        dotenv::from_filename("config.env")
+    pub fn init(env_path: &str) -> Self {
+        dotenv::from_filename(env_path)
             .expect("config.env should be in current working directory!");
 
         Self {
