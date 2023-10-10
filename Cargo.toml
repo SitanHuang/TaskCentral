@@ -1,3 +1,5 @@
+cargo-features = ["profile-rustflags"]
+
 [package]
 name = "taskcentral"
 version = "0.1.0"
@@ -38,3 +40,10 @@ diesel_cli = "2.1.1"
 
 [profile.release]
 opt-level=3
+# link time optimization
+lto='fat'
+# consider everything as one chunk
+codegen-units=1
+panic='unwind'
+rustflags=['-C', 'target-cpu=native']
+
