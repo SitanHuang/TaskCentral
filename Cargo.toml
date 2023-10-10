@@ -44,6 +44,11 @@ opt-level=3
 lto='fat'
 # consider everything as one chunk
 codegen-units=1
-panic='unwind'
+panic='abort'
 rustflags=['-C', 'target-cpu=native']
 
+[profile.flamegraph]
+# everything same as release except debug info
+inherits="release"
+debug=true
+panic='unwind'
