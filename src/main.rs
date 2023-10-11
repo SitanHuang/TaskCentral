@@ -89,7 +89,7 @@ async fn main() {
     let app = app.with_state(shared_state.clone());
 
     // 7 AM UTC = 2 AM CT
-    sched.add(Job::new("0 7 * * * *", move |_, _| {
+    sched.add(Job::new("0 0 7 * * *", move |_, _| {
         let _ =cron_backup_res(&shared_state);
     }).unwrap()).await.unwrap();
 
