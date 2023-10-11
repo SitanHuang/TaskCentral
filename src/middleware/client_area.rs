@@ -116,12 +116,11 @@ pub async fn client_area<B>(
                     return next.run(request).await;
                 }
             } else if ucontext.user == uname && ucontext.su == uname {
-                // no su param and no su in ucontext
-                // (if there's no su but ucontext.su is switched, then we need
-                // to revalidate, basically sending admin back to admin's own
-                // account)
+                // no su param and no su in ucontext, user == su
                 return next.run(request).await;
             }
+            // (if there's no su but ucontext.su is switched, then we need to
+            // revalidate, basically sending admin back to her own account)
         }
 
         match User::authenticate(&state, uname, pwd).await {

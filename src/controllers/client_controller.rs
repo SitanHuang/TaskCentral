@@ -73,21 +73,28 @@ impl ClientController {
     async fn user_passwd(
         State(state): State<SharedState>,
         session: Session,
-        UserContextWithUserExtractor(_, mut su): UserContextWithUserExtractor,
+        UserContextWithUserExtractor(ucontext, mut su): UserContextWithUserExtractor,
         Form(pswd_query): Form<NewPasswordForm>,
     ) -> Result<String, StatusCode> {
         let new_pswd = pswd_query.new_pswd;
 
-        if let Err(msg) = su.validate_newpasswd(&new_pswd) {
-            return Ok(msg);
-        }
+        let msg = if let Err(err) = su.validate_newpasswd(&new_pswd) {
+            // root can change password to whatever
+            if ucontext.root {
+                format!("As root, password was changed. ({})", err)
+            } else {
+                return Ok(err);
+            }
+        } else {
+            String::from("ok")
+        };
 
         su.passwd(&state, &new_pswd).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
         session.flush();
 
-        Ok("ok".to_string())
+        Ok(msg)
     }
 
     async fn data(
