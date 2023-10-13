@@ -1,4 +1,4 @@
-use bcrypt::{hash, verify};
+use bcrypt::hash;
 use diesel_async::*;
 use diesel::prelude::*;
 use tower_sessions::Session;
@@ -8,7 +8,8 @@ use crate::{
     db::DBError,
     controllers::app_controller::SharedState,
     schema::users::dsl::users,
-    middleware::client_area::{*}
+    middleware::client_area::{*},
+    helpers::password_hash::verify,
 };
 
 #[derive(
@@ -117,7 +118,7 @@ impl User {
         Ok(
             Self::get_by_uname(&state, uname).await?
                 .and_then(|user|
-                    verify(pswd, &user.password)
+                    verify(&state, &pswd, &user.password)
                         .map_or(None, |x| x.then(|| user))
                 )
         )
@@ -149,11 +150,15 @@ impl User {
         Ok(())
     }
 
-    pub fn validate_newpasswd(&self, new_pswd: &str) -> Result<(), String> {
+    pub fn validate_newpasswd(
+        &self,
+        state: &SharedState,
+        new_pswd: &str
+    ) -> Result<(), String> {
         if new_pswd.len() < 10 || new_pswd.len() > 30 {
             return Err("Password should be at least 10 characters long but not longer than 30.".to_string());
         }
-        if verify(new_pswd, &self.password).unwrap_or(false) {
+        if verify(&state, &new_pswd, &self.password).unwrap_or(false) {
             return Err("New password should not be the same as the previous password.".to_string());
         }
 

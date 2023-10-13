@@ -1,6 +1,7 @@
 use dotenv;
 
 use crate::db::DBContext;
+use crate::helpers::password_hash;
 
 pub struct AppContext {
     bind_host: String,
@@ -9,7 +10,12 @@ pub struct AppContext {
     session_store_size: u64,
 
     db: DBContext,
+
     pub app_root: String,
+
+    // Clone operation is cheap as it only creates thread-safe reference counted
+    // pointers to the shared internal data structures.
+    pub(crate) password_hash_cache: password_hash::CacheStore,
 }
 
 impl AppContext {
@@ -32,6 +38,8 @@ impl AppContext {
                 .expect("Environment variable SESSION_STORE_SIZE is not set!")
                 .parse()
                 .expect("Environment variable SESSION_STORE_SIZE is not integer!"),
+
+            password_hash_cache: password_hash::create_store(),
 
             db: DBContext::init(),
             app_root: std::env::var("APP_DIR")

@@ -78,7 +78,7 @@ impl ClientController {
     ) -> Result<String, StatusCode> {
         let new_pswd = pswd_query.new_pswd;
 
-        let msg = if let Err(err) = su.validate_newpasswd(&new_pswd) {
+        let msg = if let Err(err) = su.validate_newpasswd(&state, &new_pswd) {
             // root can change password to whatever
             if ucontext.root {
                 format!("As root, password was changed. ({})", err)

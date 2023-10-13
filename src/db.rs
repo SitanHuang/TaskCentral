@@ -16,6 +16,8 @@ pub enum DBError {
 }
 
 pub struct DBContext {
+    // This struct can be cloned and transferred across thread boundaries and
+    // uses reference counting for its internal state.
     pool: Pool<Connection>
 }
 
