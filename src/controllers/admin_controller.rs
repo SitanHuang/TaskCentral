@@ -22,8 +22,8 @@ use crate::schema::users::dsl::*;
 use crate::schema::users;
 use crate::helpers::send_file;
 use crate::models::users::User;
-
 use crate::db::functions::*;
+
 use super::app_controller::*;
 
 pub struct AdminController;
@@ -112,8 +112,8 @@ impl AdminController {
                 last_updated: Some(0),
                 email: form.email
             })
-            .execute(&mut *con)
-            .await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            .execute(&mut *con).await
+            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
         User::get_by_uname(&state, &form.username).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
@@ -139,7 +139,6 @@ impl AdminController {
             .order(last_updated.desc())
             .limit(100)
             .into_boxed();
-
 
         // Handling the exclude regex
         for x in exclude_regex.split(",") {

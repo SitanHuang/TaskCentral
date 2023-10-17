@@ -87,13 +87,38 @@ function task_unsnooze(task) {
 }
 
 /*
+ * Calcs eta of task or task[] using weights done & time spent
+ *
  * returns milliseconds of estimated time left
  *
  * returns -1 if N/A
  */
-function task_calc_eta(task) {
-  if (task.total && task.progress)
-    return Math.ceil(task.total / (task.progress / 100) - task.total);
+function task_calc_eta(tasks) {
+  if (!Array.isArray(tasks))
+    tasks = [tasks];
+
+  let total_weights = 0;
+  let weights_done = 0;
+  let time_tot = 0;
+
+  for (let task of tasks) {
+    if (!task.weight)
+      continue;
+
+    const progress = task.status == 'completed' ? 100 : task.progress;
+
+    total_weights += task.weight;
+    weights_done += task.weight * progress / 100;
+    time_tot += task.total;
+  }
+
+  const weights_left = total_weights - weights_done;
+
+  if (time_tot && weights_done) {
+    const rate = weights_done / time_tot;
+
+    return Math.ceil(weights_left / rate);
+  }
 
   return -1;
 }

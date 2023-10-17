@@ -570,6 +570,7 @@ function _ui_home_normal_status(tasks) {
   let weight_completed = 0;
 
   let total = 0;
+
   let total_eta = 0;
 
   let now = timestamp();
@@ -591,6 +592,21 @@ function _ui_home_normal_status(tasks) {
     }
   });
 
+  // this extrapolates any rate=weight/tracked time information to tasks that
+  // haven't been tracked but has weights
+  total_eta = [total_eta, task_calc_eta(tasks)].sort((a, b) => a - b);
+
+  // add 15% to upper estimate
+  total_eta[1] *= 1.15;
+
+  let prediction;
+
+  // combine two methods to form an estimate (if different by 10min)
+  if (Math.abs(total_eta[0] - total_eta[1]) < 600000)
+    prediction = timeIntervalStringShort(Math.max(...total_eta));
+  else
+    prediction = total_eta.map(x => timeIntervalStringShort(x)).join(" to ");
+
   let perc = weight_completed / weight_total * 100;
 
   let completed_text = perc ? `, ~${Math.round(perc)}% work done` : '';
@@ -608,7 +624,7 @@ function _ui_home_normal_status(tasks) {
   // let total = tasks.reduce((s, x) => ({ total: s.total + x.total }), { total: 0 }).total;
 
   let text = (HOME_MODE == 'ready' ?
-    `R: ${ready}${completed_text} | ${timeIntervalStringShort(total)} recorded, +${timeIntervalStringShort(total_eta)} predicted` :
+    `R: ${ready}${completed_text} | ${timeIntervalStringShort(total)} recorded, +${prediction} predicted` :
     `A: ${tasks.length} D: ${due.length} R: ${ready} | ${timeIntervalStringShort(total)}`);
 
   $('#status-bar').text(text);

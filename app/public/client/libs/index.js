@@ -1,9 +1,8 @@
-const RELEASE_DATE = '20231010';
+const RELEASE_DATE = '20231017';
 
 const RELEASE_NOTES = `
  Release notes:
-1. To improve server performance, the enter backend infrastructure was rewritten. I apologize the instability over the past few days. Things should go back to normal now. If you encounter issues/bugs, please report to sysadmin. Thank you.
-2. Fix updating progress log timestamps doesn't trigger upload
+1. Changed bottom left corner time prediction algorithm. Previously, tasks without time tracked are ignored. Now, the work completed over time rate from tasks with time tracked information are extrapolated to include other tasks as well.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
