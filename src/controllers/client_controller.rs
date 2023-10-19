@@ -1,9 +1,9 @@
 use axum::{
     routing::{get, post},
     extract::{DefaultBodyLimit, State, Multipart},
-    http::{StatusCode},
+    http::StatusCode,
     response::IntoResponse,
-    Form,
+    Form
 };
 use tower_sessions::Session;
 use diesel_async::*;
@@ -172,10 +172,18 @@ impl ClientController {
         let mut file = File::create(&tmp_path).await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
+        let mut last_char = b' ';
         while let Some(chunk) = field.chunk().await
             .map_err(|_| StatusCode::BAD_REQUEST)? {
+            last_char = chunk.last().unwrap_or(&b' ').clone();
+
             file.write(&chunk).await
                 .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        }
+
+        // premature, uncaught disconnection or bad data
+        if last_char != b'}' {
+            return Err(StatusCode::BAD_REQUEST);
         }
 
         // closes temp file
