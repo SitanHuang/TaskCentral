@@ -259,7 +259,7 @@ button .fa{
   display: block;
   text-align: center;
   pointer-events: none;
-  left: calc(50% - 32px/2);
+  /* left: calc(50% - 32px/2); */
 }
 
 .datepicker > input[type="date"] {
@@ -291,8 +291,8 @@ project {
   cursor: pointer;
   /* prevents growing height */
   align-self: flex-start;
-  position: relative;
-  top: -2px;
+  /* position: relative;
+  top: -2px; */
 }
 
 project.removable:after {
@@ -552,4 +552,23 @@ body:not(.proMode) *[data-tooltip] span:hover,
 
 body.proMode .proMode-hide {
   display: none;
+}
+
+/* excluding all touchscreen devices */
+@media (pointer: fine) {
+  *::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  *::-webkit-scrollbar-track {
+    border-radius: 8px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    height: 56px;
+    border-radius: 8px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+    background-color: var(--app-primary-color);
+  }
 }

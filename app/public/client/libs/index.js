@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20231017';
+const RELEASE_DATE = '20231019R1';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Changed bottom left corner time prediction algorithm. Previously, tasks without time tracked are ignored. Now, the work completed over time rate from tasks with time tracked information are extrapolated to include other tasks as well.
+1. Stylesheet improvements
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

@@ -121,8 +121,7 @@ function _ui_home_create_add_new_proj_btn(projects, onsubmit, oldname) {
       _ui_home_project_raise_modal(onsubmit, oldname);
     })
     .appendTo(projects)
-    .css('position', 'relative')
-    .css('top', '-0.1em');
+    .css('padding-top', '0');
   $('<a class="pure-button flat-always"><i class="fa fa-eye"></i> SHOW HIDDEN</a>')
     .click(function () {
       if (this.textContent.match(/SHOW/))
@@ -133,8 +132,7 @@ function _ui_home_create_add_new_proj_btn(projects, onsubmit, oldname) {
           .parent().removeClass('show-hidden');
     })
     .appendTo(projects)
-    .css('position', 'relative')
-    .css('top', '-0.1em');
+    .css('padding-top', '0');
 }
 
 function _ui_home_project_raise_modal(onsubmit, oldname) {
