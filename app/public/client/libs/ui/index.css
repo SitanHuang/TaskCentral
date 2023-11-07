@@ -571,4 +571,10 @@ body.proMode .proMode-hide {
     background-clip: content-box;
     background-color: var(--app-primary-color);
   }
+
+  /* Firefox & others */
+  body {
+    scrollbar-color: var(--app-primary-color) transparent;
+    scrollbar-width: thin;
+  }
 }

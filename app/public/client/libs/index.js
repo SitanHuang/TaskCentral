@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20231019R1';
+const RELEASE_DATE = '20231107';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Stylesheet improvements
+1. Add Firefox support for themed scrollbars
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {
