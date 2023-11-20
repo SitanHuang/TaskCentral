@@ -5,7 +5,7 @@ use axum::{
 };
 use tower::ServiceExt;
 use tower_http::services::ServeFile;
-use hyper::Body;
+use axum::body::Body;
 
 #[inline]
 #[allow(dead_code)]
