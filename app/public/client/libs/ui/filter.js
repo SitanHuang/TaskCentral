@@ -109,7 +109,13 @@ async function ui_filter_save() {
   ui_filter_update_holders();
 }
 
+let _ui_filter_update_holders_prev_target_provider;
+let _ui_filter_update_holders_prev_callback_provider;
+
 function ui_filter_update_holders(target_provider, callback_provider) {
+  _ui_filter_update_holders_prev_target_provider = target_provider = target_provider || _ui_filter_update_holders_prev_target_provider;
+  _ui_filter_update_holders_prev_callback_provider = callback_provider = callback_provider || _ui_filter_update_holders_prev_callback_provider;
+
   $('.filters-holder').each(function () {
     let holder = $(this).html('');
 
