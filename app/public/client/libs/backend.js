@@ -3,6 +3,8 @@ function Backend() {
 
   let switchUser = new URL(location.href).searchParams.get("su");
   this.su = switchUser = switchUser ? encodeURIComponent(switchUser) : undefined;
+  // prevent root from accidentally changing other ppl's data
+  this.allowWriteOnSu = false;
 
   let fail = function (jqXHR, textStatus, errorThrown) {
     alert(`Sync failed - （${textStatus}: ${errorThrown}）`);
@@ -77,6 +79,8 @@ function Backend() {
   }
 
   this.update = function () {
+    if (that.su && !that.allowWriteOnSu) return;
+
     that.dirty = false;
 
     if (that.uploading) return; // only 1 upload at a time
