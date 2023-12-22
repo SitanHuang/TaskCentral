@@ -1,6 +1,3 @@
-*Migration in progress: Project is migrating to Rust implementation. For the
-stable, currently running production code, check out branch "master-ruby-impl"*
-
 1. [Philosophy](#philosophy)
 2. [Screenshots](#screenshots)
 4. [Sign Up](#the-platform)
