@@ -123,6 +123,39 @@ function task_calc_eta(tasks) {
   return -1;
 }
 
+/*
+ * Calcs weight/time rate of task or task[] using weights done & time spent
+ *
+ * returns rate in weights done over time total
+ *
+ * returns -1 if N/A
+ */
+function task_calc_wt_rate(tasks) {
+  if (!Array.isArray(tasks))
+    tasks = [tasks];
+
+  let total_weights = 0;
+  let weights_done = 0;
+  let time_tot = 0;
+
+  for (let task of tasks) {
+    if (!task.weight)
+      continue;
+
+    const progress = task.status == 'completed' ? 100 : task.progress;
+
+    total_weights += task.weight;
+    weights_done += task.weight * progress / 100;
+    time_tot += task.total;
+  }
+
+  if (time_tot && weights_done)
+    return weights_done / time_tot;
+
+  return -1;
+}
+
+
 function task_calc_importance(task) {
   let now = timestamp();
 

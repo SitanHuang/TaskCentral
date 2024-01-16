@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20231222';
+const RELEASE_DATE = '20240116';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Add preliminary visual indicator when Pomodoro runs out
+1. Add "minimum amount of time needed to spend today" to the Time text box in details pane, and bottom task bar in Ready mode
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

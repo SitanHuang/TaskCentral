@@ -567,9 +567,13 @@ function _ui_home_normal_status(tasks) {
   let weight_total = 0;
   let weight_completed = 0;
 
+  let weight_due_eod = 0;
+
   let total = 0;
 
   let total_eta = 0;
+
+  let perDayTot = 0;
 
   let now = timestamp();
   let ready = 0;
@@ -579,16 +583,33 @@ function _ui_home_normal_status(tasks) {
       weight_total += x.weight;
       weight_completed += x.weight * x.progress / 100;
 
+      let daysLeft = ((x.due || x.until) - midnight()) / 8.64e+7;
+
+      if (x.due || x.until) {
+        let weightLeft = x.weight * (100 - x.progress) / 100;
+
+        if (daysLeft > 0)
+          weight_due_eod += weightLeft / daysLeft;
+        else
+          weight_due_eod += weightLeft;
+      }
+
       total += x.total;
 
       let eta = task_calc_eta(x);
-      if (eta > 0)
+      if (eta > 0) {
         total_eta += eta;
+
+        if (x.due || x.until)
+          perDayTot += eta / daysLeft;
+      }
 
       if (!x.earliest || now >= x.earliest)
         ready++;
     }
   });
+
+  const rate = task_calc_wt_rate(tasks);
 
   // this extrapolates any rate=weight/tracked time information to tasks that
   // haven't been tracked but has weights
@@ -621,8 +642,15 @@ function _ui_home_normal_status(tasks) {
   // let ready = due.filter(x => !x.earliest || now >= x.earliest).length;
   // let total = tasks.reduce((s, x) => ({ total: s.total + x.total }), { total: 0 }).total;
 
+  let time_eod_text = '';
+  if (rate > 0 && weight_due_eod) {
+    // two ways to do this too
+    let timeEod = Math.max(weight_due_eod / rate, perDayTot);
+    time_eod_text = `, ${timeIntervalStringShort(timeEod)} required today`;
+  }
+
   let text = (HOME_MODE == 'ready' ?
-    `R: ${ready}${completed_text} | ${timeIntervalStringShort(total)} recorded, +${prediction} predicted` :
+    `R: ${ready}${completed_text} | ${timeIntervalStringShort(total)} recorded, +${prediction} predicted${time_eod_text}` :
     `A: ${tasks.length} D: ${due.length} R: ${ready} | ${timeIntervalStringShort(total)}`);
 
   $('#status-bar').text(text);

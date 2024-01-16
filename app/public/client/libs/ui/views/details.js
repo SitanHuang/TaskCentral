@@ -121,9 +121,19 @@ function _ui_home_detail_update_status_importance(task) {
 
   if (task.total && task.progress) {
     let eta = task_calc_eta(task);
-    eta = timeIntervalStringShort(eta);
+    let etaStr = timeIntervalStringShort(eta);
 
-    totalString += ` (about ${eta} left)`;
+    totalString += ` (about ${etaStr} left`;
+
+    let daysLeft = ((task.due || task.until) - midnight()) / 8.64e+7;
+    if (daysLeft > 0) {
+      let perDay = eta / daysLeft;
+      perDay = timeIntervalStringShort(perDay);
+
+      totalString += `, ${perDay}/day until due`;
+    }
+
+    totalString += `)`;
   }
 
   _home_detail_form.find('input[name=total]')
