@@ -1,8 +1,10 @@
-const RELEASE_DATE = '20240116';
+const RELEASE_DATE = '20240202';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Add "minimum amount of time needed to spend today" to the Time text box in details pane, and bottom task bar in Ready mode
+1. Experimental auto data recovery during occasional data corruption, which disallowed users to log in again.
+
+If you don't see changes, clear browser cache. If your data occasionally corrupts, contact admin (usually due to mysterious network issues that admin has failed to find a solution for).
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

@@ -26,41 +26,59 @@ function Backend() {
       $.post('user/info' + (switchUser ? `?su=${switchUser}` : '')).fail(fail).done(function (user_data) {
         that.user = JSON.parse(user_data);
 
-        $.get('storage/data?y=' + new Date().getTime() + (switchUser ? `&su=${switchUser}` : '')).fail(fail).done(
-          function (data) {
-            try {
-              that.data = JSON.parse(data);
-              that.update_mtime().catch(fail).then(
-                function (mtime) {
-                  that.mtime = mtime;
-                  data_init_default();
+        function finishGet() {
+          that.update_mtime().catch(fail).then(
+            function (mtime) {
+              that.mtime = mtime;
+              data_init_default();
 
-                  window.onfocus = throttle(() => {
-                    that.update_mtime().catch(fail).then(
-                      function (mtime) {
-                        if (that.mtime != mtime) {
-                          alert("Remote file changed since last sync! Reloading page for ya...");
+              window.onfocus = throttle(() => {
+                that.update_mtime().catch(fail).then(
+                  function (mtime) {
+                    if (that.mtime != mtime) {
+                      alert("Remote file changed since last sync! Reloading page for ya...");
 
-                          window.onbeforeunload = null;
+                      window.onbeforeunload = null;
 
-                          if (isFirefox())
-                            location.href = "";
-                          else
-                            location.reload(); // force reload not needed
+                      if (isFirefox())
+                        location.href = "";
+                      else
+                        location.reload(); // force reload not needed
 
-                          reject();
-                          return;
-                        }
-                      }
-                    );
-                  }, 1000);
-                }
-              );
-            } catch (e) {
-              fail(null, e.message, e);
+                      reject();
+                      return;
+                    }
+                  }
+                );
+              }, 1000);
             }
-            resolve();
-          })
+          );
+        }
+
+        let tryGetData;
+
+        tryGetData = function (dat_recov) {
+          $.get(
+            'storage/data?y=' + new Date().getTime() +
+            (switchUser ? `&su=${switchUser}` : '') +
+            (dat_recov ? `&dat_recov=true` : '')
+          ).fail(fail).done(
+            function (data) {
+              try {
+                that.data = JSON.parse(data);
+                finishGet();
+                resolve();
+              } catch (e) {
+                if (!dat_recov) {
+                  tryGetData(true);
+                } else {
+                  fail(null, e.message, e);
+                }
+              }
+            })
+        }
+
+        tryGetData();
       });
     });
     return promise;

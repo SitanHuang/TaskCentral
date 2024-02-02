@@ -1,6 +1,6 @@
 use axum::{
     routing::{get, post},
-    extract::{DefaultBodyLimit, State, Multipart},
+    extract::{DefaultBodyLimit, State, Multipart, Query},
     http::StatusCode,
     response::IntoResponse,
     Form
@@ -41,6 +41,12 @@ impl Controller for ClientController {
 #[derive(Deserialize)]
 pub struct NewPasswordForm {
     new_pswd: String
+}
+
+#[allow(dead_code)]
+#[derive(Deserialize)]
+pub struct DataRecoveryQuery {
+    dat_recov: String
 }
 
 impl ClientController {
@@ -98,9 +104,24 @@ impl ClientController {
     }
 
     async fn data(
-        UserContextExtractor(ucontext): UserContextExtractor
+        UserContextExtractor(ucontext): UserContextExtractor,
+        data_rec_query: Option<Query<DataRecoveryQuery>>,
     ) -> Result<impl IntoResponse, StatusCode> {
         let err = StatusCode::INTERNAL_SERVER_ERROR;
+
+        // Client encounters corrupted data & is requesting to use swp file
+        if data_rec_query.is_some() {
+            eprintln!("Warning: Requesting swp file for {}", &ucontext.su_data_path_app);
+
+            tokio::fs::copy(
+                &ucontext.su_data_path_app,
+                ucontext.su_data_path_app.clone() + ".corrupt.swp"
+            ).await.map_err(|_| err)?;
+            tokio::fs::copy(
+                ucontext.su_data_path_app.clone() + ".swp",
+                &ucontext.su_data_path_app
+            ).await.map_err(|_| err)?;
+        }
 
         use std::fs::{self, File};
         use std::io::prelude::*;

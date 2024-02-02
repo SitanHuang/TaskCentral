@@ -583,7 +583,7 @@ function _ui_home_normal_status(tasks) {
       weight_total += x.weight;
       weight_completed += x.weight * x.progress / 100;
 
-      let daysLeft = ((x.due || x.until) - midnight()) / 8.64e+7;
+      let daysLeft = Math.max(((x.due || x.until) - midnight()) / 8.64e+7, 1);
 
       if (x.due || x.until) {
         let weightLeft = x.weight * (100 - x.progress) / 100;
