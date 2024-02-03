@@ -473,10 +473,10 @@ function _ui_home_gen_task_row(task) {
   if (task.earliest && timestamp() < task.earliest)
     $row.addClass('earliest');
 
-  if (task.due) {
+  if (task.due || task.until) {
     $row.find('.date-due')
-          .text(task_stringify_due(task.due))
-          .attr('style', task_colorize_due(task.due))
+          .text(task_stringify_due(task.due || task.until))
+          .attr('style', task_colorize_due(task.due || task.until))
           .show();
   }
 

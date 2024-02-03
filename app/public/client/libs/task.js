@@ -172,7 +172,9 @@ function task_calc_importance(task) {
   let weight = (task.weight + 1) / 11 * 10;
   let priority = (task.priority + 1) / 11 * 3;
 
-  let days_left = task.due ? (task.due - now) / 8.64e+7 : 100;
+  let end = task.due || task.until;
+
+  let days_left = end ? (end - now) / 8.64e+7 : 100;
   // account for negative days:
   days_left = days_left >= 0 ? days_left + 1 : 1 / (1 - days_left);
 
@@ -262,10 +264,10 @@ function task_gantt_endpoints(task) {
   } else {
     // if before until, either now or due
     // cannot be after until
-    if (task.due)
-      end = Math.max(end, task.due);
-    if (task.until)
-      end = Math.min(end, task.until);
+    if (task.due || task.until)
+      end = Math.max(end, task.due || task.until);
+    if (task.until && end > task.until)
+      end = task.until;
   }
 
   return [

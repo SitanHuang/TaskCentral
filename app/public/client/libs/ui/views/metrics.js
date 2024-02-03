@@ -353,11 +353,11 @@ var ui_metrics_inject_tasks;
         explanation('How early were tasks done before due date as % of assigned time'),
       (s, e) => {
         let tasks = _query_generate_gantt_periods(
-                      tasks2.filter(x => x.status == 'completed' && task_completed_stamp(x) < e && (x.due || x.until)),
+                      tasks2.filter(x => x.status == 'completed' && task_completed_stamp(x) < e && x.due),
                       [s, e - 8.64e+7]);
         return (tasks.map(x => {
                   x = x.task;
-                  let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)].map(x => roundDateToNearestDay(x).getTime());
+                  let endpoints = [x.earliest ? x.earliest : x.created, x.due].map(x => roundDateToNearestDay(x).getTime());
                   return endpoints[0] == endpoints[1] ?
                            0 : // if due on same day as creation, 0% ahead
                            (endpoints[1] - roundDateToNearestDay(task_completed_stamp(x))) / (endpoints[1] - endpoints[0]);
@@ -370,11 +370,11 @@ var ui_metrics_inject_tasks;
         explanation('How many days were tasks done before due date'),
       (s, e) => {
         let tasks = _query_generate_gantt_periods(
-                      tasks2.filter(x => x.status == 'completed' && task_completed_stamp(x) < e && (x.due || x.until)),
+                      tasks2.filter(x => x.status == 'completed' && task_completed_stamp(x) < e && x.due),
                       [s, e - 8.64e+7]);
         return (tasks.map(x => {
                   x = x.task;
-                  let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)];
+                  let endpoints = [x.earliest ? x.earliest : x.created, x.due];
                   return midnight(endpoints[0]) == midnight(endpoints[1]) ?
                            0 : // if due on same day as creation, 0% ahead
                            Math.floor((endpoints[1] - midnight(task_completed_stamp(x))) / 8.64e+7);
@@ -387,11 +387,11 @@ var ui_metrics_inject_tasks;
         explanation('How early were tasks done before due date as % of assigned time. Excluding tasks with 1 day of assigned time'),
       (s, e) => {
         let tasks = _query_generate_gantt_periods(
-                      tasks2.filter(x => x.status == 'completed' && task_completed_stamp(x) < e && (x.due || x.until)),
+                      tasks2.filter(x => x.status == 'completed' && task_completed_stamp(x) < e && x.due),
                       [s, e - 8.64e+7]);
         tasks = tasks.map(x => {
                   x = x.task;
-                  let endpoints = [x.earliest ? x.earliest : x.created, (x.due || x.until)].map(x => roundDateToNearestDay(x).getTime());
+                  let endpoints = [x.earliest ? x.earliest : x.created, x.due].map(x => roundDateToNearestDay(x).getTime());
                   return endpoints[0] == endpoints[1] ?
                            NaN : // if due on same day as creation, skip
                            (endpoints[1] - roundDateToNearestDay(task_completed_stamp(x))) / (endpoints[1] - endpoints[0]);

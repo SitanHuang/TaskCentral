@@ -1,8 +1,13 @@
-const RELEASE_DATE = '20240202';
+const RELEASE_DATE = '20240203';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Experimental auto data recovery during occasional data corruption, which disallowed users to log in again.
+1. Task list on the Home tab now displays the "until" date for tasks without a "due" date.
+2. Task importance and sorting algorithm now considers "until" date.
+3. Tooltip for "Until" date is rewritten for better guidance.
+4. Gantt charts now correctly adjusts endpoints in regards to "until" dates.
+5. Tasks with "until" date set but without "due" date are no longer considered for get-ahead metrics calculations (eg., calculating get-ahead for an exam preparation task does not make sense, and rankings shouldn't get penalized for clicking "complete" on the day of exam). Competitive Skill Groups will be updated correspondingly for the next calibration cycle.
+6. Experimental auto data recovery during occasional data corruption, which disallowed users to log in again.
 
 If you don't see changes, clear browser cache. If your data occasionally corrupts, contact admin (usually due to mysterious network issues that admin has failed to find a solution for).
 `;
