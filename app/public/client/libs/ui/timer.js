@@ -8,6 +8,10 @@ let _timer_pomodoro_start;
 
 let _timer_blink_cancel_callback = () => {};
 
+function timer_get_user_pomotick() {
+  return back.data.settings.pomodoro || 25;
+}
+
 function timer_start_task(task) {
   // does nothing if unset
   clearInterval(_timer_interval_id);
@@ -25,7 +29,7 @@ function timer_start_task(task) {
     if (!_timer_pomodoro_start)
       return;
 
-    const pom_offset = 60000 * (back.data.settings.pomodoro || 25);
+    const pom_offset = 60000 * timer_get_user_pomotick();
     const pom_end = _timer_pomodoro_start + pom_offset;
     if (pom_end > timestamp()) {
       $timer_container

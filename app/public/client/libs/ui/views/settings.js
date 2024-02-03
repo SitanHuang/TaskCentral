@@ -39,6 +39,7 @@ function ui_menu_select_settings() {
 
   let color = _settings_con.find('.user-form input[name="app-primary-color"]');
   let pro = _settings_con.find('#app-pro-mode');
+  let pomotick = _settings_con.find('#app-pomotick');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
 
   // unbind
@@ -66,6 +67,18 @@ function ui_menu_select_settings() {
     back.set_dirty();
 
     ui_update_proMode();
+  };
+  // unbind
+  pomotick[0].onchange = function () {};
+  // set value
+  pomotick[0].checked = back.data.settings.usePomoticks || false;
+  // bind
+  pomotick[0].onchange = function () {
+    if (pomotick[0].checked)
+      back.data.settings.usePomoticks = true;
+    else
+      delete back.data.settings.usePomoticks;
+    back.set_dirty();
   };
 
   // unbind

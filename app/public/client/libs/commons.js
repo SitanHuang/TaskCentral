@@ -71,6 +71,18 @@ function timeIntervalStringShort(final, initial = 0, maxLevel = 1) {
   let delta = Math.abs(final - initial) / 1000; // Convert to seconds
   const sign = (final - initial < 0 ? '-' : '');
 
+  // use PomoTick unit if maxLevel < day
+  if (back.data?.settings?.usePomoticks && maxLevel >= 0 && maxLevel < 2) {
+    const PT = timer_get_user_pomotick() * 60;
+
+    if (delta >= PT * 0.1) {
+      let pts = delta / PT;
+      return sign + pts.toFixed(1) + 'PT';
+    }
+
+    return sign + delta.toFixed(1) + 's';
+  }
+
   const MINUTE = 60;
   const HOUR = 3600;
   const DAY = 86400; // 24 hours
