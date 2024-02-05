@@ -165,7 +165,7 @@ function task_calc_importance(task) {
   if (task.status == 'start')
     return 11 * (task.priority + 1) / 11;
 
-  if (task.until && now >= task.until)
+  if (task.until && midnight() > midnight(task.until))
     return 0;
 
   // weight 10 vs priority 3
