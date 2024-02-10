@@ -178,11 +178,52 @@ button .fa{
   position: fixed;
   top: calc(50dvh - 1em);
   width: 100vw;
+
+  transition: top 200ms ease;
+}
+
+#timer-container timer.moved {
+  top: calc(50dvh - 2em);
 }
 
 #timer-container timer.pomodoro {
-  top: calc(50dvh + 0.5em);
+  top: calc(50dvh - 0.5em);
   font-size: 2rem;
+}
+
+#timer-container .pomodoro-progress {
+  display: block;
+  position: fixed;
+
+  --bar-width: calc(min(80dvw, 16em));
+
+  top: calc(50dvh + 4em);
+  left: calc(50dvw - var(--bar-width) / 2);
+
+  width: var(--bar-width);
+  height: 12px;
+  overflow: hidden;
+
+  background: rgba(0, 0, 0, .2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+#timer-container .pomodoro-progress.active {
+  opacity: 0.9;
+}
+
+#timer-container .pomodoro-progress .bar {
+  max-width: var(--bar-width);
+  height: inherit;
+  width: 0%;
+
+  background: white;
+
+  transition: width 300ms ease;
 }
 
 .bottom-bar {

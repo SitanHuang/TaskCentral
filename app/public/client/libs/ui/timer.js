@@ -35,6 +35,11 @@ function timer_start_task(task) {
       $timer_container
         .find('timer.pomodoro')
         .text(timeIntervalString(timestamp(), pom_end));
+
+      const perc = Math.round((100 - (pom_end - timestamp()) / pom_offset * 100));
+
+      $timer_container.find('.pomodoro-progress .bar')
+        .css('width', perc + '%');
     } else {
       // time's up
 
@@ -67,11 +72,17 @@ function timer_pomodoro(btn) {
 
   // start timer
   _timer_pomodoro_start = timestamp();
+  $timer_container.find('timer:not(.pomodoro)').addClass('moved');
   $timer_container.find('.pomodoro-btn').addClass('active');
+  $timer_container.find('.pomodoro-progress').addClass('active')
+    .find('.bar').css('width', '0');
 }
 
 function _timer_pomodoro_stop() {
+  $timer_container.find('timer:not(.pomodoro)').removeClass('moved');
   $timer_container.find('.pomodoro-btn').removeClass('active');
+  $timer_container.find('.pomodoro-progress').removeClass('active')
+    .find('.bar').css('width', '0');
   $timer_container.find('timer.pomodoro').text('');
   _timer_pomodoro_start = null;
 }
