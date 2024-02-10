@@ -72,9 +72,7 @@ function _ui_home_add_update_actions() {
   projects.html('').removeClass('show-hidden');
 
   Object.keys(back.data.projects)
-    .sort((a, b) =>
-      (!!back.data.projects[a].hidden - !!back.data.projects[b].hidden) || // hidden projects go last
-      (back.data.projects[b].lastUsed - back.data.projects[a].lastUsed))
+    .sort(_project_user_sort_func())
     .forEach(x => {
       let proj = back.data.projects[x];
       let chip = project_create_chip(x)

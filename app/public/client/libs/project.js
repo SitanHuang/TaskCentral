@@ -21,3 +21,19 @@ function project_create_chip(name) {
            .css('color', proj.fontColor)
            .text(name);
 }
+
+function project_get_user_sorting() {
+  return back.data.settings.projectSort || "time";
+}
+
+function _project_user_sort_func() {
+  if (project_get_user_sorting() == "alpha") {
+    return (a, b) =>
+      (!!back.data.projects[a].hidden - !!back.data.projects[b].hidden) || // hidden projects go last
+      a.localeCompare(b); // alphabetical sort of project names
+  }
+
+  return (a, b) =>
+    (!!back.data.projects[a].hidden - !!back.data.projects[b].hidden) || // hidden projects go last
+    (back.data.projects[b].lastUsed - back.data.projects[a].lastUsed); // last used project goes first
+}

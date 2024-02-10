@@ -271,9 +271,7 @@ function ui_home_detail_project_changed(input) {
   projects.html('');
 
   Object.keys(back.data.projects)
-    .sort((a, b) =>
-      (!!back.data.projects[a].hidden - !!back.data.projects[b].hidden) || // hidden projects go last
-      (back.data.projects[b].lastUsed - back.data.projects[a].lastUsed))
+    .sort(_project_user_sort_func())
     .forEach(x => {
       project_create_chip(x)
         .appendTo(projects)

@@ -37,10 +37,21 @@ function ui_menu_select_settings() {
 
   let percUsed = Math.round(10000 * back.user.size / back.user.quota * 100) / 10000;
 
+  let projectSort = _settings_con.find('select[name="app-projects-sort"]');
   let color = _settings_con.find('.user-form input[name="app-primary-color"]');
   let pro = _settings_con.find('#app-pro-mode');
   let pomotick = _settings_con.find('#app-pomotick');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
+
+  // unbind
+  projectSort[0].onchange = function () { };
+  // set value
+  projectSort.val(project_get_user_sorting());
+  // bind
+  projectSort[0].onchange = function () {
+    back.data.settings.projectSort = projectSort.val() || "time";
+    back.set_dirty();
+  };
 
   // unbind
   color[0].onchange = function () {};
