@@ -1,9 +1,12 @@
-const RELEASE_DATE = '20240210R2';
+const RELEASE_DATE = '20240211';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Added option in user settings to allow alphabetical sorting of projects.
-2. Added a beautiful progress bar for the Pomodoro timer.
+1. Allows numerical inputs for priority & weight.
+  - Changed range from 0-10 to 0-100 (still internally stored as 0.0-10.0, for those of you using the task_new/task_set API)
+  - Changed Excel batch import mechanisms.
+2. Added option in user settings to allow alphabetical sorting of projects.
+3. Added a beautiful progress bar for the Pomodoro timer.
 
 If you don't see changes, clear browser cache. If your data occasionally corrupts, contact admin (usually due to mysterious network issues that admin has failed to find a solution for).
 `;

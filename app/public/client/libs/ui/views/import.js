@@ -94,10 +94,13 @@ function _ui_import_gen_commands(tsv) {
     // check numbers
     dat.priority = parseFloat(dat.priority);
     dat.weight = parseFloat(dat.weight);
-    if (!Number.isInteger(dat.priority) || dat.priority < 1 || dat.priority > 10)
+    if (!Number.isInteger(dat.priority) || dat.priority < 0 || dat.priority > 100)
       continue ROW;
-    if (!Number.isInteger(dat.weight) || dat.weight < 1 || dat.weight > 10)
+    if (!Number.isInteger(dat.weight) || dat.weight < 0 || dat.weight > 100)
       continue ROW;
+
+    dat.priority /= 10;
+    dat.weight /= 10;
 
     if (!dat.notes?.length)
       delete dat.notes;

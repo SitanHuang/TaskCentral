@@ -40,6 +40,28 @@ function ui_menu_select_home(_resetForm) {
       _home_addForm.removeClass('focus-within');
     }, 2);
   }
+
+  ['weight', 'priority'].forEach(x => {
+    const input = _home_addForm.find('input[name=' + x + ']');
+    const btn = _home_addForm.find('.progress-num-input[name=' + x + '] .pure-button');
+
+    input[0].onchange = (_) => {
+      btn.text(input.val());
+    };
+
+    btn.text(input.val())[0].onclick = async (_) => {
+        let val = await ui_prompt(
+          `Change ${x} (1-100):`, input.val(),
+          { input: "number", min: 0, max: 100, valMinMax: true }
+        );
+
+        if (val && val >= 0 && val <= 100) {
+          input.val(val);
+          btn.text(input.val());
+          ui_home_add_input_focus();
+        }
+      }
+  });
 }
 
 // =========================================
@@ -328,8 +350,8 @@ function ui_home_add_trigger() {
     project: _home_addForm.find('.input-row input[name=project]').val() || null,
     due: task_parse_date_input(_home_addForm.find('.input-row input[name=due]')
            .val()).getTime() || null,
-    priority: parseInt(_home_addForm.find('.detail-row input[name=priority]').val()),
-    weight: parseInt(_home_addForm.find('.detail-row input[name=weight]').val()),
+    priority: parseInt(_home_addForm.find('.detail-row input[name=priority]').val()) / 10,
+    weight: parseInt(_home_addForm.find('.detail-row input[name=weight]').val()) / 10,
   });
   task_set(task);
 

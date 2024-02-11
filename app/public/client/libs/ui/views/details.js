@@ -39,6 +39,32 @@ function _ui_home_detail_update_status_importance(task) {
     };
   }
 
+  // progress bar is from 0-100 but we store it as 0.0 - 10.0 for legacy purposes
+  ['weight', 'priority'].forEach(x => {
+    const val = Math.round(task[x] * 10);
+
+    _home_detail_form.find('input[name=' + x + ']')
+      .val(val)[0].onchange = (e) => {
+        if (!_selected_task) return;
+
+        _selected_task[x] = parseInt(e.target.value) / 10;
+        _ui_home_details_signal_changed();
+      };
+    _home_detail_form.find('.progress-num-input[name=' + x + '] .pure-button')
+      .text(val)[0].onclick = async (_) => {
+        if (!_selected_task) return;
+        let input = await ui_prompt(
+          `Change ${x} (1-100):`, val,
+          { input: "number", min: 0, max: 100, valMinMax: true }
+        );
+
+        if (input && input >= 0 && input <= 100) {
+          _selected_task[x] = parseInt(input) / 10;
+          _ui_home_details_signal_changed();
+        }
+      }
+  });
+
   let steps = task.steps || 100;
   let _prog = Math.round((task.progress || 0) / 100 * steps);
 
@@ -206,16 +232,6 @@ function ui_detail_select_task(task) {
         delete _selected_task.notes;
       _ui_home_details_signal_changed();
     };
-
-  ['weight', 'priority'].forEach(x => {
-    _home_detail_form.find('input[name=' + x + ']')
-      .val(task[x])[0].onchange = (e) => {
-        if (!_selected_task) return;
-
-        _selected_task[x] = parseInt(e.target.value);
-        _ui_home_details_signal_changed();
-      };
-  });
 
   let hidden = _home_detail_form.find('input[name=hidden]')[0];
   hidden.checked = task.hidden;

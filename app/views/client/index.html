@@ -125,9 +125,19 @@
               </sub-title>
               <div class="projects"></div>
               <sub-title>PRIORITY</sub-title>
-              <input type="range" min="0" max="10" step="1" name="priority">
+              <div class="progress-num-input" name="priority">
+                <input type="range" min="0" max="100" step="1" name="priority">
+                <div class="pure-button">
+                  <i class="far fa-keyboard"></i>
+                </div>
+              </div>
               <sub-title>WEIGHT</sub-title>
-              <input type="range" min="0" max="10" step="1" name="weight">
+              <div class="progress-num-input" name="weight">
+                <input type="range" min="0" max="100" step="1" name="weight">
+                <div class="pure-button">
+                  <i class="far fa-keyboard"></i>
+                </div>
+              </div>
               <!-- TODO: stub -->
               <!-- <sub-title>TAGS</sub-title> -->
             </div>
@@ -175,13 +185,23 @@
                 <label data-tooltip="Priority is the relative importance of the task - ie. the penalty for missing the deadline.">
                   Priority
                 </label>
-                <input type="range" min="0" max="10" step="1" name="priority">
+                <div class="progress-num-input" name="priority">
+                  <input type="range" min="0" max="100" step="1" name="priority">
+                  <div class="pure-button">
+                    <i class="far fa-keyboard"></i>
+                  </div>
+                </div>
               </div>
               <div class="pure-control-group">
                 <label data-tooltip="Weight is the relative volume of work expected on the task.">
                   Weight
                 </label>
-                <input type="range" min="0" max="10" step="1" name="weight">
+                <div class="progress-num-input" name="weight">
+                  <input type="range" min="0" max="100" step="1" name="weight">
+                  <div class="pure-button">
+                    <i class="far fa-keyboard"></i>
+                  </div>
+                </div>
               </div>
               <div class="pure-control-group">
                 <label data-tooltip="Update this slider to tell the system how much work is left at the current instant. Use the 'Set Maximum Steps' feature to adjust the total number of steps for your progress. When a task is marked as 'Complete', the progress at the instant of completion is assumed to be 100%.">
@@ -952,22 +972,22 @@
     <script src="libs/fuzzy.js?releaseDate=20230930"></script>
     <script src="libs/query.js?releaseDate=20230930"></script>
 
-    <script src="libs/ui/dialog.js?releaseDate=20230930R1"></script>
+    <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
     <script src="libs/ui/filter.js?releaseDate=20231124"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240210R2"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20240210R2"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20240211R1"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20240211"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240210R2"></script>
     <script src="libs/ui/views/forecast.js?releaseDate=20230924"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20240203"></script>
-    <script src="libs/ui/views/import.js?releaseDate=20230924R1"></script>
+    <script src="libs/ui/views/import.js?releaseDate=20240211"></script>
 
     <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240210R2"></script>
+    <script src="libs/index.js?releaseDate=20240211"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20230917"></script>

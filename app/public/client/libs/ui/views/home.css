@@ -93,6 +93,12 @@
   background: inherit;
 }
 
+#add-form .progress-num-input {
+  display: block;
+  line-height: 2em;
+  height: 2em;
+}
+
 .home task {
   display: block;
   width: 100%;

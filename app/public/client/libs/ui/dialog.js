@@ -21,6 +21,9 @@ async function _ui_raise_dialog({
   cancelTxt  = "Cancel",
   okayTxt    = "OK",
   input      = false, // "text" / "number" / "password"
+  min        = null,
+  max        = null,
+  valMinMax  = false,
   inputPlch  = '',
   inputVal   = '',
 } = {}) {
@@ -41,6 +44,8 @@ async function _ui_raise_dialog({
     inputEle.type = input;
     inputEle.placeholder = inputPlch || '';
     inputEle.value = inputVal || '';
+    inputEle.min = min;
+    inputEle.max = max;
   } else {
     inputContainer.style.display = 'none';
   }
@@ -48,17 +53,22 @@ async function _ui_raise_dialog({
   MicroModal.show('modal-ui-dialog');
 
   inputEle.focus({ focusVisible: true });
+  inputEle.select();
 
   return new Promise(resolve => {
     const primaryBtn = document.querySelector("#modal-ui-dialog .modal__btn.modal__btn-primary");
-    primaryBtn.onclick = function () {
-      MicroModal.close('modal-ui-dialog');
-
-      resolve(input ? inputEle.value : true);
-    };
+    primaryBtn.onclick = submitModalAndResolve;
 
     const closeBtn = document.querySelector("#modal-ui-dialog .modal__close");
     closeBtn.onclick = closeModalAndResolve;
+
+    if (input) {
+      $(inputEle).unbind('keydown').bind('keydown', function (e) {
+        // no need to prevent modal from closing prematurely on enter since we
+        // don't have form element
+        e.keyCode === 13 && submitModalAndResolve();
+      });
+    }
 
     function closeModalAndResolve() {
       MicroModal.close('modal-ui-dialog');
@@ -67,6 +77,16 @@ async function _ui_raise_dialog({
       closeBtn.onclick = null;
 
       resolve(input ? null : false);
+    }
+    function submitModalAndResolve() {
+      const val = inputEle.value;
+
+      if (valMinMax && (val < min || val > max))
+        return;
+
+      MicroModal.close('modal-ui-dialog');
+
+      resolve(input ? val : true);
     }
   });
 }
