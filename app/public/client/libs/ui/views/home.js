@@ -51,7 +51,7 @@ function ui_menu_select_home(_resetForm) {
 
     btn.text(input.val())[0].onclick = async (_) => {
         let val = await ui_prompt(
-          `Change ${x} (1-100):`, input.val(),
+          `Change ${x} (0-100):`, input.val(),
           { input: "number", min: 0, max: 100, valMinMax: true }
         );
 

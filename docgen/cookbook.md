@@ -122,8 +122,8 @@ latency. But, it's a tricky balance:
 2. **Addressing Time-Critical Processes**: However, certain tasks demand timely
    attention. For instance, while your computer juggles between updating the
    cursor and running a heavy Excel calculation, you might need to check your
-   emails amidst a busy day. These tasks define the Minimal Allowable
-   Frequency.
+   emails amidst a busy day. These tasks define the Minimum Interrupt
+   Frequency for which interrupts can occur.
 
 3. **Maximizing Focus**: The aim is to extend our focus on a single task as
    much as possible. Yet, it's limited by two factors: (1) The frequency
@@ -131,8 +131,8 @@ latency. But, it's a tricky balance:
    Concentration Time — after which the cost of mental fatigue surpasses the
    price of shifting tasks.
 
-The Maximum Continuous Concentration Time and the minimum frequency for
-time-sensitive tasks are implemented in TaskCentral via the Pomodoro timer
+The Maximum Continuous Concentration Time and the Minimum Interrupt Frequency
+for time-sensitive tasks are implemented in TaskCentral via the Pomodoro timer
 feature. Users can tune the exact minutes in the *User* tab. After starting a
 task, click the middle button on the timer screen to start the Pomodoro
 countdown. The web page will beep when time is up (make sure your volume is

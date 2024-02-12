@@ -597,21 +597,21 @@ body.proMode .proMode-hide {
 
 /* excluding all touchscreen devices */
 @media (pointer: fine) {
-  *::-webkit-scrollbar {
+  /* *::-webkit-scrollbar {
     width: 16px;
   }
 
   *::-webkit-scrollbar-track {
     border-radius: 8px;
-  }
+  } */
 
-  *::-webkit-scrollbar-thumb {
+  /* *::-webkit-scrollbar-thumb {
     height: 56px;
-    border-radius: 8px;
+    /* border-radius: 8px;
     border: 4px solid transparent;
     background-clip: content-box;
     background-color: var(--app-primary-color);
-  }
+  } */
 
   /* Firefox & others */
   body {

@@ -100,6 +100,7 @@
   position: absolute;
   margin-top: -2em;
   margin-bottom: 0;
+  font-family: var(--mono-family);
 }
 
 .task-detail .progress-value-indicator > input {

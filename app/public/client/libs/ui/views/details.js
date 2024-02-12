@@ -54,7 +54,7 @@ function _ui_home_detail_update_status_importance(task) {
       .text(val)[0].onclick = async (_) => {
         if (!_selected_task) return;
         let input = await ui_prompt(
-          `Change ${x} (1-100):`, val,
+          `Change ${x} (0-100):`, val,
           { input: "number", min: 0, max: 100, valMinMax: true }
         );
 

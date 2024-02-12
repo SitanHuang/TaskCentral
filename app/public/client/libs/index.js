@@ -1,10 +1,10 @@
-const RELEASE_DATE = '20240211';
+const RELEASE_DATE = '20240212R1';
 
 const RELEASE_NOTES = `
  Release notes:
 1. Allows numerical inputs for priority & weight.
   - Changed range from 0-10 to 0-100 (still internally stored as 0.0-10.0, for those of you using the task_new/task_set API)
-  - Changed Excel batch import mechanisms.
+  - Changed Excel batch import template to accomodate the 0-100 range.
 2. Added option in user settings to allow alphabetical sorting of projects.
 3. Added a beautiful progress bar for the Pomodoro timer.
 
@@ -19,7 +19,7 @@ if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toStr
   //     back.set_dirty();
   //   }
   // }, 1000);
-  ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
+  // ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
 }
 
 localStorage.last_release = RELEASE_DATE;
