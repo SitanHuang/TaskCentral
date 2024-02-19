@@ -32,6 +32,9 @@ body.default-dark {
   --log-hour-color: #d3d3d3;
 
   color-scheme: dark;
+
+  --theme-color-red: var(--theme-color-red-dark);
+  --theme-color-yellow: var(--theme-color-yellow-dark);
 }
 
 body.default-dark .task-detail {

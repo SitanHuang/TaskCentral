@@ -479,23 +479,25 @@ function _ui_home_gen_task_row(task) {
     </primary>
   `);
 
-  if (task.weight >= 6.67)
+  if (task.weight >= _ui_settings_get_user_style_threshold("high-weight-thre"))
     $row.addClass("high-weight");
-  else if (task.weight <= 3.33)
+  else if (task.weight <= _ui_settings_get_user_style_threshold("low-weight-thre"))
     $row.addClass("low-weight");
 
-  if (task.priority >= 6.67)
+  if (task.priority >= _ui_settings_get_user_style_threshold("high-priority-thre"))
     $row.addClass("high-priority");
-  else if (task.priority <= 3.33)
+  else if (task.priority <= _ui_settings_get_user_style_threshold("low-priority-thre"))
     $row.addClass("low-priority");
 
-  const importance = task_calc_importance(task);
+  // we're disabling offset so that pinned tasks with low importance previously
+  // won't be affected
+  const importance = task_calc_importance(task, "disable_offset");
 
-  if (importance >= 5.00)
+  if (importance >= _ui_settings_get_user_style_threshold("very-high-importance-thre"))
     $row.addClass("very-high-importance");
-  else if (importance >= 4.00)
+  else if (importance >= _ui_settings_get_user_style_threshold("high-importance-thre"))
     $row.addClass("high-importance");
-  else if (importance <= 3.00)
+  else if (importance <= _ui_settings_get_user_style_threshold("low-importance-thre"))
     $row.addClass("low-importance");
 
   if (task.pinned)

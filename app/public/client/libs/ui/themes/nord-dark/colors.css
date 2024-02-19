@@ -32,6 +32,9 @@ body.nord-dark {
   --log-hour-color: #D8DEE9;
 
   color-scheme: dark;
+
+  --theme-color-red: var(--theme-color-red-dark);
+  --theme-color-yellow: var(--theme-color-yellow-dark);
 }
 
 body.nord-dark .task-detail {

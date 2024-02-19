@@ -32,6 +32,9 @@ body.pink-dark {
   --log-hour-color: #e0c1db;
 
   color-scheme: dark;
+
+  --theme-color-red: var(--theme-color-red-dark);
+  --theme-color-yellow: var(--theme-color-yellow-dark);
 }
 
 body.pink-dark .task-detail {

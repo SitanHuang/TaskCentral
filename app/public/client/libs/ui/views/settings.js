@@ -43,6 +43,35 @@ function ui_menu_select_settings() {
   let pomotick = _settings_con.find('#app-pomotick');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
 
+  Object.keys(_UI_USER_STYLE_THRESHOLDS).forEach(key => {
+    let multiply = key.match("weight|priority");
+
+    let input = _settings_con.find(`input[name="${key}"][type="number"]`);
+    input[0].onchange = function () { };
+    input.val(_ui_settings_get_user_style_threshold(key) * (multiply ? 10 : 1));
+    input[0].onchange = function () {
+      back.data.settings.styleThresholds = back.data.settings.styleThresholds || {};
+
+      const def = _UI_USER_STYLE_THRESHOLDS[key];
+
+      val = parseFloat(input.val());
+
+
+      if (multiply)
+        val /= 10;
+
+      if (Number.isNaN(val))
+        val = def.def;
+
+      back.data.settings.styleThresholds[key] = Math.min(def.max, Math.max(val, def.min));
+
+      if (back.data.settings.styleThresholds[key] == def.def)
+        delete back.data.settings.styleThresholds[key];
+
+      back.set_dirty();
+    };
+  });
+
   // unbind
   projectSort[0].onchange = function () { };
   // set value
@@ -302,11 +331,11 @@ const UI_SETTINGS_DEFAULT_STYLESHEET =`
 }
 
 .low-priority.low-weight.low-importance {
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
-.high-weight name:not(.high-priority),
-.high-weight.low-importance {
+.high-weight:not(.high-priority) name,
+.high-weight.low-importance name {
   opacity: 0.9;
 }
 .high-weight name {
@@ -314,10 +343,15 @@ const UI_SETTINGS_DEFAULT_STYLESHEET =`
 }
 
 .high-importance {
-  color: #f57c00;
+  color: var(--theme-color-yellow);
 }
 .very-high-importance {
-  color: #b71c1c;
+  color: var(--theme-color-red);
+}
+
+.very-high-importance.high-priority,
+.very-high-importance.high-weight {
+  font-weight: bolder;
 }
 
 .high-priority name {
@@ -325,7 +359,11 @@ const UI_SETTINGS_DEFAULT_STYLESHEET =`
 }
 
 .pinned {
-  border: 1px solid var(--text-sec-color) !important;
+  border-bottom: 1px solid var(--text-sec-color) !important;
+}
+
+.pinned:first-child {
+  border-top: 1px solid var(--text-sec-color) !important;
 }
 
 /* Available classes: */
@@ -346,6 +384,64 @@ const UI_SETTINGS_DEFAULT_STYLESHEET =`
 .high-priority.low-weight {}
 .low-priority.high-weight {}
 `;
+
+// maps input names to attributes
+const _UI_USER_STYLE_THRESHOLDS = {
+  "low-priority-thre": {
+    name: "lp",
+    min: 0,
+    max: 100,
+    def: 3.3
+  },
+  "high-priority-thre": {
+    name: "hp",
+    min: 0,
+    max: 100,
+    def: 6.6
+  },
+  "low-weight-thre": {
+    name: "lw",
+    min: 0,
+    max: 100,
+    def: 3.3
+  },
+  "high-weight-thre": {
+    name: "hw",
+    min: 0,
+    max: 100,
+    def: 6.6
+  },
+  "low-importance-thre": {
+    name: "li",
+    min: 0,
+    max: 100,
+    def: 3.00
+  },
+  "high-importance-thre": {
+    name: "hi",
+    min: 0,
+    max: 100000,
+    def: 4.00
+  },
+  "very-high-importance-thre": {
+    name: "vhi",
+    min: 0,
+    max: 100000,
+    def: 5.00
+  },
+};
+
+function _ui_settings_get_user_style_threshold(thresholdId) {
+  const def = _UI_USER_STYLE_THRESHOLDS[thresholdId];
+  const uThreds = back?.data?.settings?.styleThresholds || {};
+
+  const val = uThreds[thresholdId];
+
+  if (Number.isNaN(val) || !Number.isFinite(val))
+    return def.def;
+
+  return Math.min(def.max, Math.max(val, def.min));
+}
 
 function _ui_settings_get_user_stylesheets() {
   const css = back?.data?.settings?.stylesheet || UI_SETTINGS_DEFAULT_STYLESHEET;
@@ -380,7 +476,9 @@ function ui_settings_apply_user_stylesheets() {
 
 function ui_menu_settings_reset_stylesheet() {
   delete back.data.settings.stylesheet;
+  delete back.data.settings.styleThresholds;
   back.set_dirty();
 
   ui_settings_apply_user_stylesheets();
+  ui_menu_select_settings();
 }

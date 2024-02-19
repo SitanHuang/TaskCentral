@@ -598,8 +598,36 @@
         <div class="pad">
           <h4>User Stylesheets</h4>
           <form class="pure-form pure-form-aligned user-form pad" style="max-width: 1024px;">
-            <textarea name="user-stylesheet" style="display: block;width: min(100%, 1024px);min-height: 5em; font-family: var(--mono-family);"></textarea>
             <span class="pure-form-message-inline proMode-hide">Synced across all devices.</span>
+            <br>
+            <textarea name="user-stylesheet" style="display: block;width: min(100%, 1024px);min-height: 15em; font-family: var(--mono-family);"></textarea>
+            <br>
+            <label for="aligned-email">Low priority upper threshold:</label>
+            <input type="number" min="0" max="100" step="1" name="low-priority-thre" />
+            <br>
+            <br>
+            <label for="aligned-email">High priority lower threshold:</label>
+            <input type="number" min="0" max="100" step="1" name="high-priority-thre" />
+            <br>
+            <br>
+            <label for="aligned-email">Low weight upper threshold:</label>
+            <input type="number" min="0" max="100" step="1" name="low-weight-thre" />
+            <br>
+            <br>
+            <label for="aligned-email">High weight lower threshold:</label>
+            <input type="number" min="0" max="100" step="1" name="high-weight-thre" />
+            <br>
+            <br>
+            <label for="aligned-email">Low importance upper threshold:</label>
+            <input type="number" min="0" max="100" step="0.1" name="low-importance-thre" />
+            <br>
+            <br>
+            <label for="aligned-email">High importance lower threshold:</label>
+            <input type="number" min="0" max="100" step="0.1" name="high-importance-thre" />
+            <br>
+            <br>
+            <label for="aligned-email">Very high importance lower threshold:</label>
+            <input type="number" min="0" max="100" step="0.1" name="very-high-importance-thre" />
             <br>
             <button class="pure-button" type="button" onclick="ui_menu_settings_reset_stylesheet()">
               Reset to Default
@@ -984,7 +1012,7 @@
     <script src="libs/commons.js?releaseDate=20240203R1"></script>
 
     <script src="libs/data.js?releaseDate=20230914R2"></script>
-    <script src="libs/task.js?releaseDate=20240219"></script>
+    <script src="libs/task.js?releaseDate=20240219R2"></script>
     <script src="libs/project.js?releaseDate=20240210R2"></script>
     <script src="libs/backend.js?releaseDate=20240202"></script>
     <script src="libs/competitive.js?releaseDate=20231004"></script>
@@ -995,11 +1023,11 @@
     <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
     <script src="libs/ui/filter.js?releaseDate=20231124"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240219"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20240219R1"></script>
     <script src="libs/ui/views/details.js?releaseDate=20240219"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20240219"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20240221"></script>
     <script src="libs/ui/views/forecast.js?releaseDate=20230924"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20240203"></script>
     <script src="libs/ui/views/import.js?releaseDate=20240211"></script>
@@ -1007,7 +1035,7 @@
     <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240219"></script>
+    <script src="libs/index.js?releaseDate=20240219R2"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20240219"></script>

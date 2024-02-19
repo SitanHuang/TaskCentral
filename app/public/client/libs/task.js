@@ -157,11 +157,14 @@ function task_calc_wt_rate(tasks) {
 }
 
 
-function task_calc_importance(task) {
+function task_calc_importance(task, disable_offset=false) {
   let offset = 0;
 
   if (task.pinned)
     offset += 5000;
+
+  if (disable_offset)
+    offset = 0;
 
   let now = timestamp();
 
@@ -242,11 +245,11 @@ function task_colorize_due(task) {
   const now = new Date();
   const diff = task - now;
   if (diff <= 0) // overdue/due today
-    return 'color: #b71c1c; font-weight: bold;';
+    return 'color: var(--theme-color-red); font-weight: bold;';
   if (diff <= 2.592e+8) // 3 days
-    return 'color: #b71c1c;';
+    return 'color: var(--theme-color-red);';
   if (diff <= 6.048e+8) // 7 days
-    return 'color: #f57c00;'
+    return 'color: var(--theme-color-yellow);'
   else
     return '';
 }
