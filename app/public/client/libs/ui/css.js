@@ -60,6 +60,8 @@
           if (back.data.started)
             timer_start_task(back.data.tasks[back.data.started]);
 
+          ui_settings_apply_user_stylesheets();
+
           // wait til transitions finish
           setTimeout(() => {
             document.getElementById('splash').remove();

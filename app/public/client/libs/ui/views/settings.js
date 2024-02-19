@@ -290,3 +290,95 @@ async function ui_settings_export_ledg() {
   link.href = dataURI;
   link.click();
 }
+
+const UI_SETTINGS_DEFAULT_STYLESHEET =`
+/* Write custom CSS rules below: */
+
+.low-priority name {
+  font-style: italic;
+}
+.low-weight name {
+  font-weight: lighter;
+}
+
+.low-priority.low-weight.low-importance {
+  opacity: 0.85;
+}
+
+.high-weight name:not(.high-priority),
+.high-weight.low-importance {
+  opacity: 0.9;
+}
+.high-weight name {
+  font-weight: 600;
+}
+
+.high-importance {
+  color: #f57c00;
+  font-weight: bold;
+}
+.very-high-importance {
+  color: #b71c1c;
+  font-weight: bolder;
+}
+
+.high-priority name {
+  font-weight: bold;
+}
+
+/* Available classes: */
+
+.low-weight {}
+.high-weight {}
+
+.low-priority {}
+.high-priority {}
+
+.low-importance {}
+.high-importance {}
+.very-high-importance {}
+
+.high-priority.high-weight {}
+.low-priority.low-weight {}
+
+.high-priority.low-weight {}
+.low-priority.high-weight {}
+`;
+
+function _ui_settings_get_user_stylesheets() {
+  const css = back?.data?.settings?.stylesheet || UI_SETTINGS_DEFAULT_STYLESHEET;
+
+  if (back?.data?.settings?.stylesheet == UI_SETTINGS_DEFAULT_STYLESHEET) {
+    delete back.data.settings.stylesheet;
+    back.set_dirty();
+  }
+
+  return css;
+}
+
+function ui_settings_apply_user_stylesheets() {
+  const css = _ui_settings_get_user_stylesheets();
+
+  document.getElementById('app-user-stylesheets').textContent = css;
+
+  $('.settings textarea[name="user-stylesheet"]')
+    .unbind('change')
+    .val(css)
+    .bind('change', function (e) {
+      back.data.settings.stylesheet = e?.target?.value;
+
+      if (back.data.settings.stylesheet?.trim() === "")
+        back.data.settings.stylesheet = " "; // set to trusy
+
+      back.set_dirty();
+
+      ui_settings_apply_user_stylesheets();
+    });
+}
+
+function ui_menu_settings_reset_stylesheet() {
+  delete back.data.settings.stylesheet;
+  back.set_dirty();
+
+  ui_settings_apply_user_stylesheets();
+}

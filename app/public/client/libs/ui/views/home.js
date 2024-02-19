@@ -472,11 +472,34 @@ function _ui_home_gen_task_row(task) {
       <i class="fa fa-check-square"></i>
       <i class="fa fa-play"></i>
       <i class="fa fa-check"></i>
+      <i class="fa fa-eye-slash" style="opacity: 0.5"></i>
       <name></name>
       <div class="project"></div>
       <div class="date-due" style="display: none;"></div>
     </primary>
   `);
+
+  if (task.weight >= 6.67)
+    $row.addClass("high-weight");
+  else if (task.weight <= 3.33)
+    $row.addClass("low-weight");
+
+  if (task.priority >= 6.67)
+    $row.addClass("high-priority");
+  else if (task.priority <= 3.33)
+    $row.addClass("low-priority");
+
+  const importance = task_calc_importance(task);
+
+  if (importance >= 5.00)
+    $row.addClass("very-high-importance");
+  else if (importance >= 4.00)
+    $row.addClass("high-importance");
+  else if (importance <= 3.00)
+    $row.addClass("low-importance");
+
+  if (!task.hidden)
+    $row.find('.fa-eye-slash').remove();
 
   // if buttons/project is clicked, don't propagate
   // to activate details
@@ -567,7 +590,9 @@ function _ui_home_gen_task_row(task) {
         ui_menu_select_home();
       })
       .appendTo($row.find('.project'));
+
   $row.find('name').text(task.name);
+
   return $row;
 }
 
