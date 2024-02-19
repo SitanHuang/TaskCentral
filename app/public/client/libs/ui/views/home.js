@@ -498,6 +498,9 @@ function _ui_home_gen_task_row(task) {
   else if (importance <= 3.00)
     $row.addClass("low-importance");
 
+  if (task.pinned)
+    $row.addClass("pinned");
+
   if (!task.hidden)
     $row.find('.fa-eye-slash').remove();
 

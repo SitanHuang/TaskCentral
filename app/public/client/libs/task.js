@@ -14,6 +14,7 @@ function task_new(override) {
     tags: {}, // TODO: stub
     created: stamp,
     hidden: false, // unlike complete, this one can hide everything
+    pinned: false,
     due: null,
     earliest: null, // earliest time to begin working
     until: null, // latest time that the task is still relevant
@@ -157,16 +158,21 @@ function task_calc_wt_rate(tasks) {
 
 
 function task_calc_importance(task) {
+  let offset = 0;
+
+  if (task.pinned)
+    offset += 5000;
+
   let now = timestamp();
 
   if (task.status == 'completed')
-    return 0;
+    return 0 + offset;
 
   if (task.status == 'start')
-    return 11 * (task.priority + 1) / 11;
+    return 11 * (task.priority + 1) / 11 + offset;
 
   if (task.until && midnight() > midnight(task.until))
-    return 0;
+    return 0 + offset;
 
   // weight 10 vs priority 3
   let weight = (task.weight + 1) / 11 * 10;
@@ -196,7 +202,7 @@ function task_calc_importance(task) {
     );
   }
 
-  return weight * priority + priority;
+  return weight * priority + priority + offset;
 }
 
 function task_set(task) {

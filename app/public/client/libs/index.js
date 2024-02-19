@@ -2,9 +2,10 @@ const RELEASE_DATE = '20240219';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Allows custom style decoration rules to categorize different tasks. Checkout User Settings to individualize your TaskCentral!
+1. Allow custom style decoration rules to categorize different tasks. Checkout User Settings to individualize your TaskCentral!
+2. Add task pinning.
 
-If you don't see changes, clear browser cache. If your data occasionally corrupts, contact admin (usually due to mysterious network issues that admin has failed to find a solution for).
+If you don't see changes, clear browser cache or force refresh.
 `;
 
 if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toString()) {

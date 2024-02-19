@@ -315,15 +315,17 @@ const UI_SETTINGS_DEFAULT_STYLESHEET =`
 
 .high-importance {
   color: #f57c00;
-  font-weight: bold;
 }
 .very-high-importance {
   color: #b71c1c;
-  font-weight: bolder;
 }
 
 .high-priority name {
   font-weight: bold;
+}
+
+.pinned {
+  border: 1px solid var(--text-sec-color) !important;
 }
 
 /* Available classes: */

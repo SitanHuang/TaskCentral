@@ -25,8 +25,6 @@
     <!-- the only essential css not to lazy load -->
     <link rel="stylesheet" href="libs/ui/splash.css" />
 
-    <style id="app-user-stylesheets"></style>
-
     <script>
       window.onerror = function(message, source, lineno, colno, error) {
         const errorMessage = [
@@ -243,10 +241,17 @@
                 <input type="date" name="until">
               </div>
               <div class="pure-control-group">
-                <label>Visibility</label>
+                <label data-tooltip="Hidden tasks can only be viewed through the Hidden view or by changing the Filter.">Visibility</label>
                 <label for="home-details-hidden-checkbox" class="pure-checkbox"
                   style="text-align: left;">
                   <input type="checkbox" name="hidden" id="home-details-hidden-checkbox"> Hidden
+                </label>
+              </div>
+              <div class="pure-control-group">
+                <label data-tooltip="Unconditionally adds +5000 importance.">Pinning</label>
+                <label for="home-details-pinned-checkbox" class="pure-checkbox"
+                  style="text-align: left;">
+                  <input type="checkbox" name="pinned" id="home-details-pinned-checkbox"> Pinned
                 </label>
               </div>
               <div class="pure-control-group">
@@ -260,7 +265,7 @@
                 </div>
               </div>
               <div class="pure-control-group">
-                <label>Status</label>
+                <label data-tooltip="Shows the current Status type of the task as well as the calculated Importance value, which is used to sort tasks in the Ready view.">Status</label>
                 <input type="text" readonly name="status">
               </div>
               <div class="pure-control-group">
@@ -967,6 +972,8 @@
       </div>
     </div>
 
+    <style id="app-user-stylesheets"></style>
+
     <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230914R2"></script>
     <script src="libs/external/randomColor.min.js?releaseDate=20230914R2"></script>
     <script src="libs/external/micromodal.min.js?releaseDate=20230914R2"></script>
@@ -977,7 +984,7 @@
     <script src="libs/commons.js?releaseDate=20240203R1"></script>
 
     <script src="libs/data.js?releaseDate=20230914R2"></script>
-    <script src="libs/task.js?releaseDate=20240205"></script>
+    <script src="libs/task.js?releaseDate=20240219"></script>
     <script src="libs/project.js?releaseDate=20240210R2"></script>
     <script src="libs/backend.js?releaseDate=20240202"></script>
     <script src="libs/competitive.js?releaseDate=20231004"></script>
@@ -989,7 +996,7 @@
     <script src="libs/ui/filter.js?releaseDate=20231124"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20240219"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20240212R1"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20240219"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240219"></script>
