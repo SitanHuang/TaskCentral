@@ -31,6 +31,7 @@ const GANTT_DEFAULT_QUERY = (() => {
     queries: [{
       status: [],
       collect: ['tasks'],
+      hidden: false,
     }]
   };
   // default last 1 months to future 4 months

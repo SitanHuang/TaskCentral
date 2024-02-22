@@ -113,14 +113,15 @@ function task_dependency_recalc_earliest(task) {
     const parent = back.data.tasks[id];
 
     if (parent.status == 'completed') {
-      latest = Math.max(latest, task_completed_stamp(parent));
+      latest = Math.max(latest, midnight(task_completed_stamp(parent)));
     } else {
       blocked = true;
-      latest = Math.max(latest, task_gantt_endpoints(parent)[1]);
+      latest = Math.max(latest, tomorrow(task_gantt_endpoints(parent)[1]));
     }
   }
 
   if (blocked && task.earliest !== latest) {
+    // at least one task has yet to be finished
     task.earliest = latest;
     back.set_dirty();
   } else if (!blocked) {
@@ -367,9 +368,9 @@ function task_parse_date_input(val) {
  * less inclusive than relavant endpoints
  */
 function task_gantt_endpoints(task) {
-  let start = task.earliest ? task.earliest : task.created;
-  let now = timestamp();
-  let end = now;
+  let start = midnight(task.earliest ? task.earliest : task.created);
+  // let now = timestamp();
+  let end = midnight();
 
   if (task.status == 'completed') {
     end = task_completed_stamp(task);
