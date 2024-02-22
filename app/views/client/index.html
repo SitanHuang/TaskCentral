@@ -13,7 +13,9 @@
 
     <link href="libs/external/normalize.css" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/icon?family=Roboto" rel="stylesheet">
+    <link href="libs/external/autoComplete.02.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/icon?family=Roboto:200,300,400,600,700,900" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/android-chrome-192x192.png" sizes="192x192">
 
     <style>
@@ -229,7 +231,7 @@
                 <input type="date" name="due">
               </div>
               <div class="pure-control-group">
-                <label data-tooltip="Theoretically earliest possible date that a task may be started. If left empty, this value is internally assumed to be the task creation time.">
+                <label data-tooltip="Theoretically earliest possible date that a task may be started. If left empty, this value is internally assumed to be the task creation time. If task has dependencies, earliest date cannot be manually changed.">
                   Earliest
                 </label>
                 <input type="date" name="earliest">
@@ -240,19 +242,27 @@
                 </label>
                 <input type="date" name="until">
               </div>
-              <div class="pure-control-group">
+              <div class="pure-control-group split">
                 <label data-tooltip="Hidden tasks can only be viewed through the Hidden view or by changing the Filter.">Visibility</label>
                 <label for="home-details-hidden-checkbox" class="pure-checkbox"
                   style="text-align: left;">
                   <input type="checkbox" name="hidden" id="home-details-hidden-checkbox"> Hidden
                 </label>
               </div>
-              <div class="pure-control-group">
+              <div class="pure-control-group split">
                 <label data-tooltip="Unconditionally adds +5000 importance.">Pinning</label>
                 <label for="home-details-pinned-checkbox" class="pure-checkbox"
                   style="text-align: left;">
                   <input type="checkbox" name="pinned" id="home-details-pinned-checkbox"> Pinned
                 </label>
+              </div>
+              <div class="pure-control-group dependsOn-autocomplete-con">
+                <label data-tooltip="When tasks depend on others, the Earliest date will be managed by the system such that the task only becomes available when all dependencies have been completed.">Parents</label>
+                <input type="text" name="dependsOn" id="dependsOnAutoComplete">
+              </div>
+              <div class="pure-control-group dependsOn-list-con">
+                <label></label>
+                <div class="dependsOn-list"></div>
               </div>
               <div class="pure-control-group">
                 <label>Time</label>
@@ -834,8 +844,6 @@
                   max(max(now, due || until), START)
                 </span>
               </div>
-              <!-- TODO: projects -->
-              <!-- TODO: ready -->
             </main>
             <footer class="modal__footer" style="text-align: right;">
               <button type="clear" class="modal__btn" data-micromodal-close>Cancel</button>
@@ -1008,23 +1016,25 @@
     <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230914R2"></script>
     <script src="libs/external/d3.v4.js?releaseDate=20230914R2"></script>
     <script src="libs/external/d3_timeseries.min.js?releaseDate=20230914R2"></script>
+    <script src="libs/external/dice.js?releaseDate=20240221R1"></script>
+    <script src="libs/external/autoComplete.min.js?releaseDate=20240221"></script>
 
-    <script src="libs/commons.js?releaseDate=20240203R1"></script>
+    <script src="libs/commons.js?releaseDate=20240221R1"></script>
 
     <script src="libs/data.js?releaseDate=20230914R2"></script>
-    <script src="libs/task.js?releaseDate=20240219R2"></script>
-    <script src="libs/project.js?releaseDate=20240210R2"></script>
-    <script src="libs/backend.js?releaseDate=20240202"></script>
+    <script src="libs/task.js?releaseDate=20240221R1"></script>
+    <script src="libs/project.js?releaseDate=20240221R1"></script>
+    <script src="libs/backend.js?releaseDate=20240221R1"></script>
     <script src="libs/competitive.js?releaseDate=20231004"></script>
 
     <script src="libs/fuzzy.js?releaseDate=20230930"></script>
-    <script src="libs/query.js?releaseDate=20230930"></script>
+    <script src="libs/query.js?releaseDate=20240221R1"></script>
 
     <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
     <script src="libs/ui/filter.js?releaseDate=20231124"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240219R1"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20240219"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20240221R1"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20240221R1"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240221"></script>
@@ -1035,10 +1045,10 @@
     <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240219R2"></script>
+    <script src="libs/index.js?releaseDate=20240221R1"></script>
 
     <!-- lazy loads stylesheets & images -->
-    <script src="libs/ui/css.js?releaseDate=20240219"></script>
+    <script src="libs/ui/css.js?releaseDate=20240221R1"></script>
 
     <!-- lazy load non-essential stuff-->
     <script src="libs/ui/tooltips.js?releaseDate=20231006"></script>

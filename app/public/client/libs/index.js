@@ -1,11 +1,8 @@
-const RELEASE_DATE = '20240219R2';
+const RELEASE_DATE = '20240221R1';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Allow tunable thresholds for task categorization in User Settings.
-2. Allow custom style decoration rules to categorize different tasks. Checkout User Settings to individualize your TaskCentral!
-3. Add task pinning.
-4. Misc dark mode visibility fixes.
+1. Added highly experimental Task Dependency feature. Contact admin if bug occurs.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

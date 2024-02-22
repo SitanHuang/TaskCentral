@@ -463,22 +463,7 @@ function ui_home_update_list() {
   eval('_ui_home_' + HOME_MODE +'_list')();
 }
 
-function _ui_home_gen_task_row(task) {
-  let $row = $(document.createElement('task'));
-  $row.attr('data-uuid', task.id);
-  $row.html(`
-    <primary>
-      <i class="fa fa-trash"></i>
-      <i class="fa fa-check-square"></i>
-      <i class="fa fa-play"></i>
-      <i class="fa fa-check"></i>
-      <i class="fa fa-eye-slash" style="opacity: 0.5"></i>
-      <name></name>
-      <div class="project"></div>
-      <div class="date-due" style="display: none;"></div>
-    </primary>
-  `);
-
+function _ui_home_task_row_decorate_class($row, task) {
   if (task.weight >= _ui_settings_get_user_style_threshold("high-weight-thre"))
     $row.addClass("high-weight");
   else if (task.weight <= _ui_settings_get_user_style_threshold("low-weight-thre"))
@@ -506,26 +491,14 @@ function _ui_home_gen_task_row(task) {
   if (!task.hidden)
     $row.find('.fa-eye-slash').remove();
 
-  // if buttons/project is clicked, don't propagate
-  // to activate details
-  $row.find('primary > *:is(i, .project)').click((e) => {
-    e.stopPropagation();
-  });
-
-  $row.click(() => {
-    _home_task_list.find('task.activated').removeClass('activated');
-    ui_detail_select_task(task);
-    $row.addClass('activated');
-  });
-
   if (task.earliest && timestamp() < task.earliest)
     $row.addClass('earliest');
 
   if (task.due || task.until) {
     $row.find('.date-due')
-          .text(task_stringify_due(task.due || task.until))
-          .attr('style', task_colorize_due(task.due || task.until))
-          .show();
+      .text(task_stringify_due(task.due || task.until))
+      .attr('style', task_colorize_due(task.due || task.until))
+      .show();
   }
 
   if (task.status != 'default')
@@ -547,7 +520,37 @@ function _ui_home_gen_task_row(task) {
   }
   if (task == _selected_task)
     $row.addClass('activated');
+}
 
+function _ui_home_gen_task_row(task) {
+  let $row = $(document.createElement('task'));
+  $row.attr('data-uuid', task.id);
+  $row.html(`
+    <primary>
+      <i class="fa fa-trash"></i>
+      <i class="fa fa-check-square"></i>
+      <i class="fa fa-play"></i>
+      <i class="fa fa-check"></i>
+      <i class="fa fa-eye-slash" style="opacity: 0.5"></i>
+      <name></name>
+      <div class="project"></div>
+      <div class="date-due" style="display: none;"></div>
+    </primary>
+  `);
+
+  _ui_home_task_row_decorate_class($row, task);
+
+  // if buttons/project is clicked, don't propagate
+  // to activate details
+  $row.find('primary > *:is(i, .project)').click((e) => {
+    e.stopPropagation();
+  });
+
+  $row.click(() => {
+    _home_task_list.find('task.activated').removeClass('activated');
+    ui_detail_select_task(task);
+    $row.addClass('activated');
+  });
 
   $row.find('i.fa-check-square')
     .click(() => {
@@ -577,6 +580,12 @@ function _ui_home_gen_task_row(task) {
       $row.addClass('completed');
       if (_selected_task)
         ui_detail_select_task(task);
+
+      // if task has dependencies, we don't want user to not immediately see the
+      // new task popping up, even if it means user can't immediately click
+      // Delete on the old task
+      if (task_has_dependedBy(task))
+        ui_menu_select_home();
     });
 
   $row.attr('oncontextmenu', 'return false');

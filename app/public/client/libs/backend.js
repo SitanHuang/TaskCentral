@@ -1,5 +1,5 @@
 function Backend() {
-  let that = this;
+  const that = this;
 
   let switchUser = new URL(location.href).searchParams.get("su");
   this.su = switchUser = switchUser ? encodeURIComponent(switchUser) : undefined;

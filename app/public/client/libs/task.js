@@ -20,6 +20,8 @@ function task_new(override) {
     until: null, // latest time that the task is still relevant
     status: 'default',
     // [notes: string],
+    // [dependsOn: uuids{}],
+    // [dependedBy: uuids{}],
     priority: 5, // 0-10 inclusive, relative degree of importance
     weight: 0, // 0-10 inclusive, relative amount of work
     progress: null, // latest progress, updated via task.log.push(), null same as 0
@@ -38,6 +40,98 @@ function task_new(override) {
 }
 
 /**
+ * @returns true if task depends on others
+ */
+function task_has_dependsOn(task) {
+  return !!(task.dependsOn && Object.keys(task.dependsOn).length);
+}
+/**
+ * @returns true if task is depended by others
+ */
+function task_has_dependedBy(task) {
+  return !!(task.dependedBy && Object.keys(task.dependedBy).length);
+}
+
+/**
+ * set `child` to depend on `parent` if toggle is true,
+ * removes `child` from `parent` if otherwise
+ */
+function task_set_dependency(child, parent, toggle=true) {
+  child.dependsOn = child.dependsOn || {};
+  parent.dependedBy = parent.dependedBy || {};
+
+  if (toggle) {
+    child.dependsOn[parent.id] = 1;
+    parent.dependedBy[child.id] = 1;
+  } else {
+    delete child.dependsOn[parent.id];
+    delete parent.dependedBy[child.id];
+  }
+
+  task_dependency_recalc_earliest(child);
+
+  if (!Object.keys(child.dependsOn).length) {
+    delete child.dependsOn;
+
+    child.earliest = null;
+  }
+
+  if (!Object.keys(parent.dependedBy).length)
+    delete parent.dependedBy;
+
+  back.set_dirty();
+}
+
+/**
+ * sets the `earliest` date of a task based on its dependencies
+ *
+ * if task has no dependencies, earliest is not changed
+ *
+ * a blocked task always has the earliest date set to tomorrow
+ *
+ * returns task.earliest, always
+ *
+ * NOTE: Method also executed every time query is ran
+ */
+function task_dependency_recalc_earliest(task) {
+  // no dependencies:
+  if (!task_has_dependsOn(task))
+    return task.earliest;
+
+  // remove bad IDs
+  for (const id in task.dependsOn) {
+    if (!back.data.tasks[id]) {
+      delete task.dependsOn[id];
+      back.set_dirty();
+      continue;
+    }
+  }
+
+  let blocked = false;
+  let latest = midnight(tomorrow());
+
+  for (const id in task.dependsOn) {
+    const parent = back.data.tasks[id];
+
+    if (parent.status == 'completed')
+      latest = Math.max(latest, task_completed_stamp(parent));
+    else
+      blocked = true;
+  }
+
+  if (blocked && task.earliest !== latest) {
+    task.earliest = latest;
+    back.set_dirty();
+  } else if (!blocked) {
+    // all parents are completed
+    task.earliest = midnight();
+    back.set_dirty();
+  }
+
+  return task.earliest;
+}
+
+/**
  * This function shall be run whenever a task is "touched" by the system for
  * the purpose of updating certain metadata.
  *
@@ -50,6 +144,10 @@ function task_new(override) {
  * Currently, this is run during:
  *   - query_exec()
  *   - task_set()
+ *   - _ui_home_details_signal_changed()
+ *
+ * Currently hooks are:
+ *   - update snoozed
  */
 function task_run_ontouch_hook(task) {
   let dirty = false;
@@ -87,7 +185,7 @@ function task_unsnooze(task) {
   back.set_dirty();
 }
 
-/*
+/**
  * Calcs eta of task or task[] using weights done & time spent
  *
  * returns milliseconds of estimated time left
@@ -303,22 +401,90 @@ function task_is_overlap(task, range, gantt) {
 }
 
 function task_delete(task) {
+  // need to unlink all dependencies
+  for (const childId in (task.dependedBy || {})) {
+    const child = back.data.tasks[childId];
+
+    if (!child)
+      continue;
+
+    task_set_dependency(child, task, false);
+  }
+  for (const parentId in (task.dependsOn || {})) {
+    const parent = back.data.tasks[parentId];
+
+    if (!parent)
+      continue;
+
+    task_set_dependency(task, parent, false);
+  }
+
   delete back.data.tasks[task.id];
   back.set_dirty();
 
+  // also to update dependents' earliest dates
+  task_update_dependents(task);
+
   if (_selected_task?.id == task?.id)
-      ui_detail_close();
+    ui_detail_close();
+  else if (_selected_task)
+    ui_detail_select_task(_selected_task);
+}
+
+/**
+ * calls task_dependency_recalc_earliest on each dependent
+ *
+ * Currently, this is called by:
+ *   - task_delete()
+ *   - task_complete()
+ *   - task_reopen()
+ *   - _ui_home_details_signal_changed()
+ */
+function task_update_dependents(task) {
+  let empty = true;
+
+  for (const childId in (task.dependedBy || {})) {
+    // prevent infinite loop
+    if (childId == task.id)
+      continue;
+
+    empty = false;
+
+    const child = back.data.tasks[childId];
+
+    if (!child) {
+      delete task.dependedBy[childId];
+
+      back.set_dirty();
+      continue;
+    }
+
+    task_dependency_recalc_earliest(child);
+  }
+
+  if (empty) {
+    delete task.dependedBy;
+    back.set_dirty();
+  }
 }
 
 function task_complete(task) {
   task.status = 'completed';
   task.log.push({ type: 'default', time: timestamp(), note: 'Completed.' });
+
+  // also to update dependents' earliest dates
+  task_update_dependents(task);
+
   back.set_dirty();
 }
 
 function task_reopen(task) {
   task.status = 'default';
   task.log.push({ type: 'default', time: timestamp(), note: 'Reopened.' });
+
+  // also to update dependents' earliest dates
+  task_update_dependents(task);
+
   back.set_dirty();
 }
 
@@ -463,6 +629,10 @@ function task_get_latest_start_stamp(task) {
   return null;
 }
 
+/**
+ * returns the final completion date (including in the future), or the until
+ * date, or 0
+ */
 function task_completed_stamp(task) {
   let def = Math.min(task.until, timestamp());
   let d = def;

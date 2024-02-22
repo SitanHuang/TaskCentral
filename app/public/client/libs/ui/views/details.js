@@ -87,6 +87,29 @@ function _ui_home_detail_update_status_importance(task) {
       _ui_home_details_signal_changed();
     };
 
+  _home_detail_form.find('input[type=date]').each(function () {
+    let input = this;
+    input.valueAsNumber = task[input.name] || NaN;
+
+    // earliest date is managed by dependency
+    if (input.name == "earliest" && task_has_dependsOn(task)) {
+      input.disabled = true;
+      input.title = "Earliest is managed by task dependency.";
+      input.onchange = null;
+    } else {
+      input.disabled = false;
+      input.onchange = () => {
+        if (!_selected_task) return;
+        _selected_task[input.name] = input.valueAsNumber ? task_parse_date_input(input.value).getTime() : null;
+        _ui_home_details_signal_changed();
+      };
+
+      input.title = "";
+    }
+  });
+
+  _ui_detail_render_dependsOn(task);
+
   _home_detail_form.find('input[name=status]')
     .val(task.status + '; importance=' + task_calc_importance(task).toFixed(2));
 
@@ -249,16 +272,6 @@ function ui_detail_select_task(task) {
     _ui_home_details_signal_changed();
   };
 
-  _home_detail_form.find('input[type=date]').each(function () {
-    let input = this;
-    input.valueAsNumber = task[input.name] || NaN;
-    input.onchange = () => {
-      if (!_selected_task) return;
-      _selected_task[input.name] = input.valueAsNumber ? task_parse_date_input(input.value).getTime() : null;
-      _ui_home_details_signal_changed();
-    };
-  });
-
   _home_detail_form.find('input').change();
 
   {
@@ -337,6 +350,11 @@ function ui_home_details_project_callback(form) {
 }
 
 function _ui_home_details_signal_changed() {
+  if (_selected_task) {
+    task_run_ontouch_hook(_selected_task);
+    task_update_dependents(_selected_task);
+  }
+
   // shouldn't update whole thing?
   ui_home_update_list();
   back.set_dirty();
@@ -359,3 +377,159 @@ function ui_detail_unsnooze() {
   task_unsnooze(_selected_task);
   _ui_home_details_signal_changed();
 }
+
+function _ui_detail_render_dependsOn(task) {
+  _home_detail_form.find(".dependsOn-list-con").hide();
+
+  const con = _home_detail_form.find(".dependsOn-list");
+
+  con.html('');
+
+  Object.keys(task.dependsOn || {})
+    .map(x => back.data.tasks[x])
+    .sort((a, b) => {
+      return (task_calc_importance(b) - task_calc_importance(a)) ||
+        (b.created - a.created)
+    })
+    .forEach(parent => {
+      _home_detail_form.find(".dependsOn-list-con").show();
+
+      let $row = $(document.createElement('task'));
+      $row.attr('data-uuid', parent.id);
+      $row.html(`
+        <primary>
+          <i class="fa fa-unlink"></i>
+          <name></name>
+          <div class="project"></div>
+        </primary>
+      `);
+
+      _ui_home_task_row_decorate_class($row, parent);
+
+      $row.find('name').text(parent.name);
+
+      if (task.project)
+        project_create_chip(task.project).appendTo($row.find('.project'));
+
+      $row.click(() => {
+        ui_detail_select_task(parent);
+      });
+
+      $row.attr('oncontextmenu', 'return false');
+      $row.find('i.fa-unlink')
+        .click(function (e) {
+          e.preventDefault();
+
+          task_set_dependency(task, parent, false);
+
+          _ui_home_details_signal_changed();
+        });
+
+      con.append($row);
+    });
+}
+
+function ui_detail_dependsOn_select(task) {
+  if (!task.id || !task.name || !_selected_task)
+    return;
+
+  document.getElementById("dependsOnAutoComplete").value = "";
+  _details_dep_autocomplete_engine.close();
+
+  task_set_dependency(_selected_task, task);
+
+  _ui_home_details_signal_changed();
+}
+
+let _details_mtime;
+let _details_dep_autocomplete_cache;
+let _details_dep_autocomplete_engine;
+
+// run on boot
+function _ui_details_dep_prepare_autocomplete() {
+  const config = {
+    name: "autoComplete",
+    selector: '#dependsOnAutoComplete',
+    searchEngine: "loose",
+    placeHolder: "Search by Task Name...",
+      data: {
+        src: async () => {
+          // cache list of all tasks based on mtime
+          if (_details_mtime != (_details_mtime = back.mtime) || !_details_dep_autocomplete_cache)
+            _details_dep_autocomplete_cache = Object.values(back.data.tasks).map(x => ({
+              task: x,
+              name: x.name + (x.project ? ` - ${x.project}` : "")
+            }));
+
+          return _details_dep_autocomplete_cache;
+        },
+      keys: ["name"],
+      filter: list => {
+        const q = document.getElementById("dependsOnAutoComplete").value.toLowerCase()
+        return list.filter(x => {
+          // cannot be self
+          if (x.value.task.id == _selected_task.id)
+            return false;
+
+          // cannot depend on child
+          if ((_selected_task.dependedBy || {})[x.value.task.id])
+            return false;
+
+          return true;
+        }).sort((a, b) => {
+          const t1 = a.value.task;
+          const t2 = b.value.task;
+
+          let fs = diceCoefficient(q, t1.name.toLowerCase());
+          let ss = diceCoefficient(q, t2.name.toLowerCase());
+
+          if (t1.status == 'completed')
+            fs -= 0.5;
+          if (t2.status == 'completed')
+            ss -= 0.5;
+
+          let diff = ss - fs;
+
+          return diff ? diff : t1.name > t2.name;
+        });
+      }
+    },
+    resultItem: {
+      highlight: true,
+      element: (item, data) => {
+        const task = data.value.task;
+
+        item.setAttribute("data-uuid", task.id);
+
+        if (task.status == 'completed') {
+          item.setAttribute("class", "completed");
+        }
+
+        project_color_element($(item), task.project);
+      },
+    },
+    resultsList: {
+      element: (list, data) => {
+        if (!data.results.length) {
+          const message = document.createElement("div");
+          message.setAttribute("class", "no-result");
+          message.innerHTML = `<span>No Results for "${data.query}"</span>`;
+
+          list.prepend(message);
+        }
+      },
+      noResults: true,
+      maxResults: 50,
+      threshold: 1,
+    },
+  };
+
+  _details_dep_autocomplete_engine = new autoComplete(config);
+  _details_dep_autocomplete_engine.init();
+
+  document.querySelector("#dependsOnAutoComplete").addEventListener("selection", function (event) {
+    ui_detail_dependsOn_select(event.detail.selection.value.task);
+  });
+}
+
+_ui_details_dep_prepare_autocomplete();

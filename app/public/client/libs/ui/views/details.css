@@ -129,6 +129,25 @@
   }
 }
 
+.task-detail .pure-form-aligned .pure-control-group {
+  clear: both;
+}
+
+.task-detail .pure-control-group.split {
+  width: 50%;
+  float: left;
+  clear: none;
+}
+
+.task-detail .pure-control-group label {
+  vertical-align: top;
+  padding-top: .3em;
+}
+
+.task-detail .dependsOn-list project {
+  cursor: default;
+}
+
 .task-detail .textarea {
   display: block;
   white-space: pre-wrap;
@@ -164,7 +183,8 @@
 .task-detail .project-container > .projects {
   padding: 2px 0;
   border-top: 1px solid #e3e3e3;
-  max-height: 104px;
+  /* max-height: 104px; */
+  max-height: 75px;
   overflow-y: auto;
 }
 

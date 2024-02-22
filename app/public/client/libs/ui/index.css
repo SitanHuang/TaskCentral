@@ -20,6 +20,10 @@
   accent-color: var(--app-primary-color);
 }
 
+.su-only {
+  display: none;
+}
+
 .font-mono {
   font-family: var(--mono-family);
 }
@@ -383,12 +387,13 @@ p.no-tasks {
 
 .pure-form-aligned .pure-control-group > *:not(span:not(.textarea)):last-child,
 .pure-form-aligned .pure-control-group > input,
+#dependsOnAutoComplete,
 .pure-form-aligned .pure-control-group > select,
 .pure-form-aligned .pure-control-group > progress {
   width: calc(100%);
 }
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 480px)  {
   .pure-form-aligned .pure-control-group > label:first-child {
     width: 5em;
   }

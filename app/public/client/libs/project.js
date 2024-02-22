@@ -13,13 +13,19 @@ function project_new(obj) {
 }
 
 function project_create_chip(name) {
-  let proj = back.data.projects[name] || back.data.projects.default;
-  let $p = $(document.createElement('project'));
+  const proj = back.data.projects[name] || back.data.projects.default;
+  const $p = $(document.createElement('project'));
   if (proj.hidden)
     $p.addClass('hidden-project');
   return $p.css('background-color', proj.color)
            .css('color', proj.fontColor)
            .text(name);
+}
+
+function project_color_element(ele, name) {
+  const proj = back.data.projects[name] || back.data.projects.default;
+  return ele.css('background-color', proj.color)
+    .css('color', proj.fontColor);
 }
 
 function project_get_user_sorting() {

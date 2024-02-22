@@ -68,11 +68,15 @@ function query_exec(query) {
 
   }
 
-  let _range = [_range_min, _range_max];
+  const _range = [_range_min, _range_max];
 
   // -------- actual query --------
-  for (let uuid of tasks) {
-    let task = back.data.tasks[uuid];
+  for (const uuid of tasks) {
+    const task = back.data.tasks[uuid];
+
+    // get most current earliest date based on dependencies
+    task_dependency_recalc_earliest(task);
+
     if (!task_is_overlap(task, _range)) {
       // remove from set so the next query doesn't waste time
       tasks.delete(uuid);
@@ -80,7 +84,7 @@ function query_exec(query) {
     }
 
     for (let i = 0;i < query.queries.length;i++) {
-      let q = query.queries[i];
+      const q = query.queries[i];
 
       // a task might fulfill the overall range but
       // not the range of a specific query
