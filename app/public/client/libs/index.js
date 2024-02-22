@@ -1,8 +1,9 @@
-const RELEASE_DATE = '20240221R2';
+const RELEASE_DATE = '20240222R2';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Added highly experimental Task Dependency feature. Contact admin if bug or data loss occurs (Admin can roll back your data by a day).
+1. Gantt chart has a Show Dependencies option.
+2. Added Task Dependency feature.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

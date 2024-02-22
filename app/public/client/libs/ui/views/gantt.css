@@ -28,17 +28,37 @@ gantt-graph {
   min-width: 100vw;
   min-height: var(--gantt-day-width);
   border-bottom: 1px solid #e3e3e3;
-  background-image: repeating-linear-gradient( 
+  background-image: repeating-linear-gradient(
           90deg,
           var(--gantt-border-color), /* starting at pixel 0 */
           var(--gantt-border-color) 1px, /* White, continuing to pixel 1 */
           var(--gantt-bg) 1px, /* Transparent beginning at pixel 1 */
           var(--gantt-bg) var(--gantt-day-width) /* Transparent ending at pixel 40 (39 + 1) */
         );
+
+  --period-height: calc(var(--gantt-day-width) * 0.75);
+}
+
+gantt-graph depends {
+  display: none;
+  position: absolute;
+  overflow: hidden;
+  white-space: nowrap;
+  height: calc(var(--period-height) * 0.35);
+  z-index: 6;
+  pointer-events: none;
+  border-radius: calc(var(--period-height) * 0.35 / 2);
+}
+
+gantt-graph.show-dependencies depends {
+  display: block;
+}
+
+gantt-graph depends.vertical {
+  width: calc(var(--period-height) * 0.35);
 }
 
 gantt-graph period {
-  --period-height: calc(var(--gantt-day-width) * 0.75);
   position: absolute;
   overflow: hidden;
   white-space: nowrap;
@@ -50,14 +70,15 @@ gantt-graph period {
   cursor: pointer;
 }
 
-gantt-graph period.completed {
+gantt-graph period.completed,
+gantt-graph depends.completed {
   opacity: 0.3;
 }
 
 gantt-graph period.overlay {
   overflow: visible;
   color: rgba(0, 0, 0, 0.87);
-  z-index: 2;
+  z-index: 5;
 }
 
 gantt-graph period.overlay span {

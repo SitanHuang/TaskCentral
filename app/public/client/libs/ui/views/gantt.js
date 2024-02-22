@@ -162,7 +162,10 @@ async function ui_gantt_render() {
       `
     );
 
-  let PERIOD_PADDING = 5;
+  const PERIOD_PADDING = 5;
+
+  // maps uuid to period elements
+  const $periods = {};
 
   for (let row = 0;row < tracks.length; row++) {
     let track = tracks[row];
@@ -183,7 +186,13 @@ async function ui_gantt_render() {
           ui_menu_select('home');
           ui_detail_select_task(period.task);
         })
-        .appendTo(graph);
+        .appendTo(graph)
+        [0].task = period.task;
+      $p[0].row = row;
+      $p[0].left = start + PERIOD_PADDING;
+      $p[0].width = length - PERIOD_PADDING * 2;
+
+      $periods[period.task.id] = $p[0];
 
       if (period.task.status == 'completed')
         $p.addClass('completed');
@@ -248,9 +257,62 @@ async function ui_gantt_render() {
     }
   }
 
+  _ui_gantt_render_dependencies($periods, graph, PERIOD_PADDING);
   ui_gantt_scroll_to_today();
 
+  if (localStorage.ganttShowDep)
+    ui_gantt_show_dependencies();
+  else
+    ui_gantt_hide_dependencies();
+
   console.timeEnd('Re-render gantt');
+}
+
+function _ui_gantt_render_dependencies($periods, graph, PERIOD_PADDING) {
+  for (const id in $periods) {
+    const $p = $periods[id];
+    const task = $p.task;
+
+    for (const id2 in (task.dependedBy || {})) {
+      const $p2 = $periods[id2];
+      const child = $p2?.task;
+
+      if (!child)
+        continue;
+
+      const proj = back.data.projects[child.project || 'default'];
+
+      // create vertical line
+      if ($p.row != $p2.row) {
+        const low = Math.min($p.row, $p2.row);
+        const high = Math.max($p.row, $p2.row);
+
+        let $d = $(document.createElement('depends'));
+        $d.css('background-color', proj.color)
+          .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + ((low + 0.27) * GANTT_DAY_WIDTH) + 'px)')
+          .css('height', (high - low + 0.25) * GANTT_DAY_WIDTH)
+          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH / 2)
+          .css('color', proj.fontColor)
+          .addClass('vertical')
+          .appendTo(graph);
+        if (child.status == 'completed' && task.status == 'completed')
+          $d.addClass('completed');
+      }
+
+      if ($p.left != $p2.left) {
+        // create horizontal line
+        let $d = $(document.createElement('depends'));
+        $d.css('background-color', proj.color)
+          .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + (($p2.row + 0.27) * GANTT_DAY_WIDTH) + 'px)')
+          .css('width', $p2.left - ($p.left + $p.width - GANTT_DAY_WIDTH))
+          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH / 2)
+          .css('color', proj.fontColor)
+          .appendTo(graph);
+        if (child.status == 'completed' && task.status == 'completed')
+          $d.addClass('completed');
+      }
+    }
+  }
 }
 
 function ui_gantt_scroll_to_today() {
@@ -264,4 +326,14 @@ function ui_gantt_scroll_to_today() {
     if (!isFirefox())
       today_indicator.scrollIntoViewIfNeeded();
   }
+}
+function ui_gantt_show_dependencies(btn) {
+  localStorage.ganttShowDep = true;
+  _gantt_con.find('button.show-dependencies').hide().next().show();
+  _gantt_con.find('gantt-graph').addClass('show-dependencies');
+}
+function ui_gantt_hide_dependencies(btn) {
+  delete localStorage.ganttShowDep;
+  _gantt_con.find('button.hide-dependencies').hide().prev().show();
+  _gantt_con.find('gantt-graph').removeClass('show-dependencies');
 }
