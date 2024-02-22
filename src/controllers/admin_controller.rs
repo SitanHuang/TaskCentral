@@ -172,24 +172,29 @@ impl AdminController {
 
             match std::fs::read_to_string(&target_path) {
                 Ok(content) => {
-                    let udat: serde_json::Value = serde_json::from_str(&content).unwrap();
+                    match serde_json::from_str::<serde_json::Value>(&content) {
+                        Ok(udat) => {
+                            let exp = UserSummary {
+                                settings: udat["settings"].clone(),
+                                comp: udat["comp"].clone(),
+                                last_updated: user.last_updated,
+                                last_visited: user.last_visited,
+                                quota: user.quota(),
+                                size: std::fs::metadata(&target_path).unwrap().len(),
+                                started: udat.get("started").and_then(|started| {
+                                    started.as_str().and_then(|s| udat["tasks"].get(s))
+                                }).cloned(),
+                            };
 
-                    let exp = UserSummary {
-                        settings: udat["settings"].clone(),
-                        comp: udat["comp"].clone(),
-                        last_updated: user.last_updated,
-                        last_visited: user.last_visited,
-                        quota: user.quota(),
-                        size: std::fs::metadata(&target_path).unwrap().len(),
-                        started: udat.get("started").and_then(|started| {
-                            started.as_str().and_then(|s| udat["tasks"].get(s))
-                        }).cloned(),
-                    };
-
-                    data.push(UserData { user: user.username.clone(), data: exp });
+                            data.push(UserData { user: user.username.clone(), data: exp });
+                        },
+                        Err(e) => {
+                            eprintln!("An error occurred: {} {}", user.username, e);
+                        }
+                    }
                 }
-                Err(_) => {
-                    // eprintln!("An error occurred: {} {}", user.username, e);
+                Err(e) => {
+                    eprintln!("An error occurred: {} {}", user.username, e);
                 }
             }
         }
