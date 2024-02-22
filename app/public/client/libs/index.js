@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20240221R1';
+const RELEASE_DATE = '20240221R2';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Added highly experimental Task Dependency feature. Contact admin if bug occurs.
+1. Added highly experimental Task Dependency feature. Contact admin if bug or data loss occurs (Admin can roll back your data by a day).
 
 If you don't see changes, clear browser cache or force refresh.
 `;

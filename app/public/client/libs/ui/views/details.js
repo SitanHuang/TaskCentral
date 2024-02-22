@@ -389,7 +389,7 @@ function _ui_detail_render_dependsOn(task) {
     .map(x => back.data.tasks[x])
     .sort((a, b) => {
       return (task_calc_importance(b) - task_calc_importance(a)) ||
-        (b.created - a.created)
+        (task_completed_stamp(b) - task_completed_stamp(a))
     })
     .forEach(parent => {
       _home_detail_form.find(".dependsOn-list-con").show();
@@ -473,6 +473,10 @@ function _ui_details_dep_prepare_autocomplete() {
 
           // cannot depend on child
           if ((_selected_task.dependedBy || {})[x.value.task.id])
+            return false;
+
+          // cannot already depend on task
+          if ((_selected_task.dependsOn || {})[x.value.task.id])
             return false;
 
           return true;

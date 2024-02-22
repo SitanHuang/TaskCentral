@@ -606,6 +606,10 @@ body.proMode .proMode-hide {
   display: none;
 }
 
+body.proMode input::placeholder {
+  color: transparent;
+}
+
 /* excluding all touchscreen devices */
 @media (pointer: fine) {
   /* *::-webkit-scrollbar {

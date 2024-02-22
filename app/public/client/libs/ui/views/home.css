@@ -209,10 +209,6 @@
   line-height: 42px;
 }
 
-body.proMode #add-form .input-row input[name="name"]::placeholder {
-  color: transparent;
-}
-
 #add-form .input-row > * {
   display: block;
   line-height: 35px;
