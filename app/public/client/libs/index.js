@@ -1,8 +1,10 @@
-const RELEASE_DATE = '20240223R2';
+const RELEASE_DATE = '20240223R4';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Gantt items will now show dependency lines on mouse hover.
+1. Adds "Blocks" attribute to details panel for tasks with dependents.
+2. Gantt items will now show dependency lines on mouse hover.
+3. Gantt items now shows tooltips on mouse hover.
 
 If you don't see changes, clear browser cache or force refresh.
 `;
@@ -15,7 +17,7 @@ if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toStr
   //     back.set_dirty();
   //   }
   // }, 1000);
-  ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
+  // ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
 }
 
 localStorage.last_release = RELEASE_DATE;

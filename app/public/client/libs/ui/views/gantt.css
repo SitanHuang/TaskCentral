@@ -120,11 +120,11 @@ gantt-graph depends.hover {
   z-index: 17;
   background-color: var(--proj-color);
   filter: drop-shadow(5px 0px 5px rgba(0, 0, 0, 0.2));
-  height: calc(var(--period-height) * 0.25);
+  /* height: calc(var(--period-height) * 0.25); */
 }
 
 gantt-graph depends.vertical.hover {
-  width: calc(var(--period-height) * 0.25);
+  /* width: calc(var(--period-height) * 0.25); */
 }
 
 gantt-graph today {

@@ -186,6 +186,7 @@ async function ui_gantt_render() {
           ui_menu_select('home');
           ui_detail_select_task(period.task);
         })
+        .attr('title', period.task.name)
         .appendTo(graph)
         [0].task = period.task;
       $p[0].row = row;
@@ -295,7 +296,7 @@ function _ui_gantt_render_dependencies($periods, graph, PERIOD_PADDING) {
         $d.css('--proj-color', proj.color)
           .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + ((low + 0.27) * GANTT_DAY_WIDTH) + 'px)')
           .css('height', (high - low + 0.25) * GANTT_DAY_WIDTH)
-          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH * 0.45)
+          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH * 0.5)
           .css('color', proj.fontColor)
           .addClass('vertical')
           .appendTo(graph);
@@ -310,7 +311,7 @@ function _ui_gantt_render_dependencies($periods, graph, PERIOD_PADDING) {
         $d.css('--proj-color', proj.color)
           .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + (($p2.row + 0.27) * GANTT_DAY_WIDTH) + 'px)')
           .css('width', $p2.left - ($p.left + $p.width - GANTT_DAY_WIDTH))
-          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH * 0.45)
+          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH * 0.5)
           .css('color', proj.fontColor)
           .appendTo(graph);
         if (child.status == 'completed' && task.status == 'completed')

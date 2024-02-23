@@ -379,24 +379,21 @@ function ui_detail_unsnooze() {
 }
 
 function _ui_detail_render_dependsOn(task) {
-  _home_detail_form.find(".dependsOn-list-con").hide();
+  function populateList(con, keys, isTaskChild) {
+    con.html('').parent().hide();
 
-  const con = _home_detail_form.find(".dependsOn-list");
+    Object.keys(keys || {})
+      .map(x => back.data.tasks[x])
+      .sort((a, b) => {
+        return (task_calc_importance(b) - task_calc_importance(a)) ||
+          (task_completed_stamp(b) - task_completed_stamp(a))
+      })
+      .forEach(parent => {
+        con.parent().show();
 
-  con.html('');
-
-  Object.keys(task.dependsOn || {})
-    .map(x => back.data.tasks[x])
-    .sort((a, b) => {
-      return (task_calc_importance(b) - task_calc_importance(a)) ||
-        (task_completed_stamp(b) - task_completed_stamp(a))
-    })
-    .forEach(parent => {
-      _home_detail_form.find(".dependsOn-list-con").show();
-
-      let $row = $(document.createElement('task'));
-      $row.attr('data-uuid', parent.id);
-      $row.html(`
+        let $row = $(document.createElement('task'));
+        $row.attr('data-uuid', parent.id);
+        $row.html(`
         <primary>
           <i class="fa fa-unlink"></i>
           <name></name>
@@ -404,29 +401,36 @@ function _ui_detail_render_dependsOn(task) {
         </primary>
       `);
 
-      _ui_home_task_row_decorate_class($row, parent);
+        _ui_home_task_row_decorate_class($row, parent);
 
-      $row.find('name').text(parent.name);
+        $row.find('name').text(parent.name);
 
-      if (task.project)
-        project_create_chip(task.project).appendTo($row.find('.project'));
+        if (task.project)
+          project_create_chip(task.project).appendTo($row.find('.project'));
 
-      $row.click(() => {
-        ui_detail_select_task(parent);
-      });
-
-      $row.attr('oncontextmenu', 'return false');
-      $row.find('i.fa-unlink')
-        .click(function (e) {
-          e.preventDefault();
-
-          task_set_dependency(task, parent, false);
-
-          _ui_home_details_signal_changed();
+        $row.click(() => {
+          ui_detail_select_task(parent);
         });
 
-      con.append($row);
-    });
+        $row.attr('oncontextmenu', 'return false');
+        $row.find('i.fa-unlink')
+          .click(function (e) {
+            e.preventDefault();
+
+            if (isTaskChild)
+              task_set_dependency(task, parent, false);
+            else
+              task_set_dependency(parent, task, false);
+
+            _ui_home_details_signal_changed();
+          });
+
+        con.append($row);
+      });
+  }
+
+  populateList(_home_detail_form.find(".dependsOn-list"), task.dependsOn, true);
+  populateList(_home_detail_form.find(".dependedBy-list"), task.dependedBy, false);
 }
 
 function ui_detail_dependsOn_select(task) {

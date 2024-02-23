@@ -257,13 +257,18 @@
                 </label>
               </div>
               <div class="pure-control-group dependsOn-autocomplete-con">
-                <label data-tooltip="When a task depends on others, the system auto-sets the Earliest date such that the task only becomes available when all dependencies have been completed.">Depends</label>
+                <label data-tooltip="When a task depends on others, the system auto-sets the Earliest date such that the task only becomes available when all dependencies have been completed.">Requires</label>
                 <input type="text" name="dependsOn" id="dependsOnAutoComplete"
                   autocomplete="off" aria-autocomplete="none">
               </div>
               <div class="pure-control-group dependsOn-list-con">
                 <label></label>
                 <div class="dependsOn-list"></div>
+              </div>
+              <div class="pure-control-group dependedBy-list-con">
+                <label
+                data-tooltip="When a task is depended by others, the system auto-sets the Earliest date of the dependents such that they only become available when all dependencies have been completed.">Blocks</label>
+                <div class="dependedBy-list"></div>
               </div>
               <div class="pure-control-group">
                 <label>Time</label>
@@ -1041,8 +1046,8 @@
     <script src="libs/ui/filter.js?releaseDate=20231124"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20240221R2"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20240221R2"></script>
-    <script src="libs/ui/views/gantt.js?releaseDate=20240223R2"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20240223R3"></script>
+    <script src="libs/ui/views/gantt.js?releaseDate=20240223R3"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240221"></script>
     <script src="libs/ui/views/forecast.js?releaseDate=20230924"></script>
@@ -1052,7 +1057,7 @@
     <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240223R2"></script>
+    <script src="libs/index.js?releaseDate=20240223R3"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20240221R2"></script>
