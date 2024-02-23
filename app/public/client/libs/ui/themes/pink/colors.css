@@ -19,7 +19,7 @@ body.pink {
   --input-disabled-color: #aaa;
   --input-disabled-bg: #F3E4E6;
 
-  --text-sec-color: rgba(0, 0, 0, 0.6);
+  --text-sec-color: #666060;
 
   --task-activated-bg: #F5B6C0;
   --task-active-bg: var(--panel-sec-bg);

@@ -1,9 +1,8 @@
-const RELEASE_DATE = '20240222R2';
+const RELEASE_DATE = '20240223R2';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Gantt chart has a Show Dependencies option.
-2. Added Task Dependency feature.
+1. Gantt items will now show dependency lines on mouse hover.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

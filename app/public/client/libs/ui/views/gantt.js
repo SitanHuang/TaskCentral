@@ -273,9 +273,13 @@ function _ui_gantt_render_dependencies($periods, graph, PERIOD_PADDING) {
     const $p = $periods[id];
     const task = $p.task;
 
+    const $hoverGroup = [$p];
+
     for (const id2 in (task.dependedBy || {})) {
       const $p2 = $periods[id2];
       const child = $p2?.task;
+
+      $hoverGroup.push($p2);
 
       if (!child)
         continue;
@@ -288,30 +292,42 @@ function _ui_gantt_render_dependencies($periods, graph, PERIOD_PADDING) {
         const high = Math.max($p.row, $p2.row);
 
         let $d = $(document.createElement('depends'));
-        $d.css('background-color', proj.color)
+        $d.css('--proj-color', proj.color)
           .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + ((low + 0.27) * GANTT_DAY_WIDTH) + 'px)')
           .css('height', (high - low + 0.25) * GANTT_DAY_WIDTH)
-          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH / 2)
+          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH * 0.45)
           .css('color', proj.fontColor)
           .addClass('vertical')
           .appendTo(graph);
         if (child.status == 'completed' && task.status == 'completed')
           $d.addClass('completed');
+        $hoverGroup.push($d);
       }
 
       if ($p.left != $p2.left) {
         // create horizontal line
         let $d = $(document.createElement('depends'));
-        $d.css('background-color', proj.color)
+        $d.css('--proj-color', proj.color)
           .css('top', 'calc((var(--gantt-day-width) - var(--period-height)) / 2 + ' + (($p2.row + 0.27) * GANTT_DAY_WIDTH) + 'px)')
           .css('width', $p2.left - ($p.left + $p.width - GANTT_DAY_WIDTH))
-          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH / 2)
+          .css('left', $p.left + $p.width - GANTT_DAY_WIDTH * 0.45)
           .css('color', proj.fontColor)
           .appendTo(graph);
         if (child.status == 'completed' && task.status == 'completed')
           $d.addClass('completed');
+        $hoverGroup.push($d);
       }
     }
+
+    $hoverGroup.forEach(ele => {
+      ele = $(ele);
+      ele.on("mouseenter", function () {
+        $hoverGroup.forEach(hover => $(hover).addClass('hover'));
+      });
+      ele.on("mouseleave", function () {
+        $hoverGroup.forEach(hover => $(hover).removeClass('hover'));
+      });
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 
 body.solarized {
   --text-color: #586e75;
+  --text-sec-color: #93a0a0;
   --body-bg: #fdf6e3;
 
   --menu-color: #657b83;
@@ -19,7 +20,6 @@ body.solarized {
   --input-disabled-color: #93a1a1;
   --input-disabled-bg: #eee8d5;
 
-  --text-sec-color: rgba(101, 123, 131, 0.7);
 
   --task-activated-bg: #eee8d5;
   --task-active-bg: #fdf6e3;
@@ -33,4 +33,3 @@ body.solarized {
 
   color-scheme: light;
 }
-

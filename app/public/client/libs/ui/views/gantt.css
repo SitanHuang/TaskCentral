@@ -40,7 +40,6 @@ gantt-graph {
 }
 
 gantt-graph depends {
-  display: none;
   position: absolute;
   overflow: hidden;
   white-space: nowrap;
@@ -48,10 +47,11 @@ gantt-graph depends {
   z-index: 6;
   pointer-events: none;
   border-radius: calc(var(--period-height) * 0.35 / 2);
+  background-color: var(--text-sec-color);
 }
 
-gantt-graph.show-dependencies depends {
-  display: block;
+gantt-graph:not(.show-dependencies) depends:not(.hover) {
+  display: none;
 }
 
 gantt-graph depends.vertical {
@@ -97,6 +97,34 @@ gantt-graph period.end-round {
 gantt-graph period span {
   display: inline-block;
   text-align: center;
+}
+
+gantt-graph period,
+gantt-graph depends,
+gantt-graph depends:before {
+  transition-property: box-shadow, filter, transform, background-color, width, height;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+gantt-graph period.hover:not(.overlay) {
+  z-index: 21;
+  box-shadow: var(--card-shadow);
+  transform: scale(1.01);
+}
+gantt-graph period.hover.overlay {
+  z-index: 16;
+  transform: scale(1.02);
+}
+gantt-graph depends.hover {
+  z-index: 17;
+  background-color: var(--proj-color);
+  filter: drop-shadow(5px 0px 5px rgba(0, 0, 0, 0.2));
+  height: calc(var(--period-height) * 0.25);
+}
+
+gantt-graph depends.vertical.hover {
+  width: calc(var(--period-height) * 0.25);
 }
 
 gantt-graph today {
