@@ -31,5 +31,3 @@ Cargo.lock
 
 app/res/storage/
 app/res/mariadb_dump*
-
-*.svg

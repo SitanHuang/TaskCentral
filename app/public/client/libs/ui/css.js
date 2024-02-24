@@ -3,18 +3,18 @@
   document.getElementById('splash-status').innerText = 'Loading CSS';
 
   const links = [
-    'libs/ui/fontawesome/css/all.css',
+    'libs/external/fontawesome/css/all.css',
 
     // components
-    'libs/ui/micromodal.css',
+    'libs/external/micromodal.css',
     'libs/ui/sliders.css',
 
     // pure
-    'libs/ui/pure-min.css',
-    'libs/ui/grids-responsive-min.css',
+    'libs/external/pure-min.css',
+    'libs/external/grids-responsive-min.css',
 
     // d3
-    'libs/ui/d3_timeseries.min.css',
+    'libs/external/d3_timeseries.min.css',
 
     'libs/ui/index.css',
 
