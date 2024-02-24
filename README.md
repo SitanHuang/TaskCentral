@@ -8,7 +8,7 @@ TaskCentral is an opinionated TODO-style platform aiming to **reduce cognitive l
 
 Users input **priority** (task importance), **weight** (work volume), and an earliest possible start date. Instead of an overwhelming list, you receive a concise daily task selection.
 
-You can use it as a simple list if you'd like. But it can scale to your workflow: **stress forecast, Pomodoro timers, time tracking, productivity graphs**, etc.
+You can use it as a simple list if you'd like. But it can scale to your workflow: **dependency trees, stress forecast, Pomodoro timers, time tracking, productivity graphs**, etc.
 
 Read more here: [The Cookbook](docgen/cookbook.md)
 
