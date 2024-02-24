@@ -426,6 +426,14 @@ const HOME_SNOOZED_QUERY = {
     to: new Date(2100, 1, 1).getTime()
   }]
 };
+const HOME_RECUR_QUERY = {
+  queries: [{
+    status: ['recur'],
+    collect: ['tasks'],
+    from: 0,
+    to: new Date(2100, 1, 1).getTime()
+  }]
+};
 const HOME_ALL_QUERY = {
   queries: [{
     status: [],
@@ -644,7 +652,7 @@ function _ui_home_normal_status(tasks) {
   let ready = 0;
 
   tasks.forEach(x => {
-    if (x.status != 'completed' && x.weight) {
+    if (x.status != 'completed' && x.status != 'recur' && x.weight) {
       weight_total += x.weight;
       weight_completed += x.weight * x.progress / 100;
 
@@ -767,11 +775,21 @@ function _ui_home_actionable_list() {
 function _ui_home_snoozed_list() {
   let tasks = _ui_query_filter();
 
-  // ready: sort by importance algorithm & filter out tasks not snoozed
   tasks = tasks.sort((a, b) =>
     task_calc_importance(b) - task_calc_importance(a)
   );
-  //.filter(x => x.earliest ? now >= x.earliest : true);
+
+  _ui_home_normal_status(tasks);
+
+  _ui_home_normal_list_gen(tasks);
+}
+// --------------- recur -----------------
+function _ui_home_recur_list() {
+  let tasks = _ui_query_filter();
+
+  tasks = tasks.sort((a, b) =>
+    b.created - a.created
+  );
 
   _ui_home_normal_status(tasks);
 

@@ -302,9 +302,9 @@ function task_calc_importance(task, disable_offset=false) {
   if (disable_offset)
     offset = 0;
 
-  let now = timestamp();
+  const now = timestamp();
 
-  if (task.status == 'completed')
+  if (task.status == 'completed' || task.status == 'recur')
     return 0 + offset;
 
   if (task.status == 'start')

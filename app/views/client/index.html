@@ -804,6 +804,10 @@
                     <input type="checkbox" id="filter-checkbox-completed">
                     Completed
                   </label>
+                  <label for="filter-checkbox-recur" class="pure-checkbox">
+                    <input type="checkbox" id="filter-checkbox-recur">
+                    Recur templates
+                  </label>
                   <label for="filter-checkbox-snoozed" class="pure-checkbox">
                     <input type="checkbox" id="filter-checkbox-snoozed">
                     Snoozed
@@ -953,6 +957,10 @@
                     <a href="#" class="pure-menu-link">Snoozed Only</a>
                   </li>
                   <li class="pure-menu-item"
+                    onclick="ui_home_mode_select_trigger('recur', HOME_RECUR_QUERY)">
+                    <a href="#" class="pure-menu-link">Recur templates</a>
+                  </li>
+                  <li class="pure-menu-item"
                     onclick="ui_home_mode_select_trigger('all', HOME_ALL_QUERY)">
                     <a href="#" class="pure-menu-link">All</a>
                   </li>
@@ -1034,7 +1042,7 @@
     <script src="libs/commons.js?releaseDate=20240221R2"></script>
 
     <script src="libs/data.js?releaseDate=20230914R2"></script>
-    <script src="libs/task.js?releaseDate=20240224R1"></script>
+    <script src="libs/task.js?releaseDate=20240224R2"></script>
     <script src="libs/project.js?releaseDate=20240221R2"></script>
     <script src="libs/backend.js?releaseDate=20240221R2"></script>
     <script src="libs/competitive.js?releaseDate=20231004"></script>
@@ -1043,9 +1051,9 @@
     <script src="libs/query.js?releaseDate=20240221R2"></script>
 
     <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
-    <script src="libs/ui/filter.js?releaseDate=20231124"></script>
+    <script src="libs/ui/filter.js?releaseDate=20240224R2"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240224R1"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20240224R2"></script>
     <script src="libs/ui/views/details.js?releaseDate=20240223R3"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20240223R3"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
