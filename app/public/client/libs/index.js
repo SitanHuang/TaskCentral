@@ -1,4 +1,4 @@
-const RELEASE_DATE = '20240224';
+const RELEASE_DATE = '20240224R3';
 
 const RELEASE_NOTES = `
  Release notes:
@@ -7,6 +7,7 @@ const RELEASE_NOTES = `
 3. Dependency changes are now saved to task logs.
 4. Gantt items will now show dependency lines on mouse hover.
 5. Gantt items now shows tooltips on mouse hover.
+6. Reset button on home page also resets the preferred modeset to Ready on next visit.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

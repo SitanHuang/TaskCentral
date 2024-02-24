@@ -443,6 +443,18 @@ p.no-tasks {
   text-align: left;
 }
 
+.filter-save-tip {
+  color: var(--text-sec-color);
+  padding: .5em;
+  display: inline-block;
+  line-height: normal;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: center;
+  user-select: none;
+  box-sizing: border-box;
+}
+
 .filters-holder {
   display: inline-block;
   line-height: normal;
@@ -603,7 +615,7 @@ body:not(.proMode) *[data-tooltip] span:hover,
 }
 
 body.proMode .proMode-hide {
-  display: none;
+  display: none !important;
 }
 
 body.proMode input::placeholder {

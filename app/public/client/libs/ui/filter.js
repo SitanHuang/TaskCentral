@@ -119,7 +119,11 @@ function ui_filter_update_holders(target_provider, callback_provider) {
   $('.filters-holder').each(function () {
     let holder = $(this).html('');
 
+    let tooltips = $('.filter-save-tip').show();
+
     Object.keys(back.data.filters).forEach(name => {
+      tooltips.hide();
+
       let row = $(`
         <div class="pure-button-group" role="group">
           <button class="pure-button"></button>
