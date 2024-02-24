@@ -120,15 +120,6 @@
   margin-bottom: -1px;
 }
 
-.home task primary i.fa-check-square,
-.home task primary i.fa-trash {
-  display: none;
-}
-.home task.completed primary i.fa-check-square,
-.home task.completed primary i.fa-trash {
-  display: block;
-}
-
 .home task.completed {
   background-color: #fafafa;
 }
@@ -167,12 +158,37 @@
   width: 33px;
   text-align: center;
   flex: 0 0 33px;
-  opacity: 0.87;
+
+  --fa-opacity: 0.87;
+  opacity: var(--fa-opacity);
+
   border-radius: 100%;
   transition: all 180ms ease;
   background-color: transparent;
   /* prevents growing height */
   align-self: flex-start;
+}
+
+.home task primary>i.fa-check-square,
+.home task primary>i.fa-trash {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  transition: none;
+}
+
+.home task.completed primary>i.fa-check-square,
+.home task.completed primary>i.fa-trash,
+.home task.context-menu primary>i.fa-trash {
+  position: static;
+  opacity: var(--fa-opacity);
+  pointer-events: all;
+  transition-delay: 100ms;
+  transition: all 200ms ease-in;
+}
+
+.home task.context-menu {
+  background-color: var(--task-activated-bg);
 }
 
 .home task primary > i.fa:not(.fa-eye-slash) {

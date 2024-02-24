@@ -527,11 +527,11 @@ function _ui_home_gen_task_row(task) {
   $row.attr('data-uuid', task.id);
   $row.html(`
     <primary>
-      <i class="fa fa-trash"></i>
-      <i class="fa fa-check-square"></i>
-      <i class="fa fa-play"></i>
-      <i class="fa fa-check"></i>
-      <i class="fa fa-eye-slash" style="opacity: 0.5"></i>
+      <i title="Delete task permanently." class="fa fa-trash"></i>
+      <i title="Reopen task." class="fa fa-check-square"></i>
+      <i title="Start the task." class="fa fa-play"></i>
+      <i title="Mark as complete." class="fa fa-check"></i>
+      <i title="The task is hidden." class="fa fa-eye-slash" style="opacity: 0.5"></i>
       <name></name>
       <div class="project"></div>
       <div class="date-due" style="display: none;"></div>
@@ -588,7 +588,10 @@ function _ui_home_gen_task_row(task) {
         ui_menu_select_home();
     });
 
-  $row.attr('oncontextmenu', 'return false');
+  $row.on('contextmenu', () => {
+    $row.toggleClass("context-menu");
+    return false;
+  });
   $row.find('i')
     .bind('mousedown touchstart click', () => {
       $row.addClass('child-clicked');
@@ -596,6 +599,9 @@ function _ui_home_gen_task_row(task) {
     .bind('mouseup mouseleave touchend', () => {
       $row.removeClass('child-clicked');
     });
+  $row.bind('blur mouseleave', () => {
+    $row.removeClass('context-menu');
+  })
 
   if (task.project)
     project_create_chip(task.project)
