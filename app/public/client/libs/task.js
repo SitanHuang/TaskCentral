@@ -60,10 +60,42 @@ function task_set_dependency(child, parent, toggle=true) {
   child.dependsOn = child.dependsOn || {};
   parent.dependedBy = parent.dependedBy || {};
 
+  const now = timestamp();
+
   if (toggle) {
+    if (!child.dependsOn[parent.id]) {
+      child.log.push({
+        type: '+requires',
+        time: now,
+        uuid: parent.id,
+      });
+    }
+    if (!parent.dependedBy[child.id]) {
+      parent.log.push({
+        type: '+blocks',
+        time: now,
+        uuid: child.id,
+      });
+    }
+
     child.dependsOn[parent.id] = 1;
     parent.dependedBy[child.id] = 1;
   } else {
+    if (child.dependsOn[parent.id]) {
+      child.log.push({
+        type: '-requires',
+        time: now,
+        uuid: parent.id,
+      });
+    }
+    if (parent.dependedBy[child.id]) {
+      parent.log.push({
+        type: '-blocks',
+        time: now,
+        uuid: child.id,
+      });
+    }
+
     delete child.dependsOn[parent.id];
     delete parent.dependedBy[child.id];
   }
@@ -527,6 +559,10 @@ function task_validate_log(log) {
 
     switch (e.type) {
       case 'start':
+      case '+requires':
+      case '-requires':
+      case '+blocks':
+      case '-blocks':
       case 'default':
         break;
       case 'progress':
@@ -548,7 +584,10 @@ function task_gen_readable_log(task) {
     s += new Date(x.time).toLocaleString() + ' ';
     if (!isNaN(x.progress))
       s += ' int=' + x.progress.toString().padStart(2, '0') + ' ';
-    if (x.note)
+    // assume dependency here:
+    if (x.uuid)
+      s += ` "${back.data.tasks[x.uuid]?.name || "[Deleted task]"}"`;
+    else if (x.note)
       s += ' "' + x.note + '" ';
     s += '\n';
   });
