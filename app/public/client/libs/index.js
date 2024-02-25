@@ -1,13 +1,15 @@
-const RELEASE_DATE = '20240224R3';
+const RELEASE_DATE = '20240224R4';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Right clicking (or long press on mobile) on tasks will reveal delete button.
-2. Adds "Blocks" attribute to details panel for tasks with dependents.
-3. Dependency changes are now saved to task logs.
-4. Gantt items will now show dependency lines on mouse hover.
-5. Gantt items now shows tooltips on mouse hover.
-6. Reset button on home page also resets the preferred modeset to Ready on next visit.
+1. Adds experimental recurrint task feature.
+2. Right clicking (or long press on mobile) on tasks will reveal delete button.
+3. Adds "Blocks" attribute to details panel for tasks with dependents.
+4. Dependency changes are now saved to task logs.
+5. Gantt items will now show dependency lines on mouse hover.
+6. Gantt items now shows tooltips on mouse hover.
+7. Reset button on home page also resets the preferred modeset to Ready on next visit.
+8. Stopping the timer now triggers proper recalculation of total time spent.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

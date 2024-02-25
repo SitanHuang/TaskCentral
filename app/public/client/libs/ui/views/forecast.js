@@ -17,7 +17,7 @@ function ui_menu_select_forecast() {
 const FORECAST_DEFAULT_QUERY = (() => {
   let query = {
     queries: [{
-      status: [],
+      status: ["default", "start", "completed", "snoozed"], // excluding recur
       collect: ['tasks'],
     }]
   };

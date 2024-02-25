@@ -23,7 +23,7 @@ function ui_menu_select_metrics() {
 const METRICS_TODAY_QUERY = (() => {
   let query = {
     queries: [{
-      status: [],
+      status: ["default", "start", "completed", "snoozed"], // excluding recur
       hidden: null,
       due: null,
       projects: [],
@@ -45,7 +45,7 @@ const METRICS_TODAY_QUERY = (() => {
 const METRICS_WEEK_QUERY = (() => {
   let query = {
     queries: [{
-      status: [],
+      status: ["default", "start", "completed", "snoozed"], // excluding recur
       hidden: null,
       due: null,
       projects: [],
@@ -74,7 +74,7 @@ const METRICS_DEFAULT_QUERY = METRICS_WEEK_QUERY;
 const METRICS_MONTH_QUERY = (() => {
   let query = {
     queries: [{
-      status: [],
+      status: ["default", "start", "completed", "snoozed"], // excluding recur
       hidden: null,
       due: null,
       projects: [],
@@ -97,7 +97,7 @@ const METRICS_MONTH_QUERY = (() => {
 const METRICS_YEAR_QUERY = (() => {
   let query = {
     queries: [{
-      status: [],
+      status: ["default", "start", "completed", "snoozed"], // excluding recur
       hidden: null,
       due: null,
       projects: [],

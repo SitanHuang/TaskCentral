@@ -105,6 +105,7 @@
             <div class="filters-holder"></div>
           </div>
           <form id="add-form" autocomplete="off" onsubmit="ui_home_add_trigger(); return false;">
+            <input type="submit" hidden />
             <div class="input-row">
               <i class="fa fa-plus"></i>
               <div class="input-wrapper">
@@ -144,6 +145,64 @@
                   <i class="far fa-keyboard"></i>
                 </div>
               </div>
+              <div class="pure-form pure-form-stacked">
+                <fieldset>
+                  <div class="pure-g">
+                    <div class="pure-u-1 pure-u-md-1-2">
+                      <sub-title for="add-form-earliest">Earliest</sub-title>
+                      <input type="date" id="add-form-earliest" class="pure-u-23-24" />
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-2">
+                      <sub-title for="add-form-until">Until</sub-title>
+                      <input type="date" id="add-form-until" class="pure-u-23-24" />
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <sub-title data-tooltip="Recurring tasks are accomplished through recurrence of recurring task instances from a recurring task template. By creating this template and specifying a recurrence interval, new instances will be cloned based on this template. The Earliest, Due, and Until dates will be moved one recurring interval from the previous instance. The Recurrence Limit denotes how many future instances must be maintained at any given time. Note that you never interact with a recurring task template, and can only find it in the Recur view mode or by adjusting the filter. ">RECURRENCE</sub-title>
+              <label for="add-form-recurrence" class="pure-checkbox recur">
+                <input type="checkbox" id="add-form-recurrence" onchange="$('.recur-form').toggle(this.checked)">
+                This task is a recurring template.
+              </label>
+              <div class="pure-form recur-form pure-form-stacked" style="display: none">
+                <fieldset>
+                  <legend>Every:</legend>
+                  <div class="pure-g recur-intervals">
+                    <!-- we want to allow floating points here -->
+                    <div class="pure-u-1 pure-u-md-1-3">
+                      <label for="add-form-recur-months">Months</label>
+                      <input type="number" id="add-form-recur-months" class="pure-u-23-24"
+                        min="0" max="1024" required step=".0001" value="0"/>
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-3">
+                      <label for="add-form-recur-weeks">Weeks</label>
+                      <input type="number" id="add-form-recur-weeks" class="pure-u-23-24"
+                        min="0" max="1024" required step=".0001" value="0"/>
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-3">
+                      <label for="add-form-recur-days">Days</label>
+                      <input type="number" id="add-form-recur-days" class="pure-u-23-24"
+                        min="0" max="1024" required step=".0001" value="0"/>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend> </legend>
+                  <div class="pure-g recur-intervals">
+                    <div class="pure-u-1 pure-u-md-1-2">
+                      <label for="add-form-recur-limit" data-tooltip="Maximum number of recurring task instances to be maintained at any given time.">Recurrence Limit</label>
+                      <input type="number" id="add-form-recur-limit" class="pure-u-23-24"
+                        value="3" min="0" max="1024" step="0" required />
+                    </div>
+                    <div class="pure-u-1">
+                      <span class="pure-form-message-inline proMode-hide">
+                        Set this to zero if you don't want the system to
+                        immediately start creating instances.
+                      </span>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
               <!-- TODO: stub -->
               <!-- <sub-title>TAGS</sub-title> -->
             </div>
@@ -156,16 +215,16 @@
           <form onsubmit="return false;" oncontextmenu="return false;">
             <header>
               <!-- The ones that don't close shouldn't have # (used for pop state). -->
-              <button type="button" class="pure-button snooze left" onclick="ui_detail_snooze_tomorrow()">
+              <button type="button" class="pure-button snooze left recur-hide" onclick="ui_detail_snooze_tomorrow()">
                 Snooze until tomorrow
                 <i class="fa fa-clock"></i>
               </button>
-              <button type="button" class="pure-button snooze left datepicker">
+              <button type="button" class="pure-button snooze left datepicker recur-hide">
                 Snooze
                 <input type="datetime-local" id="snooze-datetime">
                 <i class="fa fa-calendar-alt"></i>
               </button>
-              <button type="button" class="pure-button unsnooze left" onclick="ui_detail_unsnooze()">
+              <button type="button" class="pure-button unsnooze left recur-hide" onclick="ui_detail_unsnooze()">
                 Unsnooze
                 <i class="fa fa-bell"></i>
               </button>
@@ -260,21 +319,21 @@
                   <input type="checkbox" name="pinned" id="home-details-pinned-checkbox"> Pinned
                 </label>
               </div>
-              <div class="pure-control-group dependsOn-autocomplete-con">
+              <div class="pure-control-group dependsOn-autocomplete-con recur-hide">
                 <label data-tooltip="When a task depends on others, the system auto-sets the Earliest date such that the task only becomes available when all dependencies have been completed.">Requires</label>
                 <input type="text" name="dependsOn" id="dependsOnAutoComplete"
                   autocomplete="off" aria-autocomplete="none">
               </div>
-              <div class="pure-control-group dependsOn-list-con">
+              <div class="pure-control-group dependsOn-list-con recur-hide">
                 <label></label>
                 <div class="dependsOn-list"></div>
               </div>
-              <div class="pure-control-group dependedBy-list-con">
+              <div class="pure-control-group dependedBy-list-con recur-hide">
                 <label
                 data-tooltip="When a task is depended by others, the system auto-sets the Earliest date of the dependents such that they only become available when all dependencies have been completed.">Blocks</label>
                 <div class="dependedBy-list"></div>
               </div>
-              <div class="pure-control-group">
+              <div class="pure-control-group recur-hide">
                 <label>Time</label>
                 <div>
                   <div style="display: flex">
@@ -298,11 +357,20 @@
                 <label>Created</label>
                 <input type="text" readonly name="created">
               </div>
-              <div class="pure-control-group">
+              <div class="pure-control-group recur-show">
+                <label data-tooltip="Maximum number of recurring task instances to be maintained at any given time.">Limit</label>
+                <input type="number" name="recur-limit" value="3" min="0"
+                  max="1024" step="0" />
+              </div>
+              <div class="pure-control-group recur-show">
+                <label>Recur Info</label>
+                <textarea readonly name="recur-info" style="height: 7.5em;font-family: var(--mono-family);"></textarea>
+              </div>
+              <div class="pure-control-group recur-hide">
                 <label>Log</label>
                 <textarea readonly name="log" style="height: 7.5em;font-family: var(--mono-family);"></textarea>
               </div>
-              <div class="pure-control-group">
+              <div class="pure-control-group recur-hide">
                 <label></label>
                 <div>
                   <div style="text-align: right;">
@@ -867,8 +935,10 @@
             </main>
             <footer class="modal__footer" style="text-align: right;">
               <button type="clear" class="modal__btn" data-micromodal-close>Cancel</button>
-              <button type="button" onclick="ui_filter_save()" class="modal__btn modal__btn-primary">Save</button>
               <button type="submit" class="modal__btn modal__btn-primary">Apply</button>
+              <button type="button" onclick="ui_filter_save()" class="modal__btn modal__btn-primary">
+                <b>Save</b>
+              </button>
             </footer>
           </form>
         </div>
@@ -1043,36 +1113,37 @@
     <script src="libs/external/dice.js?releaseDate=20240221R2"></script>
     <script src="libs/external/autoComplete.min.js?releaseDate=20240221"></script>
 
-    <script src="libs/commons.js?releaseDate=20240221R2"></script>
+    <script src="libs/commons.js?releaseDate=20240224R6"></script>
 
     <script src="libs/data.js?releaseDate=20230914R2"></script>
-    <script src="libs/task.js?releaseDate=20240224R2"></script>
+    <script src="libs/task.js?releaseDate=20240224R6"></script>
+    <script src="libs/recur.js?releaseDate=20240224R6"></script>
     <script src="libs/project.js?releaseDate=20240221R2"></script>
     <script src="libs/backend.js?releaseDate=20240221R2"></script>
     <script src="libs/competitive.js?releaseDate=20231004"></script>
 
     <script src="libs/fuzzy.js?releaseDate=20230930"></script>
-    <script src="libs/query.js?releaseDate=20240221R2"></script>
+    <script src="libs/query.js?releaseDate=20240224R6"></script>
 
     <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
     <script src="libs/ui/filter.js?releaseDate=20240224R3"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240224R3"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20240223R3"></script>
-    <script src="libs/ui/views/gantt.js?releaseDate=20240223R3"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20240224R6"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20240224R6"></script>
+    <script src="libs/ui/views/gantt.js?releaseDate=20240224R6"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240221"></script>
-    <script src="libs/ui/views/forecast.js?releaseDate=20230924"></script>
-    <script src="libs/ui/views/metrics.js?releaseDate=20240203"></script>
+    <script src="libs/ui/views/forecast.js?releaseDate=20240224R6"></script>
+    <script src="libs/ui/views/metrics.js?releaseDate=20240224R6"></script>
     <script src="libs/ui/views/import.js?releaseDate=20240211"></script>
 
     <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240224R3"></script>
+    <script src="libs/index.js?releaseDate=20240224R6"></script>
 
     <!-- lazy loads stylesheets & images -->
-    <script src="libs/ui/css.js?releaseDate=20240221R2"></script>
+    <script src="libs/ui/css.js?releaseDate=20240224R6"></script>
 
     <!-- lazy load non-essential stuff-->
     <script src="libs/ui/tooltips.js?releaseDate=20231006"></script>

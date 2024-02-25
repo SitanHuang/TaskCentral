@@ -58,7 +58,7 @@
           ui_menu_init();
 
           if (back.user.status >= 99)
-            $('.su-only').show();
+            $('.su-only').removeClass("su-only");
 
           if (back.data.started)
             timer_start_task(back.data.tasks[back.data.started]);

@@ -179,6 +179,7 @@
 
 .home task.completed primary>i.fa-check-square,
 .home task.completed primary>i.fa-trash,
+.home task.recur primary>i.fa-trash,
 .home task.context-menu primary>i.fa-trash {
   position: static;
   opacity: var(--fa-opacity);
@@ -191,12 +192,17 @@
   background-color: var(--task-activated-bg);
 }
 
-.home task primary > i.fa:not(.fa-eye-slash) {
+.home task primary > i.fa:not(.fa-eye-slash):not(.fa-redo-alt) {
   cursor: pointer;
 }
 
 .home task primary > i.fa:active {
   background-color: #c9c9c9;
+}
+
+.home task primary > i.fa.fa-eye-slash:active,
+.home task primary > i.fa.fa-redo-alt:active {
+  background-color: transparent;
 }
 
 .home task primary project {
@@ -324,10 +330,18 @@
 
 #add-form .detail-row sub-title {
   display: block;
-  font-size: 0.7rem;
   color: rgba(0, 0, 0, 0.7);
   font-weight: 600;
   line-height: 1.5rem;
+  user-select: none;
+  font-size: 0.7rem;
+}
+
+#add-form .detail-row subtitle,
+#add-form .detail-row .recur-form,
+#add-form .detail-row .pure-form,
+#add-form .detail-row .recur {
+  font-size: 0.7rem;
 }
 
 #add-form .detail-row .projects {

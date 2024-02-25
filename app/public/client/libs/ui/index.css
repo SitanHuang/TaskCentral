@@ -21,7 +21,7 @@
 }
 
 .su-only {
-  display: none;
+  display: none !important;
 }
 
 .font-mono {
@@ -645,6 +645,14 @@ body.proMode input::placeholder {
     scrollbar-color: var(--app-primary-color) transparent;
     scrollbar-width: thin;
   }
+}
+
+.pure-checkbox {
+  user-select: none;
+}
+
+.pure-form legend {
+  font-weight: bold;
 }
 
 .progress-num-input input[type="range"] {
