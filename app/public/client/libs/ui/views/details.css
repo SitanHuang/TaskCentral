@@ -7,6 +7,11 @@
   display: block;
 }
 
+.task-detail:not(.recur) .recur-show,
+.task-detail.recur .recur-hide {
+  display: none !important;
+}
+
 .task-detail header {
   display: flex;
   flex-flow: row nowrap;

@@ -108,6 +108,11 @@ textarea,
   color: var(--text-sec-color);
 }
 
+.pure-form legend {
+  color: var(--text-color);
+  border-bottom: var(--menu-border);
+}
+
 #add-form .date-due {
   border-color: var(--text-color);
   background-color: var(--body-bg);

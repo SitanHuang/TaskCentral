@@ -18,6 +18,17 @@ function addDateByMonthWeekDay(date, [month, week, day]) {
   return result;
 }
 
+function addDateByRecurInt(date, recurInt, factor=1) {
+  // setDate doesn't work well with decimals
+  const result = new Date(
+    date +
+    (recurInt.week || 0) * 7 * factor * 8.64e+7 +
+    (recurInt.day || 0) * factor * 8.64e+7);
+
+  result.setMonth(result.getMonth() + (recurInt.month || 0)) * factor;
+  return result;
+}
+
 function midnight(a) {
   let date = new Date((a || new Date()));
   date.setHours(0, 0, 0, 0);

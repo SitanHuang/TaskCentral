@@ -14,6 +14,9 @@ function ui_menu_select_home(_resetForm) {
     _home_addForm[0].reset();
     _home_addForm.find('input').val('').change().blur(); // to trigger all listeners
     // ^ sliders should automatically go to center
+    _home_addForm.find('.recur-intervals input[type="number"]').val("0");
+    _home_addForm.find('#add-form-recur-limit').val("3");
+    $('#add-form-recurrence')[0].checked = false;
   }
 
   // this binds the datepicker click listener
@@ -345,6 +348,9 @@ function ui_home_add_trigger() {
   let name = _home_addForm.find('.input-row input[name=name]').val().trim();
   if (!name) return;
 
+  let earliest = document.getElementById('add-form-earliest');
+  let until = document.getElementById('add-form-until');
+
   let task = task_new({
     name: name,
     project: _home_addForm.find('.input-row input[name=project]').val() || null,
@@ -352,12 +358,67 @@ function ui_home_add_trigger() {
            .val()).getTime() || null,
     priority: parseInt(_home_addForm.find('.detail-row input[name=priority]').val()) / 10,
     weight: parseInt(_home_addForm.find('.detail-row input[name=weight]').val()) / 10,
+    earliest: earliest.valueAsNumber ? task_parse_date_input(earliest.value).getTime() : null,
+    until: until.valueAsNumber ? task_parse_date_input(until.value).getTime() : null,
   });
+
+  let recur = $('#add-form-recurrence')[0].checked;
+
+  // handle recurrence
+  if (recur) {
+    let intervals = [
+      "#add-form-recur-months",
+      "#add-form-recur-weeks",
+      "#add-form-recur-days",
+    ].map(x => parseFloat(_home_addForm.find(x).val()));
+
+    // at least one has to be non-zero
+    let fail = !(Math.max(...intervals) > 0);
+    for (let int of intervals) {
+      if (isNaN(int) || !isFinite(int) || int > 1024 || int < 0) {
+        fail = true;
+        break;
+      }
+    }
+
+    if (fail) {
+      ui_alert(
+        "Recurrence months/weeks/days must be between 1024 and 0, " +
+        "with at least one non-zero value."
+      );
+      return;
+    }
+
+    let limit = parseFloat(_home_addForm.find('#add-form-recur-limit').val());
+
+    if (!Number.isInteger(limit) || limit > 1024 || limit < 0) {
+      ui_alert("Recurrence Limit must be between 1024 and 0.");
+      return;
+    }
+
+    task.recurInts = {
+      month: intervals[0],
+      week: intervals[1],
+      day: intervals[2],
+    };
+
+    task.status = 'recur';
+
+    task.recurLim = limit;
+    task.recurIndex = 0;
+  }
+
   task_set(task);
 
   _home_addForm.find('input').val('').change(); // to trigger all listeners
+  _home_addForm.find('.recur-intervals input[type="number"]').val("0");
+  _home_addForm.find('#add-form-recur-limit').val("3");
+  $('#add-form-recurrence')[0].checked = false;
 
   ui_menu_select_home(true);
+
+  if (recur)
+    ui_detail_select_task(task);
 }
 
 function ui_home_mode_select() {
@@ -499,6 +560,8 @@ function _ui_home_task_row_decorate_class($row, task) {
 
   if (!task.hidden)
     $row.find('.fa-eye-slash').remove();
+  if (task.status != 'recur')
+    $row.find('.fa-redo-alt').remove();
 
   if (task.earliest && timestamp() < task.earliest)
     $row.addClass('earliest');
@@ -512,6 +575,10 @@ function _ui_home_task_row_decorate_class($row, task) {
 
   if (task.status != 'default')
     $row.find('i.fa-play, i.fa-check').hide();
+
+  if (task.status == 'recur')
+    $row.addClass('recur');
+
   if (task.status == 'completed') {
     $row.addClass('completed');
   } else {
@@ -541,6 +608,7 @@ function _ui_home_gen_task_row(task) {
       <i title="Start the task." class="fa fa-play"></i>
       <i title="Mark as complete." class="fa fa-check"></i>
       <i title="The task is hidden." class="fa fa-eye-slash" style="opacity: 0.5"></i>
+      <i title="The task is a recurring task template." class="fa fa-redo-alt" style="opacity: 0.5"></i>
       <name></name>
       <div class="project"></div>
       <div class="date-due" style="display: none;"></div>

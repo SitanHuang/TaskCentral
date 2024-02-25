@@ -77,6 +77,8 @@ function query_exec(query) {
     // get most current earliest date based on dependencies
     task_dependency_recalc_earliest(task);
 
+    task_recur_recalc(task);
+
     if (!task_is_overlap(task, _range)) {
       // remove from set so the next query doesn't waste time
       tasks.delete(uuid);

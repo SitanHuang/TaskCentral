@@ -18,7 +18,8 @@ function task_new(override) {
     due: null,
     earliest: null, // earliest time to begin working
     until: null, // latest time that the task is still relevant
-    status: 'default',
+    status: 'default', // default, start, completed, recur
+    // [steps: 1-100],
     // [notes: string],
     // [dependsOn: uuids{}],
     // [dependedBy: uuids{}],
@@ -27,15 +28,26 @@ function task_new(override) {
     progress: null, // latest progress, updated via task.log.push(), null same as 0
     total: 0, // total difference in timestamp spent on working (start -> default)
     // TODO: stub
-    // [subtasks: []],
+    // [subtasks: []], // 2/24/24 note: already implemented via dependencies
     // status change should pay attention to log
-    // ex. if status==completed, can't start/pause task
+    // ex. if status!=default, can't start/pause task
     log: [
       { type: 'default', time: stamp } // always first
       // { type: 'start', time: timestamp },
       // { type: 'default', time: timestamp },
       // { type: 'progress', time: timestamp, progress: int 0-100 },
-    ]
+      // { type: '+requires', time: timestamp, uuid: uuid },
+      // { type: '-requires', time: timestamp, uuid: uuid },
+      // { type: '+blocks', time: timestamp, uuid: uuid },
+      // { type: '-blocks', time: timestamp, uuid: uuid },
+    ],
+    // [recurInts: {
+    //   month: intervals[0],
+    //   week: intervals[1],
+    //   day: intervals[2],
+    // }],
+    // [recurIndex: 1-1024],
+    // [recurLim: 1-1024],
   }, override);
 }
 
@@ -638,7 +650,7 @@ function task_update_progress(task, progress, note) {
 }
 
 /*
- * returns total diff (new - old)
+ * returns total diff (new - old) and sets proper total without back.set_dirty()
  */
 function task_recalc_total(task) {
   let ot = task.total;
@@ -657,10 +669,12 @@ function task_pause(task) {
   task.log.push({ type: 'default', time: timestamp() });
   delete back.data.started;
 
-  // aggregate to total time spent
-  let start = task_get_latest_start_stamp(task);
-  if (start)
-    task.total += timestamp() - start;
+  // // aggregate to total time spent
+  // let start = task_get_latest_start_stamp(task);
+  // if (start)
+  //   task.total += timestamp() - start;
+
+  task_recalc_total(task);
 
   back.set_dirty();
 }

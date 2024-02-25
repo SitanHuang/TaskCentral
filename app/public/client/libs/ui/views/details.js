@@ -187,6 +187,31 @@ function _ui_home_detail_update_status_importance(task) {
 
   _home_detail_form.find('input[name=total]')
     .val(totalString);
+
+  let recurLimit = _home_detail_form.find('input[name="recur-limit"]');
+  recurLimit[0].onchange = null;
+  if (task.status == 'recur') {
+    recurLimit.val(task.recurLim)[0].onchange = () => {
+      if (_selected_task !== task) return;
+
+      let val = parseFloat(recurLimit.val());
+
+      if (val === task.recurLim) return;
+
+      if (!Number.isInteger(val) || val > 1024 || val < 0) {
+        ui_alert("Recurrence Limit must be between 1024 and 0.");
+        recurLimit.val(task.recurLim);
+        return;
+      }
+
+      task.recurLim = val;
+
+      _ui_home_details_signal_changed();
+    };
+
+    _home_detail_form.find('textarea[name="recur-info"]')
+      .val(task_recur_gen_readable_info(task));
+  }
 }
 
 function ui_detail_select_task(task) {
@@ -194,6 +219,12 @@ function ui_detail_select_task(task) {
 
   _home_detail = _home_con.find('.task-detail').addClass('activated');
   _home_detail_form = _home_detail.find('form');
+
+  if (task.status == 'recur') {
+    _home_detail.addClass('recur');
+  } else {
+    _home_detail.removeClass('recur');
+  }
 
   // resets every input
   _home_detail_form.find('input[type!=button]').val('');
