@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20240224R4';
+const RELEASE_DATE = '20240224R6';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Adds experimental recurrint task feature.
+1. Adds experimental task recurrency feature.
 2. Right clicking (or long press on mobile) on tasks will reveal delete button.
 3. Adds "Blocks" attribute to details panel for tasks with dependents.
 4. Dependency changes are now saved to task logs.

@@ -111,7 +111,7 @@ impl ClientController {
 
         // Client encounters corrupted data & is requesting to use swp file
         if data_rec_query.is_some() {
-            eprintln!("Warning: Requesting swp file for {}", &ucontext.su_data_path_app);
+            eprintln!("{} Warning: Requesting swp file for {}", chrono::Local::now(), &ucontext.su_data_path_app);
 
             tokio::fs::copy(
                 &ucontext.su_data_path_app,
