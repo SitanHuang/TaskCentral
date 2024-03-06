@@ -47,8 +47,8 @@ function _admin_userlist_preset_load() {
 
   if (preset?.length != 2) return;
 
-  $('#includeUsersRegex').val(preset[0]);
-  $('#excludeUsersRegex').val(preset[1]);
+  $('#includeUsersRegex').val(preset[0]).change();
+  $('#excludeUsersRegex').val(preset[1]).change();
 
   admin_userlist_start();
 }
@@ -109,11 +109,11 @@ function _admin_userlist_fetch() {
   function beep() {
     const context = new (window.AudioContext || window.webkitAudioContext)();
     const gainNode = context.createGain();
-    gainNode.gain.value = ($('#volumeSlider').val() / 100) || 0.8;
+    gainNode.gain.value = ($('#volumeSlider').val() / 100) || 0.0;
     const oscillator = context.createOscillator();
 
     oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(440, context.currentTime); // 440 Hz frequency (A4 note)
+    oscillator.frequency.setValueAtTime(parseFloat($('#pitchSlider').val()) || 440, context.currentTime);
     oscillator.connect(gainNode).connect(context.destination);
     oscillator.start();
     oscillator.stop(context.currentTime + 0.2); // stops after 200ms
