@@ -36,6 +36,10 @@
       <br>
       <input type="text" id="includeUsersRegex" placeholder="username inclusion wildcards, separated by comma">
       <input type="text" id="excludeUsersRegex" placeholder="username exclusion wildcards, separated by comma">
+      <select id="userListPresets"></select>
+      <button type="button" onclick="_admin_userlist_preset_load()">Load</button>
+      <button type="button" onclick="_admin_userlist_preset_save()">Save</button>
+      <button type="button" onclick="_admin_userlist_preset_del()">Delete</button>
       <pre class="status"></pre>
       <table class="sortable">
         <thead>
@@ -66,4 +70,3 @@
     <script src="libs/add-user.js"></script>
   </body>
 </html>
-

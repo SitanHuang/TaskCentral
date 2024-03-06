@@ -5,14 +5,60 @@ let _admin_userlist_data = null;
 let _admin_userlist_time = null;
 let _admin_userlist_proctime = null;
 let _admin_userlist_intervalid = null;
+let _admin_userlist_timeoutid = null;
 
 $('#excludeUsersRegex').val(localStorage.admin_excludeUsersRegex || ''),
 $('#includeUsersRegex').val(localStorage.admin_includeUsersRegex || ''),
 
 $('#excludeUsersRegex, #includeUsersRegex').change(() => {
-  localStorage.admin_excludeUsersRegex = $('#excludeUsersRegex').val();
   localStorage.admin_includeUsersRegex = $('#includeUsersRegex').val();
+  localStorage.admin_excludeUsersRegex = $('#excludeUsersRegex').val();
 });
+
+function _admin_userlist_preset_get() {
+  return JSON.parse(localStorage.admin_userlist_presets || "{}");
+}
+
+function _admin_userlist_preset_set(preset) {
+  localStorage.admin_userlist_presets = JSON.stringify(preset);
+  _admin_userlist_preset_update_select();
+}
+
+function _admin_userlist_preset_update_select() {
+  let presets = _admin_userlist_preset_get();
+
+  let select = $('#userListPresets').html('<option> </option>');
+
+  for (let name in presets) {
+    select.append($(`<option/>`).text(name).val(name));
+  }
+}
+
+function _admin_userlist_preset_del() {
+  let name = $('#userListPresets').val();
+  let presets = _admin_userlist_preset_get();
+  delete presets[name];
+  _admin_userlist_preset_set(presets);
+}
+function _admin_userlist_preset_load() {
+  let name = $('#userListPresets').val();
+  let presets = _admin_userlist_preset_get();
+  let preset = presets[name];
+
+  if (preset?.length != 2) return;
+
+  $('#includeUsersRegex').val(preset[0]);
+  $('#excludeUsersRegex').val(preset[1]);
+
+  admin_userlist_start();
+}
+function _admin_userlist_preset_save() {
+  let name = prompt('Name', $('#userListPresets').val());
+  let presets = _admin_userlist_preset_get();
+  presets[name] = [$('#includeUsersRegex').val(), $('#excludeUsersRegex').val()];
+  _admin_userlist_preset_set(presets);
+  $('#userListPresets').val(name);
+}
 
 function _admin_userlist_rerender() {
   $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago. ${_admin_userlist_proctime}ms. ${_admin_userlist_data_uptime?.trim()}`);
@@ -97,7 +143,7 @@ function _admin_userlist_fetch() {
 
       _admin_userlist_rerender();
 
-      setTimeout(_admin_userlist_fetch, ($('#freqSlider').val() * 1000) || 5000);
+      _admin_userlist_timeoutid = setTimeout(_admin_userlist_fetch, ($('#freqSlider').val() * 1000) || 5000);
     }
   );
 }
@@ -105,8 +151,11 @@ function _admin_userlist_fetch() {
 function admin_userlist_start() {
   if (_admin_userlist_intervalid)
     clearInterval(_admin_userlist_intervalid);
+  if (_admin_userlist_timeoutid)
+    clearTimeout(_admin_userlist_timeoutid);
 
   _admin_userlist_intervalid = setInterval(_admin_userlist_rerender, 593); // prime number
-
   _admin_userlist_fetch();
 }
+
+_admin_userlist_preset_update_select();
