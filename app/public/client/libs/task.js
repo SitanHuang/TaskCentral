@@ -737,3 +737,8 @@ function task_gen_working_periods(task, capRange) {
 
   return periods;
 }
+
+function task_get_prog_user_steps(task) {
+  const steps = task.steps || 100;
+  return Math.round((task.progress || 0) / 100 * steps);
+}

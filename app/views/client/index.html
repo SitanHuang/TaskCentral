@@ -268,11 +268,18 @@
                   </div>
                 </div>
               </div>
-              <div class="pure-control-group">
+              <div class="pure-control-group" style="margin-bottom: 0;">
                 <label data-tooltip="Update this slider to tell the system how much work is left at the current instant. Use the 'Set Maximum Steps' feature to adjust the total number of steps for your progress. When a task is marked as 'Complete', the progress at the instant of completion is assumed to be 100%.">
                   Progress
                 </label>
-                <input type="range" min="0" max="100" step="1" name="progress">
+                <div class="progress-num-input" name="progress">
+                  <input type="range" min="0" max="100" step="1" name="progress">
+                  <div class="pure-button">
+                    <i class="far fa-keyboard"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="pure-control-group">
                 <a class="pure-form-message-inline right" href=""
                   onclick="$('.task-detail .change-step-size').slideToggle(200, 'swing'); return false;">
                   Set Maximum Steps
@@ -1116,7 +1123,7 @@
     <script src="libs/commons.js?releaseDate=20240224R6"></script>
 
     <script src="libs/data.js?releaseDate=20230914R2"></script>
-    <script src="libs/task.js?releaseDate=20240224R6"></script>
+    <script src="libs/task.js?releaseDate=20240305"></script>
     <script src="libs/recur.js?releaseDate=20240224R6"></script>
     <script src="libs/project.js?releaseDate=20240221R2"></script>
     <script src="libs/backend.js?releaseDate=20240221R2"></script>
@@ -1129,7 +1136,7 @@
     <script src="libs/ui/filter.js?releaseDate=20240224R3"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20240224R6"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20240224R6"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20240305"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20240224R6"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240221"></script>
@@ -1140,7 +1147,7 @@
     <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240224R6"></script>
+    <script src="libs/index.js?releaseDate=20240305"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20240224R6"></script>

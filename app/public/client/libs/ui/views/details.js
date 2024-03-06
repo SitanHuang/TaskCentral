@@ -66,10 +66,28 @@ function _ui_home_detail_update_status_importance(task) {
   });
 
   let steps = task.steps || 100;
-  let _prog = Math.round((task.progress || 0) / 100 * steps);
+  let _prog = task_get_prog_user_steps(task);
 
   _home_detail_form.find('input[name=progress-value-indicator]')
     .val(`${_prog} / ${steps}`);
+
+  _home_detail_form.find('.progress-num-input[name="progress"] .pure-button')
+    .text(`${_prog}`)[0].onclick = async (_) => {
+      if (!_selected_task) return;
+      let input = await ui_prompt(
+        `Change progress (0-${steps}):`, _prog,
+        { input: "number", min: 0, max: steps, valMinMax: true }
+      );
+
+      if (input && input >= 0 && input <= steps) {
+        let progress = input || null;
+
+        progress = Math.round(progress / steps * 100);
+
+        task_update_progress(_selected_task, progress);
+        _ui_home_details_signal_changed();
+      }
+    };
 
   _home_detail_form.find('input[name=progress]')
     .attr('max', steps)
