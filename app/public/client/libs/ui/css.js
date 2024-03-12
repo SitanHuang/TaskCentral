@@ -2,6 +2,9 @@
   document.getElementById('splash').className = 'init';
   document.getElementById('splash-status').innerText = 'Loading CSS';
 
+  if (window.chrome)
+    document.body.classList.add("chrome");
+
   const links = [
     'libs/external/fontawesome/css/all.css',
 

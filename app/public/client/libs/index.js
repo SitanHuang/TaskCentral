@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20240305';
+const RELEASE_DATE = '20240311';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Fulfill feature request on progress bar input. Please test for bugs.
+1. Themed scrollbars now work for both Chrome and Firefox
 
 If you don't see changes, clear browser cache or force refresh.
 `;
@@ -15,7 +15,7 @@ if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toStr
   //     back.set_dirty();
   //   }
   // }, 1000);
-  ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
+  // ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
 }
 
 localStorage.last_release = RELEASE_DATE;
