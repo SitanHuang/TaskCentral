@@ -193,6 +193,19 @@
   overflow-y: auto;
 }
 
+.task-detail .edit-log-errors {
+  color: var(--theme-color-red);
+  overflow: auto;
+  margin: 0;
+}
+
+.task-detail input[type="button"][name="delete"] {
+  background-color: var(--theme-color-error-bg);
+  color: white;
+  font-weight: bold;
+  width: 100%;
+}
+
 #modal-home-mode .modal__container {
   width: min(90vw, 400px);
 }

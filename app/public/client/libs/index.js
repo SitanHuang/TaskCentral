@@ -1,8 +1,9 @@
-const RELEASE_DATE = '20240311';
+const RELEASE_DATE = '20240314';
 
 const RELEASE_NOTES = `
  Release notes:
 1. Themed scrollbars now work for both Chrome and Firefox
+2. Add delete button in details panel (useful for deleting tasks after selecting them in the Gantt tab)
 
 If you don't see changes, clear browser cache or force refresh.
 `;

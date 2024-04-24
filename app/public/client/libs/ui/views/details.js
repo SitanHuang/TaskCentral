@@ -422,6 +422,14 @@ function ui_detail_snooze_tomorrow() {
   _ui_home_details_signal_changed();
 }
 
+async function ui_detail_delete() {
+  if (await ui_confirm('Delete task "' + _selected_task.name + '"?')) {
+    task_delete(_selected_task);
+    ui_detail_close();
+    ui_menu_select_home();
+  }
+}
+
 function ui_detail_unsnooze() {
   task_unsnooze(_selected_task);
   _ui_home_details_signal_changed();
