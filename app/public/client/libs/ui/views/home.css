@@ -192,7 +192,7 @@
   background-color: var(--task-activated-bg);
 }
 
-.home task primary > i.fa:not(.fa-eye-slash):not(.fa-redo-alt) {
+.home task primary > i.fa:not(.fa-eye-slash):not(.fa-redo-alt):not(.fa-calendar-times):not(.fa-lock) {
   cursor: pointer;
 }
 

@@ -1,9 +1,9 @@
-const RELEASE_DATE = '20240314';
+const RELEASE_DATE = '20240608';
 
 const RELEASE_NOTES = `
  Release notes:
-1. Themed scrollbars now work for both Chrome and Firefox
-2. Add delete button in details panel (useful for deleting tasks after selecting them in the Gantt tab)
+1. Reverts sorting mechanism in Ready, Default, All modesets to use task creation date as backup to the calculated importance value.
+2. Adds 2 icons for blocked tasks due to earliest date and/or dependencies. (If you don't want to see these, write custom spreadsheet rules in User Settings.)
 
 If you don't see changes, clear browser cache or force refresh.
 `;
@@ -16,7 +16,7 @@ if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toStr
   //     back.set_dirty();
   //   }
   // }, 1000);
-  // ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
+  ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
 }
 
 localStorage.last_release = RELEASE_DATE;

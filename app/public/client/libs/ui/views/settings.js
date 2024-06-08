@@ -323,6 +323,27 @@ async function ui_settings_export_ledg() {
 const UI_SETTINGS_DEFAULT_STYLESHEET =`
 /* Write custom CSS rules below: */
 
+task.earliest .fa-check,
+task.blocked .fa-check {
+  display: none;
+}
+
+task.earliest {
+
+}
+
+task.earliest .fa-calendar-times {
+
+}
+
+task.blocked {
+
+}
+
+task.blocked .fa-lock {
+
+}
+
 .low-priority name {
   font-style: italic;
 }

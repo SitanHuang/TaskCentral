@@ -563,8 +563,21 @@ function _ui_home_task_row_decorate_class($row, task) {
   if (task.status != 'recur')
     $row.find('.fa-redo-alt').remove();
 
-  if (task.earliest && timestamp() < task.earliest)
+  if (task.earliest && timestamp() < task.earliest) {
     $row.addClass('earliest');
+
+    if (task_dependency_is_blocked(task))
+      $row.addClass('blocked')
+        .find('.fa-lock')
+        .attr('title', `This task is blocked by other tasks.`);
+    else
+      $row.find('.fa-lock')
+        .attr('title', `This task cannot yet be started due to its Earliest attribute.`)
+        .removeClass('fa-lock')
+        .addClass('fa-calendar-times');
+  } else {
+    $row.find('.fa-lock').remove();
+  }
 
   if (task.due || task.until) {
     $row.find('.date-due')
@@ -609,6 +622,7 @@ function _ui_home_gen_task_row(task) {
       <i title="Mark as complete." class="fa fa-check"></i>
       <i title="The task is hidden." class="fa fa-eye-slash" style="opacity: 0.5"></i>
       <i title="The task is a recurring task template." class="fa fa-redo-alt" style="opacity: 0.5"></i>
+      <i title="The task is blocked." class="fa fa-lock" style="opacity: 0.5"></i>
       <name></name>
       <div class="project"></div>
       <div class="date-due" style="display: none;"></div>

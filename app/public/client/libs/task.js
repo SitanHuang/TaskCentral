@@ -181,6 +181,20 @@ function task_dependency_recalc_earliest(task) {
   return task.earliest;
 }
 
+function task_dependency_is_blocked(task) {
+  if (!task_has_dependsOn(task))
+    return null;
+
+  for (const id in task.dependsOn) {
+    const parent = back.data.tasks[id];
+
+    if (parent.status != 'completed')
+      return true;
+  }
+
+  return false;
+}
+
 /**
  * This function shall be run whenever a task is "touched" by the system for
  * the purpose of updating certain metadata.
