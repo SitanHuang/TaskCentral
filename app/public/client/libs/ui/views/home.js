@@ -804,7 +804,8 @@ function _ui_home_default_list() {
 
   // default: sort by importance algorithm
   tasks = tasks.sort((a, b) =>
-    task_calc_importance(b) - task_calc_importance(a)
+    (task_calc_importance(b) - task_calc_importance(a)) ||
+    (b.created - a.created)
   );
 
   _ui_home_normal_status(tasks);
@@ -818,7 +819,8 @@ function _ui_home_ready_list() {
 
   // ready: sort by importance algorithm & filter out tasks not ready
   tasks = tasks.sort((a, b) =>
-    task_calc_importance(b) - task_calc_importance(a)
+    (task_calc_importance(b) - task_calc_importance(a)) ||
+    (b.created - a.created)
   );
   //.filter(x => x.earliest ? now >= x.earliest : true);
 
@@ -832,7 +834,8 @@ function _ui_home_actionable_list() {
 
   // ready: sort by importance algorithm & filter out tasks not actionable
   tasks = tasks.sort((a, b) =>
-    task_calc_importance(b) - task_calc_importance(a)
+    (task_calc_importance(b) - task_calc_importance(a)) ||
+    (b.created - a.created)
   );
   //.filter(x => x.earliest ? now >= x.earliest : true);
 
@@ -845,7 +848,8 @@ function _ui_home_snoozed_list() {
   let tasks = _ui_query_filter();
 
   tasks = tasks.sort((a, b) =>
-    task_calc_importance(b) - task_calc_importance(a)
+    (task_calc_importance(b) - task_calc_importance(a)) ||
+    (b.created - a.created)
   );
 
   _ui_home_normal_status(tasks);
