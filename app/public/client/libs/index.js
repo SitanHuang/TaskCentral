@@ -1,7 +1,11 @@
-const RELEASE_DATE = '20240608';
+const RELEASE_DATE = '20240614';
 
 const RELEASE_NOTES = `
  Release notes:
+
+1. Added graphs for burndown statistics in task details pane.
+
+ Older notes:
 1. Reverts sorting mechanism in Ready, Default, All modesets to use task creation date as backup to the calculated importance value.
 2. Adds 2 icons for blocked tasks due to earliest date and/or dependencies. (If you don't want to see these, write custom spreadsheet rules in User Settings.)
 

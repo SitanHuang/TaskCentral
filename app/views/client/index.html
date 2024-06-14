@@ -387,6 +387,14 @@
                   <pre class="edit-log-errors"></pre>
                 </div>
               </div>
+              <div class="pure-control-group recur-hide">
+                <div style="width: 100%;text-align: center;">
+                  <div id="task-burndown-chart"></div>
+                  <span class="pure-form-message-inline proMode-hide">
+                    Click on legend items to hide series. Drag to zoom.
+                  </span>
+                </div>
+              </div>
               <div class="pure-control-group">
                 <label></label>
                 <div>
@@ -1124,13 +1132,14 @@
     <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230914R2"></script>
     <script src="libs/external/d3.v4.js?releaseDate=20230914R2"></script>
     <script src="libs/external/d3_timeseries.min.js?releaseDate=20230914R2"></script>
+    <script src="libs/external/plotly-2.32.0.min.js?releaseDate=20240613"></script>
     <script src="libs/external/dice.js?releaseDate=20240221R2"></script>
     <script src="libs/external/autoComplete.min.js?releaseDate=20240221"></script>
 
     <script src="libs/commons.js?releaseDate=20240224R6"></script>
 
     <script src="libs/data.js?releaseDate=20230914R2"></script>
-    <script src="libs/task.js?releaseDate=20240608"></script>
+    <script src="libs/task.js?releaseDate=20240614"></script>
     <script src="libs/recur.js?releaseDate=20240224R6"></script>
     <script src="libs/project.js?releaseDate=20240221R2"></script>
     <script src="libs/backend.js?releaseDate=20240221R2"></script>
@@ -1143,7 +1152,7 @@
     <script src="libs/ui/filter.js?releaseDate=20240224R3"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20240608"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20240314"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20240614"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20240224R6"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240608"></script>

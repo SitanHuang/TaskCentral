@@ -203,6 +203,8 @@ function _ui_home_detail_update_status_importance(task) {
     totalString += `)`;
   }
 
+  _ui_detail_render_burndown_stats(task);
+
   _home_detail_form.find('input[name=total]')
     .val(totalString);
 
@@ -230,6 +232,109 @@ function _ui_home_detail_update_status_importance(task) {
     _home_detail_form.find('textarea[name="recur-info"]')
       .val(task_recur_gen_readable_info(task));
   }
+}
+
+function _ui_detail_render_burndown_stats(task) {
+  let { avgRatesData, progressData, timeData } = task_gen_burndown_stats(task);
+
+  if (Math.min(avgRatesData.length, progressData.length, timeData.length) >= 2) {
+    _home_detail_form.find('#task-burndown-chart').parent().show();
+  } else {
+    Plotly.purge('task-burndown-chart');
+    _home_detail_form.find('#task-burndown-chart').parent().hide();
+    return;
+  }
+
+  avgRatesData.forEach(x => x.time = new Date(x.time));
+  progressData.forEach(x => { x.time = new Date(x.time); x.progress = 100 - x.progress; });
+  timeData.forEach(x => { x.time = new Date(x.time); x.total /= 3.6e+6; }); // to hour
+
+  let traceProgress = {
+    type: "scatter",
+    mode: "lines+markers",
+    name: '% Remaining',
+    x: progressData.map(x => x.time),
+    y: progressData.map(x => x.progress),
+    line: { color: '#DB4437', size: 4, shape: 'linear' },
+    marker: { size: 8 },
+  };
+  let traceRate = {
+    type: "scatter",
+    mode: "lines+markers",
+    name: 'Avg. %/hr',
+    x: avgRatesData.map(x => x.time),
+    y: avgRatesData.map(x => x.rate),
+    line: { color: '#2196F3', size: 1, shape: 'linear' },
+    marker: { size: 8 },
+    yaxis: 'y2',
+  };
+  let traceTime = {
+    type: "scatter",
+    mode: "lines+markers",
+    name: 'Hours Spent',
+    x: timeData.map(x => x.time),
+    y: timeData.map(x => x.total),
+    line: { color: '#4CAF50', size: 4, shape: 'linear' },
+    marker: { size: 8 },
+    yaxis: 'y3',
+  };
+
+  let data = [traceRate, traceProgress, traceTime];
+
+  let layout = {
+    title: 'Burndown Statistics',
+    xaxis: {
+      autorange: true,
+      rangeselector: {
+        buttons: [
+          {
+            count: 3,
+            label: '3d',
+            step: 'day',
+            stepmode: 'backward'
+          },
+          {
+            count: 7,
+            label: '7d',
+            step: 'day',
+            stepmode: 'backward'
+          },
+          { step: 'all' }
+        ]
+      },
+      // rangeslider: {},
+      type: 'date'
+    },
+    yaxis: {
+      // autorange: true,
+      range: [0, 100],
+      type: 'linear',
+      tickfont: { color: '#DB4437' },
+    },
+    yaxis2: {
+      autorange: true,
+      type: 'linear',
+      tickfont: { color: '#2196F3' },
+      overlaying: 'y',
+    },
+    yaxis3: {
+      autorange: true,
+      type: 'linear',
+      tickfont: { color: '#4CAF50' },
+      side: 'right',
+      overlaying: 'y',
+    },
+    showlegend: true,
+    legend: { "orientation": "h" },
+  };
+
+  // remove series with only 1 unique y value
+  data.forEach((x, i) => {
+    if (new Set(x.y).size <= 1)
+      x.visible = 'legendonly';
+  });
+
+  Plotly.react('task-burndown-chart', data, layout, { responsive: true });
 }
 
 function ui_detail_select_task(task) {

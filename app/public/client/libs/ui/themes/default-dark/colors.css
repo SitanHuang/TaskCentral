@@ -56,3 +56,7 @@ body.default-dark svg *[stroke="#000"] {
 body.default-dark svg *[fill="#000"] {
   fill: #fff;
 }
+
+body[class*="-dark"] #task-burndown-chart {
+  filter: invert(1);
+}

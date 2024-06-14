@@ -644,6 +644,88 @@ function task_progress_at_stamp(task, stamp) {
   return comp ? 100 : p;
 }
 
+/**
+ * Generates burndown statistics for a task, returning productivity rates,
+
+ * progress, and time data.
+ */
+function task_gen_burndown_stats(task) {
+  const avgRatesData = []; // average rate up to each stamp (instantenous might be a bit funky)
+  const progressData = [];
+  const timeData = [];
+  let totalTime = 0;
+  let lastProgress = 0;
+  let lastRealProgress = 0;
+  let lastTime;
+
+  for (let i = 0; i < task.log.length; i++) {
+    let log = task.log[i];
+
+    let isCompletedLog = log.type == 'default' && log.note?.toLowerCase().indexOf('completed') >= 0;
+    let isReopenedLog = log.type == 'default' && log.note?.toLowerCase().indexOf('reopened') >= 0;
+
+    if (log.type == 'start') {
+      // handle start
+      lastTime = log.time;
+
+      timeData.push({ time: log.time, total: totalTime });
+      progressData.push({ time: log.time, progress: lastProgress });
+      if (totalTime) {
+        let rate = (lastProgress / totalTime) * 1000 * 3600; // progress per hr
+        avgRatesData.push({ time: log.time, rate: rate });
+      }
+    } else if (log.type == 'default' && lastTime) {
+      // handle stop
+      totalTime += log.time - lastTime;
+
+      timeData.push({ time: log.time, total: totalTime });
+
+      lastTime = null;
+    } else if (log.type == 'progress' || isCompletedLog || isReopenedLog) {
+      // handle progress
+      if (isReopenedLog) {
+        progressData.push({ time: log.time, progress: 100 });
+      }
+
+      lastProgress = log.type == 'progress' ?
+        log.progress :
+        (isReopenedLog ? lastRealProgress : 100);
+
+      if (log.type == 'progress')
+        lastRealProgress = log.progress;
+
+      let adjTotalTime = totalTime;
+
+      if (lastTime) // we're in the middle of a working period
+        adjTotalTime += log.time - lastTime;
+
+      progressData.push({ time: log.time, progress: lastProgress });
+      if (adjTotalTime) {
+        let rate = (lastProgress / adjTotalTime) * 1000 * 3600; // progress per hr
+        avgRatesData.push({ time: log.time, rate: rate });
+      }
+    }
+  }
+
+
+  if (task.status != 'completed') {
+    let currentTime = timestamp();
+    let currentTotalTime = totalTime + (lastTime ? currentTime - lastTime : 0);
+    let currentRate = (lastProgress / currentTotalTime) * 1000 * 3600 || 0; // progress per hr
+
+    avgRatesData.push({ time: currentTime, rate: currentRate });
+    progressData.push({ time: currentTime, progress: lastProgress });
+    timeData.push({ time: currentTime, total: currentTotalTime });
+  }
+
+  return {
+    avgRatesData: avgRatesData,
+    progressData: progressData,
+    timeData: timeData
+  };
+}
+
+
 
 function task_update_progress(task, progress, note) {
   task.progress = Math.max(Math.min(progress, 100), 0);
