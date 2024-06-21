@@ -17,6 +17,8 @@ function ui_menu_select_home(_resetForm) {
     _home_addForm.find('.recur-intervals input[type="number"]').val("0");
     _home_addForm.find('#add-form-recur-limit').val("3");
     $('#add-form-recurrence')[0].checked = false;
+
+    projectSearchInput.value = '';
   }
 
   // this binds the datepicker click listener
@@ -37,6 +39,20 @@ function ui_menu_select_home(_resetForm) {
   _home_addForm.find('input[name=name]').bind('focus', () => {
     ui_home_add_input_focus();
   });
+
+  const projectSearchInput = _home_addForm.find('.projects .project-search-form input')[0];
+
+  projectSearchInput.onkeyup = () => { projectSearchInput.onchange() };
+  projectSearchInput.onchange = () => {
+    // this is slightly different than the glob pattern used in filters; we're
+    // including all children projects as well; trading inconsistency for user
+    // convenience
+    const search = fzy_compile(projectSearchInput.value + '*');
+
+    _home_addForm.find('.projects project').each(function () {
+      this.style.display = this.innerText.match(search) ? '' : 'none';
+    });
+  };
 
   if (_resetForm) {
     setTimeout(() => {
@@ -94,7 +110,7 @@ function _ui_home_add_update_actions() {
   _ui_home_add_update_actions_keep_edit = false
 
   let projects = _home_addForm.find('.detail-row .projects');
-  projects.html('').removeClass('show-hidden');
+  projects.removeClass('show-hidden').children('project,a').remove();
 
   Object.keys(back.data.projects)
     .sort(_project_user_sort_func())
@@ -127,7 +143,10 @@ function _ui_home_add_update_actions() {
       }
     });
 
-    _ui_home_create_add_new_proj_btn(projects, 'ui_home_add_project_callback(_home_proj_form);');
+  // each time after we update the list, we filter again
+  projects.find('.project-search-form input')[0].onchange();
+
+  _ui_home_create_add_new_proj_btn(projects, 'ui_home_add_project_callback(_home_proj_form);');
 }
 
 function ui_home_add_project_edit() {

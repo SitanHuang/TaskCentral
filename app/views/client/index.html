@@ -130,7 +130,11 @@
                 <i class="fa-solid fa-pen-to-square edit-projects-btn" onclick="ui_home_add_project_edit()"></i>
                 <i class="fa-solid fa-xmark edit-projects-btn" onclick="ui_home_add_project_cancel_edit()"></i>
               </sub-title>
-              <div class="projects"></div>
+              <div class="projects">
+                <div class="pure-form project-search-form">
+                  <input type="text" placeholder="Glob pattern..." autocomplete="off">
+                </div>
+              </div>
               <sub-title>PRIORITY</sub-title>
               <div class="progress-num-input" name="priority">
                 <input type="range" min="0" max="100" step="1" name="priority">
@@ -1151,7 +1155,7 @@
     <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
     <script src="libs/ui/filter.js?releaseDate=20240224R3"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240608"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20240621"></script>
     <script src="libs/ui/views/details.js?releaseDate=20240614"></script>
     <script src="libs/ui/views/gantt.js?releaseDate=20240224R6"></script>
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
@@ -1163,7 +1167,7 @@
     <script src="libs/ui/layout.js?releaseDate=20231004"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240608"></script>
+    <script src="libs/index.js?releaseDate=20240621"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20240311"></script>

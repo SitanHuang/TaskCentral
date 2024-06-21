@@ -354,6 +354,24 @@
   overflow-x: auto;
 }
 
+#add-form .detail-row .projects .project-search-form {
+  font-size: 0.8rem;
+  line-height: 2em;
+  margin: 0 5px 0 0;
+  display: inline-block;
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+#add-form .detail-row .projects .project-search-form input {
+  font-family: var(--mono-family);
+  width: min(35dvw, 12em);
+  height: 2em;
+  margin-top: -4px;
+}
+
 .colors-container color {
   width: 80%;
   display: block;
