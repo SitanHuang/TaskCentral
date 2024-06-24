@@ -3,12 +3,15 @@ let _home_con;
 let _home_button;
 let _home_init;
 let _home_proj_form;
+let _home_project_search_input;
 
 function ui_menu_select_home(_resetForm) {
   _home_con = $('.content-container > div.home');
   _home_addForm = $('#add-form');
   _home_addForm.find('input[name=name]').unbind('focus');
   _home_button = $('#home-mode-button').text(HOME_MODE);
+
+  _home_project_search_input = _home_addForm.find('.projects .project-search-form input')[0];
 
   if (_resetForm) {
     _home_addForm[0].reset();
@@ -17,8 +20,6 @@ function ui_menu_select_home(_resetForm) {
     _home_addForm.find('.recur-intervals input[type="number"]').val("0");
     _home_addForm.find('#add-form-recur-limit').val("3");
     $('#add-form-recurrence')[0].checked = false;
-
-    projectSearchInput.value = '';
   }
 
   // this binds the datepicker click listener
@@ -40,14 +41,12 @@ function ui_menu_select_home(_resetForm) {
     ui_home_add_input_focus();
   });
 
-  const projectSearchInput = _home_addForm.find('.projects .project-search-form input')[0];
-
-  projectSearchInput.onkeyup = () => { projectSearchInput.onchange() };
-  projectSearchInput.onchange = () => {
+  _home_project_search_input.onkeyup = () => { _home_project_search_input.onchange() };
+  _home_project_search_input.onchange = () => {
     // this is slightly different than the glob pattern used in filters; we're
     // including all children projects as well; trading inconsistency for user
     // convenience
-    const search = fzy_compile(projectSearchInput.value + '*');
+    const search = fzy_compile(_home_project_search_input.value + '*');
 
     _home_addForm.find('.projects project').each(function () {
       this.style.display = this.innerText.match(search) ? '' : 'none';
@@ -548,6 +547,10 @@ let _home_task_list;
 
 function ui_home_update_list() {
   _home_task_list = _home_con.find('.task-container > .task-list').html('');
+
+  // this is convenient for ex. when user is in a work filter, projects should
+  // only show work stuff
+  _home_project_search_input.value = HOME_QUERY.queries[0]?.projectRegex || '';
 
   eval('_ui_home_' + HOME_MODE +'_list')();
 }

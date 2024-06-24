@@ -1,10 +1,11 @@
-const RELEASE_DATE = '20240621';
+const RELEASE_DATE = '20240624';
 
 const RELEASE_NOTES = `
  Release notes:
-- Add search bar for selecting projects
+- Projects search bar in the Add Task pane now copies your current filter's project selection (ex. when user is in Work Mode filter, the list of projects selectable should only be work related)
 
  Older notes:
+- Add search bar for selecting projects
 - Added graphs for burndown statistics in task details pane.
 - Reverts sorting mechanism in Ready, Default, All modesets to use task creation date as backup to the calculated importance value.
 - Adds 2 icons for blocked tasks due to earliest date and/or dependencies. (If you don't want to see these, write custom spreadsheet rules in User Settings.)
