@@ -46,11 +46,17 @@ function ui_menu_select_home(_resetForm) {
     // this is slightly different than the glob pattern used in filters; we're
     // including all children projects as well; trading inconsistency for user
     // convenience
-    const search = fzy_compile(_home_project_search_input.value + '*');
+    try {
+      const search = fzy_compile(_home_project_search_input.value || '*');
 
-    _home_addForm.find('.projects project').each(function () {
-      this.style.display = this.innerText.match(search) ? '' : 'none';
-    });
+      _home_addForm.find('.projects project').each(function () {
+        this.style.display = this.innerText.match(search) ? '' : 'none';
+      });
+
+      _home_project_search_input.setCustomValidity("");
+    } catch (e) {
+      _home_project_search_input.setCustomValidity("Invalid pattern.");
+    }
   };
 
   if (_resetForm) {
@@ -551,6 +557,8 @@ function ui_home_update_list() {
   // this is convenient for ex. when user is in a work filter, projects should
   // only show work stuff
   _home_project_search_input.value = HOME_QUERY.queries[0]?.projectRegex || '';
+  if (_home_project_search_input.onchange)
+    _home_project_search_input.onchange();
 
   eval('_ui_home_' + HOME_MODE +'_list')();
 }
