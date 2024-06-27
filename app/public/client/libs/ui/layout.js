@@ -45,6 +45,8 @@ function ui_update_primaryColor() {
     );
 }
 
+let _ui_keydown_shift = false;
+
 /**
  * called after css.js readies backend & all other files
  */
@@ -56,6 +58,11 @@ function ui_menu_init() {
     ui_menu_select(this.dataset.menu);
   });
   ui_menu_select('home');
+
+  $(document).on('keyup keydown', function(e) {
+    _ui_keydown_shift = e.shiftKey;
+    return true;
+  });
 }
 
 let _ui_menu_current_menu;

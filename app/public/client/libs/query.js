@@ -260,16 +260,22 @@ function query_generate_log_daily_tasks(query, date) {
 function query_generate_log_daily_periods(tasks, date) {
   date = new Date(date);
 
-  let from = date.getTime();
+  const from = date.getTime();
+
   // next midnight
   date.setDate(date.getDate() + 1);
-  let to = date.getTime();
-  let range = [from, to];
+  const to = date.getTime();
 
-  let periods = [];
+  return query_generate_log_periods(tasks, from, to);
+}
 
-  for (let task of tasks) {
-    let p = task_gen_working_periods(task, range);
+function query_generate_log_periods(tasks, from, to) {
+  const range = [from, to];
+
+  const periods = [];
+
+  for (const task of tasks) {
+    const p = task_gen_working_periods(task, range);
     // fastest way to concat (https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki)
     Array.prototype.push.apply(periods, p);
   }

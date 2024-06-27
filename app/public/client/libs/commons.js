@@ -104,7 +104,7 @@ function timeIntervalStringShort(final, initial = 0, maxLevel = 1) {
   const HOUR = 3600;
   const DAY = 86400; // 24 hours
   const WEEK = 604800; // 7 days
-  const MONTH = 2592000; // 30 days
+  const MONTH = 365.25 * 86400 / 12; // 30.4375 days
 
   if (delta >= MONTH && maxLevel >= 4) {
     let months = delta / MONTH;

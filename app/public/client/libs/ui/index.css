@@ -506,6 +506,7 @@ p.no-tasks {
 
 .info-card .info-action:first-child > .title {
   flex-grow: 1;
+  overflow: hidden;
   text-align: center;
   font-size: 1.2rem;
 }

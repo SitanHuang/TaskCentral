@@ -64,6 +64,9 @@
             <a href="#" data-menu="log" class="pure-menu-link">Log</a>
           </li>
           <li class="pure-menu-item">
+            <a href="#" data-menu="trackers" class="pure-menu-link">Trackers</a>
+          </li>
+          <li class="pure-menu-item">
             <a href="#" data-menu="metrics" class="pure-menu-link">Metrics</a>
           </li>
           <li class="pure-menu-item">
@@ -109,7 +112,7 @@
             <div class="input-row">
               <i class="fa fa-plus"></i>
               <div class="input-wrapper">
-                <input type="text" name="name" placeholder="Add task...">
+                <input type="text" name="name" placeholder="Add task..." autocomplete="off">
               </div>
 
               <input type="hidden" name="project" onchange="ui_home_add_project_changed(this);ui_home_add_input_focus()">
@@ -507,6 +510,77 @@
           </div>
         </grid>
       </div>
+      <div class="trackers" oncontextmenu="return false;">
+        <header>
+          <div class="actions pad">
+            <button class="pure-button" onclick="_ui_trackers_add()">
+              <i class="fa fa-plus"></i>
+              Add Tracker
+            </button>
+          </div>
+        </header>
+        <div class="trackers-list">
+
+        </div>
+        <tracker class="info-card pure-form template">
+          <div class="info-action">
+            <i class="fa fa-chevron-up" title="Move up in order. Hold SHIFT to move to top."></i>
+            <i class="fa fa-chevron-down" title="Move down in order. Hold SHIFT to move to bottom."></i>
+            <div class="title">
+              <input type="text" name="name" placeholder="Enter Tracker Name..." autocomplete="off">
+            </div>
+            <i class="fa fa-trash"></i>
+          </div>
+          <div class="content">
+            <div class="pure-g">
+              <div class="pure-u-1 pure-u-lg-1-3 pure-u-xl-1-4 form-controls">
+                <div class="pure-g">
+                  <div class="pure-u-1 pure-u-lg-1-4 pure-u-xl-1-5">
+                    <label name="project">Projects</label>
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-3-4 pure-u-xl-4-5">
+                    <input type="text" name="project" placeholder="Glob pattern..."
+                      style="font-family: var(--mono-family);">
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-1-4 pure-u-xl-1-5">
+                    <label name="from">From</label>
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-3-4 pure-u-xl-4-5">
+                    <input type="text" name="from" placeholder="Smart date...">
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-1-4 pure-u-xl-1-5">
+                    <label name="to">To</label>
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-3-4 pure-u-xl-4-5">
+                    <input type="text" name="to" placeholder="Smart date...">
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-1-4 pure-u-xl-1-5">
+                    <label name="duration">Budget</label>
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-3-4 pure-u-xl-4-5">
+                    <input type="text" name="duration" placeholder="Smart duration...">
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-1-4 pure-u-xl-1-5">
+                    <label>Type</label>
+                  </div>
+                  <div class="pure-u-1 pure-u-lg-3-4 pure-u-xl-4-5">
+                    <select name="type">
+                      <option value="limit" selected>Limit</option>
+                      <option value="goal">Goal</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="pure-u-1 pure-u-lg-1-3 pure-u-xl-1-2 chart-con">
+                <div class="budget-chart"></div>
+              </div>
+              <div class="pure-u-1 pure-u-lg-1-3 pure-u-xl-1-4 chart-con">
+                <div class="rate-chart"></div>
+              </div>
+            </div>
+          </div>
+        </tracker>
+      </div>
       <div class="metrics" oncontextmenu="return false;">
         <header>
           <div class="actions pad">
@@ -868,7 +942,8 @@
             <main class="modal__content" id="modal-filter-content">
               <div class="pure-control-group">
                 <label>Project</label>
-                <input type="text" name="project">
+                <input type="text" name="project"
+                  style="font-family: var(--mono-family);">
                 <span class="pure-form-message-inline proMode-hide">
                   "none" for tasks without project; pattern match available, ex: "school..hw", "school.*", "(school*|personal*)"; add "\v" prefix for regex mode
                 </span>
@@ -1139,41 +1214,47 @@
     <script src="libs/external/plotly-2.32.0.min.js?releaseDate=20240613"></script>
     <script src="libs/external/dice.js?releaseDate=20240221R2"></script>
     <script src="libs/external/autoComplete.min.js?releaseDate=20240221"></script>
+    <script src="libs/external/sugar.js?releaseDate=20240627"></script>
+    <script src="libs/external/smart-duration.js?releaseDate=20240628"></script>
 
-    <script src="libs/commons.js?releaseDate=20240224R6"></script>
+    <script src="libs/commons.js?releaseDate=20240628"></script>
 
-    <script src="libs/data.js?releaseDate=20230914R2"></script>
+    <script src="libs/data.js?releaseDate=20240627"></script>
     <script src="libs/task.js?releaseDate=20240614"></script>
     <script src="libs/recur.js?releaseDate=20240224R6"></script>
     <script src="libs/project.js?releaseDate=20240221R2"></script>
+    <!-- tracker.js is blocked by uOrigin :( -->
+    <script src="libs/budget.js?releaseDate=20240627"></script>
     <script src="libs/backend.js?releaseDate=20240221R2"></script>
     <script src="libs/competitive.js?releaseDate=20231004"></script>
 
     <script src="libs/fuzzy.js?releaseDate=20230930"></script>
-    <script src="libs/query.js?releaseDate=20240224R6"></script>
+    <script src="libs/query.js?releaseDate=20240627"></script>
 
     <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
     <script src="libs/ui/filter.js?releaseDate=20240224R3"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20240624R1"></script>
     <script src="libs/ui/views/details.js?releaseDate=20240614"></script>
-    <script src="libs/ui/views/gantt.js?releaseDate=20240224R6"></script>
-    <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240608"></script>
-    <script src="libs/ui/views/forecast.js?releaseDate=20240224R6"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20240224R6"></script>
-    <script src="libs/ui/views/import.js?releaseDate=20240211"></script>
 
-    <script src="libs/ui/layout.js?releaseDate=20231004"></script>
+    <script src="libs/ui/layout.js?releaseDate=20240628"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240624"></script>
+    <script src="libs/index.js?releaseDate=20240628"></script>
 
     <!-- lazy loads stylesheets & images -->
-    <script src="libs/ui/css.js?releaseDate=20240311"></script>
+    <script src="libs/ui/css.js?releaseDate=20240627"></script>
 
     <!-- lazy load non-essential stuff-->
-    <script src="libs/ui/tooltips.js?releaseDate=20231006"></script>
+    <script src="libs/ui/tooltips.js?releaseDate=20240627"></script>
+
+    <script src="libs/ui/views/gantt.js?releaseDate=20240224R6"></script>
+    <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
+    <script src="libs/ui/views/forecast.js?releaseDate=20240224R6"></script>
+    <script src="libs/ui/views/import.js?releaseDate=20240211"></script>
+    <script src="libs/ui/views/budgets.js?releaseDate=20240628"></script>
     <script src="libs/ui/cookbook.js?releaseDate=20240212R1"></script>
   </body>
 </html>

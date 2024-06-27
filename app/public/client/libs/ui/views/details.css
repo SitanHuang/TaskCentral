@@ -209,3 +209,9 @@
 #modal-home-mode .modal__container {
   width: min(90vw, 400px);
 }
+
+#task-burndown-chart .main-svg,
+#task-burndown-chart rect.bg {
+  background: rgba(0, 0, 0, 0) !important;
+  fill: rgba(0, 0, 0, 0) !important;
+}

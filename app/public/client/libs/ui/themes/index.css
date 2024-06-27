@@ -181,7 +181,8 @@ textarea,
 
 .content-container .gantt,
 .content-container .log,
-.content-container .metrics {
+.content-container .metrics,
+.content-container .trackers {
   background-color: var(--panel-sec-bg);
 }
 

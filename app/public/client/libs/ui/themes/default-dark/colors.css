@@ -57,6 +57,11 @@ body.default-dark svg *[fill="#000"] {
   fill: #fff;
 }
 
-body[class*="-dark"] #task-burndown-chart {
-  filter: invert(1);
+body[class*="-dark"] .plot-container.plotly {
+  filter: invert(100%) hue-rotate(180deg);
+}
+
+body[class*="-dark"] .plot-container.plotly svg .cartesianlayer .gridlayer {
+  filter: invert(100%) hue-rotate(180deg);
+  opacity: 0.3;
 }

@@ -10,6 +10,7 @@ function data_init_default() {
     settings: {},
     tags: {},
     filters: {}, // used by UI to store user-defined query filters
+    trackers: [],
     comp: {
       rank: undefined,
       lastUpdated: undefined,

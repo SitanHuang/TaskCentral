@@ -1,10 +1,11 @@
-const RELEASE_DATE = '20240624';
+const RELEASE_DATE = '20240628';
 
 const RELEASE_NOTES = `
  Release notes:
-- Projects search bar in the Add Task pane now copies your current filter's project selection (ex. when user is in Work Mode filter, the list of projects selectable should only be work related)
+ - Added "Trackers" tab for time tracking/budgeting. Feel free to feature-test and send feedback/bug reports.
 
- Older notes:
+ Older notes from this summer:
+- Projects search bar in the Add Task pane now copies your current filter's project selection (ex. when user is in Work Mode filter, the list of projects selectable should only be work related)
 - Add search bar for selecting projects
 - Added graphs for burndown statistics in task details pane.
 - Reverts sorting mechanism in Ready, Default, All modesets to use task creation date as backup to the calculated importance value.
