@@ -260,3 +260,7 @@ gantt-header {
 .task-detail .project-container > .projects {
   border-top: var(--menu-border);
 }
+
+.force-transparent-bg {
+  background: rgba(0, 0, 0, 0) !important;
+}

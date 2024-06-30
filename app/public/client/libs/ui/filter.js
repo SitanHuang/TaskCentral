@@ -26,7 +26,7 @@ function ui_filter_open(target, callback) {
 
     Object.assign(target, _ui_filter_form_to_query());
 
-    setTimeout(callback, 0);
+    setTimeout(() => callback(target), 0);
 
     MicroModal.close('modal-filter');
 

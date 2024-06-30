@@ -191,7 +191,7 @@ function _ui_trackers_gen_graphs(tracker, index) {
     { s: 'min', l: 'Minutes', min: 60 * 1000, val: 60 * 1000 },
     { s: 'hr', l: 'Hours', min: 180 * 60 * 1000, val: 60 * 60 * 1000 },
   ]) {
-    if (budget >= x.min) {
+    if (budget >= x.min || x.min == 0) {
       workingUnit = x;
     }
   }
@@ -260,15 +260,15 @@ function _ui_trackers_gen_graphs(tracker, index) {
   let periodPassed = now - from;
   let periodRemaining = to - now;
 
-
   let periodUnit;
 
   for (let x of [
-    { s: 'd', min: 0, val: 86400000 },
+    { s: 'hr', min: 0, val: 3600000 },
+    { s: 'd', min: 86400000, val: 86400000 },
     { s: 'wk', min: 86400000 * 7, val: 86400000 * 7 },
     { s: 'mo', min: 86400000 * 30.4375, val: 86400000 * 30.4375 },
   ]) {
-    if (Math.min(periodTotal / 6, periodRemaining) >= x.min) {
+    if (Math.min(periodTotal / 6, periodRemaining) >= x.min || x.min == 0) {
       periodUnit = x;
     }
   }
@@ -317,7 +317,7 @@ function _ui_trackers_gen_graphs(tracker, index) {
           steps: [
             { range: [0, rateRequired * 0.45], color: isLimit ? "green" : "red" },
             { range: [rateRequired * 0.45, rateRequired], color: "yellow" },
-            { range: [rateRequired, rateRequired * 10], color: isLimit ? "red" : "green" },
+            { range: [rateRequired, rateRequired * 1000], color: isLimit ? "red" : "green" },
           ],
           bar: { color: "darkblue" }
         }
@@ -346,7 +346,7 @@ function _ui_trackers_gen_graphs(tracker, index) {
   );
 
   _trackers_list.find(`tracker[data-index="${index}"] svg.main-svg`)
-    .css('background', 'rgba(0, 0, 0, 0)');
+    .addClass('force-transparent-bg');
 }
 
 function _ui_trackers_data_fetch() {

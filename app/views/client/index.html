@@ -410,7 +410,6 @@
                 </div>
               </div>
               <br>
-              <!-- TODO: total time & log -->
             </form-body>
           </form>
         </div>
@@ -515,10 +514,17 @@
           <div class="actions pad">
             <button class="pure-button" onclick="_ui_trackers_add()">
               <i class="fa fa-plus"></i>
-              Add Tracker
+              Add Time Tracker
+            </button>
+            <button class="pure-button" onclick="ui_trackers_treemap_onclick()">
+              <i class="fa fa-chart-pie"></i>
+              Generate Treemap
             </button>
           </div>
         </header>
+        <div class="treemap-con pure-g">
+          <div class="treemap-chart pure-u-1"></div>
+        </div>
         <div class="trackers-list">
 
         </div>
@@ -1232,7 +1238,7 @@
     <script src="libs/query.js?releaseDate=20240627"></script>
 
     <script src="libs/ui/dialog.js?releaseDate=20240211"></script>
-    <script src="libs/ui/filter.js?releaseDate=20240224R3"></script>
+    <script src="libs/ui/filter.js?releaseDate=20240630"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20240624R1"></script>
     <script src="libs/ui/views/details.js?releaseDate=20240614"></script>
@@ -1242,7 +1248,7 @@
     <script src="libs/ui/layout.js?releaseDate=20240628"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240628"></script>
+    <script src="libs/index.js?releaseDate=20240630"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20240627"></script>
@@ -1254,7 +1260,8 @@
     <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
     <script src="libs/ui/views/forecast.js?releaseDate=20240224R6"></script>
     <script src="libs/ui/views/import.js?releaseDate=20240211"></script>
-    <script src="libs/ui/views/budgets.js?releaseDate=20240628"></script>
+    <script src="libs/ui/views/budgets.js?releaseDate=20240630"></script>
+    <script src="libs/ui/views/budgets_treemap.js?releaseDate=20240630"></script>
     <script src="libs/ui/cookbook.js?releaseDate=20240212R1"></script>
   </body>
 </html>
