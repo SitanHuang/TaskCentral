@@ -14,7 +14,8 @@ function data_init_default() {
     comp: {
       rank: undefined,
       lastUpdated: undefined,
-    }
+    },
+    _tele: {}, // can be set to false to turn off
   };
   back.data = Object.assign(def, back.data);
 }

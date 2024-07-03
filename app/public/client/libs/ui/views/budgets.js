@@ -4,10 +4,13 @@ let _trackers_mtime;
 let _trackers_queried_tasks;
 
 function ui_menu_select_trackers() {
+  if (back.data._tele)
+    back.data._tele.trackers = new Date().getTime();
+
   _trackers_con = $('.content-container > div.trackers');
   _trackers_list = $('.content-container > div.trackers > .trackers-list');
 
-  if (_trackers_mtime != (_trackers_mtime = back.mtime))
+  if (_trackers_mtime != back.mtime)
     _ui_trackers_rerender();
   else
     _ui_trackers_update_graphs(); // task list haven't changed but duration may change

@@ -43,11 +43,14 @@ function ui_menu_select_home(_resetForm) {
 
   _home_project_search_input.onkeyup = () => { _home_project_search_input.onchange() };
   _home_project_search_input.onchange = () => {
-    // this is slightly different than the glob pattern used in filters; we're
-    // including all children projects as well; trading inconsistency for user
-    // convenience
     try {
       const search = fzy_compile(_home_project_search_input.value || '*');
+
+      if (back.data._tele && _home_project_search_input.value.length) {
+        back.data._tele._home_glob = new Date().getTime();
+        back.data._tele._home_glob_s = _home_project_search_input.value;
+        back.set_dirty();
+      }
 
       _home_addForm.find('.projects project').each(function () {
         this.style.display = this.innerText.match(search) ? '' : 'none';

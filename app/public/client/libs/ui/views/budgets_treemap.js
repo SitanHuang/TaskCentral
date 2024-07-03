@@ -18,6 +18,10 @@ function ui_trackers_treemap_onclick() {
 }
 
 async function _ui_trackers_treemap_filter_callback(query) {
+  if (back.data._tele) {
+    back.data._tele.trackers_treemap = new Date().getTime();
+    back.set_dirty();
+  }
   // =================== data generation ===================
 
   const tasks = query_exec(_ui_trackers_treemap_query)[0].tasks;
@@ -25,6 +29,7 @@ async function _ui_trackers_treemap_filter_callback(query) {
   const to = query.to;
 
   const projectSums = new Map();
+  let rootVal = 0;
 
   for (const task of tasks) {
     const project = task.project || 'No Project';
@@ -57,6 +62,8 @@ async function _ui_trackers_treemap_filter_callback(query) {
 
     }
 
+    rootVal += taskSum;
+
     // sum parent logic from ledg
     const levels = taskPath.split(".");
     let parentPath = "";
@@ -71,17 +78,17 @@ async function _ui_trackers_treemap_filter_callback(query) {
 
   // =================== graph generation ===================
 
-  const labels = [];
-  const parents = [];
-  const values = [];
-  const colors = [];
-  const text = [];
+  const labels = ["Query", "Root"];
+  const parents = ["", "Query"];
+  const values = [ rootVal / 1000 / 60 / 60, rootVal / 1000 / 60 / 60 ];
+  const colors = ["", ""];
+  const text = ["", "Root"];
 
   for (const [key, value] of projectSums) {
     const split = key.split('.');
 
     labels.push(key);
-    parents.push(split.slice(0, -1).join('.'));
+    parents.push(split.slice(0, -1).join('.') || "Root");
     values.push(value / 1000 / 60 / 60); // to hour
 
     text.push(
@@ -124,7 +131,7 @@ async function _ui_trackers_treemap_filter_callback(query) {
           "%{percentParent} of %{parent}<br>" +
           "%{percentEntry} of Screen",
         marker: { line: { width: 2 }, colors },
-        maxdepth: 2,
+        maxdepth: 3,
 
         pathbar: { "visible": true }
       }

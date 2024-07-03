@@ -238,7 +238,9 @@ function _ui_detail_render_burndown_stats(task) {
   let { avgRatesData, progressData, timeData } = task_gen_burndown_stats(task);
 
   if (Math.min(avgRatesData.length, progressData.length, timeData.length) >= 2) {
-    _home_detail_form.find('#task-burndown-chart').parent().show();
+    _home_detail_form.find('#task-burndown-chart')
+      .css('min-height', 450)
+      .parent().show();
   } else {
     Plotly.purge('task-burndown-chart');
     _home_detail_form.find('#task-burndown-chart').parent().hide();

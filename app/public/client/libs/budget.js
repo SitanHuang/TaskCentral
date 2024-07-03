@@ -48,7 +48,7 @@ function tracker_gen_query(trackers) {
 
       projectRegex: tracker.projectRegex,
 
-      useGantt: true,
+      // useGantt: true,
       collect: to > from && from > 0 ? [ 'tasks' ] : [], // placeholder for invalids
     };
   });
