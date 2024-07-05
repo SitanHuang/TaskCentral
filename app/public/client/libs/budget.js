@@ -23,10 +23,17 @@ function tracker_add(tracker) {
 
 function tracker_reorder(index, newIndex) {
   const trackers = back.data.trackers;
-  if (newIndex < 0 || newIndex >= trackers.length) return;
+  if (newIndex < -1 || newIndex > trackers.length) return;
 
-  // swap elements
-  [trackers[index], trackers[newIndex]] = [trackers[newIndex], trackers[index]];
+  if (newIndex == -1)
+    // move to front
+    trackers.unshift(trackers.splice(index, 1)[0]);
+  else if (newIndex == trackers.length)
+    // move to end
+    trackers.push(trackers.splice(index, 1)[0]);
+  else
+    // swap elements
+    [trackers[index], trackers[newIndex]] = [trackers[newIndex], trackers[index]];
 
   back.set_dirty();
 }

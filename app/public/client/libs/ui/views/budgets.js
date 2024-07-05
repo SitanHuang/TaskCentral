@@ -49,12 +49,12 @@ function _ui_trackers_rerender() {
     ele.attr('data-index', i.toString()).removeClass('template');
 
     ele.find('.fa-chevron-up')[0].onclick = () => {
-      tracker_reorder(i, _ui_keydown_shift ? 0 : i - 1);
+      tracker_reorder(i, _ui_keydown_shift ? -1 : i - 1);
       _trackers_mtime = null;
       _ui_trackers_rerender();
     };
     ele.find('.fa-chevron-down')[0].onclick = () => {
-      tracker_reorder(i, _ui_keydown_shift ? back.data.trackers.length - 1 : i + 1);
+      tracker_reorder(i, _ui_keydown_shift ? back.data.trackers.length : i + 1);
       _trackers_mtime = null;
       _ui_trackers_rerender();
     };
