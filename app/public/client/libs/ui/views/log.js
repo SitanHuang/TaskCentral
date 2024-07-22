@@ -86,8 +86,8 @@ async function _ui_log_render_calendar(stamp, chevron) {
     .find('.title')
     .text(startDate.toLocaleDateString() + ' - ' + endDate.toLocaleDateString());
 
-  // if more than 1 month
-  if (1 < (diff) / 2.592e+9 && ! chevron) {
+  // if more than 6 month
+  if ((diff) / 2.592e+9 > 6 && ! chevron) {
     if (!(await ui_confirm(`Calendar panel: Query range is too big (${timeIntervalStringShort(diff, 0, Infinity)}). App might freeze. Continue?`)))
       return false;
   }
@@ -160,6 +160,14 @@ async function _ui_log_render_calendar(stamp, chevron) {
         .css('color', proj.fontColor)
         .css('top', LOG_CAL_HEIGHT * percOfDay)
         .css('height', height)
+        .attr(
+          'title',
+          `>>> ${period.task.name}\n` +
+          `from ${new Date(period.from).toLocaleString()} ` +
+          `to ${new Date(period.to).toLocaleTimeString()}.\n` +
+          `Duration: ${timeIntervalString(duration)} (${timeIntervalStringShort(duration, 0, 1)})\n` +
+          `Project: ${period.task.project || 'none'}`
+        )
         .text(period.task.name.trim())
         .click(() => {
           ui_menu_select('home');

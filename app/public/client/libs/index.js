@@ -1,7 +1,8 @@
-const RELEASE_DATE = '20240630';
+const RELEASE_DATE = '20240722';
 
 const RELEASE_NOTES = `
  Release notes:
+ - Add tooltip on hovering time blocks in Log
  - Added Treemap for analyzing time logs under "Trackers" tab
  - Added "Trackers" tab for time tracking/budgeting. Feel free to feature-test and send feedback/bug reports.
 
