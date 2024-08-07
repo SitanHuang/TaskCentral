@@ -98,7 +98,7 @@
               onclick="ui_home_mode_select_trigger('ready', HOME_READY_QUERY, true)">
               Reset
             </button>
-            <button class="pure-button" onclick="ui_filter_open(HOME_QUERY, ui_home_update_list)">
+            <button class="pure-button" onclick="ui_filter_open(HOME_QUERY, ui_home_filter_callback)">
               Filter <i class="fa fa-filter"></i>
             </button>
             <span class="proMode-hide filter-save-tip">
@@ -951,7 +951,7 @@
                 <input type="text" name="project"
                   style="font-family: var(--mono-family);">
                 <span class="pure-form-message-inline proMode-hide">
-                  "none" for tasks without project; pattern match available, ex: "school..hw", "school.*", "(school*|personal*)"; add "\v" prefix for regex mode
+                  "none" for tasks without project; pattern match available, ex: "school..hw", "school.*", "(school*|personal*)"; add "\v" prefix for regex mode, ex: "\v^(?!misc)\."
                 </span>
               </div>
               <div class="pure-control-group">
@@ -1240,7 +1240,7 @@
     <script src="libs/ui/dialog.js?releaseDate=20240722"></script>
     <script src="libs/ui/filter.js?releaseDate=20240630"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240702R1"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20240806"></script>
     <script src="libs/ui/views/details.js?releaseDate=20240703"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20240608"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20240224R6"></script>
@@ -1248,7 +1248,7 @@
     <script src="libs/ui/layout.js?releaseDate=20240628"></script>
     <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20240722"></script>
+    <script src="libs/index.js?releaseDate=20240806"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20240627"></script>

@@ -9,7 +9,7 @@ function ui_menu_select_home(_resetForm) {
   _home_con = $('.content-container > div.home');
   _home_addForm = $('#add-form');
   _home_addForm.find('input[name=name]').unbind('focus');
-  _home_button = $('#home-mode-button').text(HOME_MODE);
+  ui_home_update_mode_btn();
 
   _home_project_search_input = _home_addForm.find('.projects .project-search-form input')[0];
 
@@ -33,7 +33,7 @@ function ui_menu_select_home(_resetForm) {
   ui_home_update_list();
 
   let target_provider = () => HOME_QUERY;
-  let callback_provider = () => ui_home_update_list;
+  let callback_provider = () => ui_home_filter_callback;
 
   ui_filter_update_holders(target_provider, callback_provider);
 
@@ -553,6 +553,22 @@ const HOME_HIDDEN_QUERY = {
 HOME_QUERY = JSON.parse(localStorage?.home_query || JSON.stringify(HOME_READY_QUERY));
 
 let _home_task_list;
+
+function ui_home_filter_callback() {
+  HOME_QUERY.__custom = true;
+
+  localStorage.home_query = JSON.stringify(HOME_QUERY);
+
+  ui_home_update_mode_btn();
+  ui_home_update_list();
+}
+
+function ui_home_update_mode_btn() {
+  _home_button = $('#home-mode-button').text(
+    (HOME_QUERY.__custom ? 'custom: ' : '') +
+    HOME_MODE
+  );
+}
 
 function ui_home_update_list() {
   _home_task_list = _home_con.find('.task-container > .task-list').html('');

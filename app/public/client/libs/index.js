@@ -1,12 +1,13 @@
-const RELEASE_DATE = '20240722';
+const RELEASE_DATE = '20240806';
 
 const RELEASE_NOTES = `
  Release notes:
- - Add tooltip on hovering time blocks in Log
- - Added Treemap for analyzing time logs under "Trackers" tab
- - Added "Trackers" tab for time tracking/budgeting. Feel free to feature-test and send feedback/bug reports.
+- Home view applies last used filter at app launch
 
  Older notes from this summer:
+- Add tooltip on hovering time blocks in Log
+- Added Treemap for analyzing time logs under "Trackers" tab
+- Added "Trackers" tab for time tracking/budgeting. Feel free to feature-test and send feedback/bug reports.
 - Projects search bar in the Add Task pane now copies your current filter's project selection (ex. when user is in Work Mode filter, the list of projects selectable should only be work related)
 - Add search bar for selecting projects
 - Added graphs for burndown statistics in task details pane.
