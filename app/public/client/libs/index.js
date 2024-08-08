@@ -1,7 +1,8 @@
-const RELEASE_DATE = '20240806';
+const RELEASE_DATE = '20240808';
 
 const RELEASE_NOTES = `
  Release notes:
+- Task importance (and ordering) now recursively considers blocked tasks downstream
 - Home view applies last used filter at app launch
 
  Older notes from this summer:

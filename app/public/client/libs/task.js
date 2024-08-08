@@ -319,7 +319,17 @@ function task_calc_wt_rate(tasks) {
 }
 
 
-function task_calc_importance(task, disable_offset=false) {
+/**
+ *
+ * @param {boolean} [disable_offset=false] whether to bypass pinning
+ */
+function task_calc_importance(
+  task,
+  disable_offset=false, // TODO: refactor this away
+  {
+    calcDep = true, // whether to recursively sum tasks downstream of dependency
+    maxDep = 5, // max levels of recursion
+  }={}) {
   let offset = 0;
 
   if (task.pinned)
@@ -349,8 +359,32 @@ function task_calc_importance(task, disable_offset=false) {
   // account for negative days:
   days_left = days_left >= 0 ? days_left + 1 : 1 / (1 - days_left);
 
-  if (task.earliest && now < task.earliest)
+  if (task.earliest && now < task.earliest) {
+    // unread tasks also include blocked ones
     days_left *= 100;
+    priority -= 1 / 11 * 3;
+  }
+
+  if (calcDep && task_has_dependedBy(task)) {
+    // perform recusion on blocked priorities
+    const stack = [[0, task]];
+
+    while (stack.length) {
+      const [depth, parent] = stack.pop();
+
+      for (const childId in (parent.dependedBy || {})) {
+        const child = back.data.tasks[childId];
+
+        if (!child)
+          continue;
+
+        priority += (child.priority) / 11 * 3 / (depth + 2);
+
+        if (depth < maxDep)
+          stack.push([depth + 1, child]);
+      }
+    }
+  }
 
   days_left = Math.pow(days_left, 2);
 
