@@ -21,8 +21,9 @@ body.solarized-dark {
 
   --text-sec-color: #839496;
 
-  --task-activated-bg: #073642;
-  --task-active-bg: #002b36;
+  --task-activated-bg: #0d4452;
+  --task-active-bg: #033c49;
+  --task-hover-bg: #01313d;
   --task-border: #586e75;
 
   --task-progress-bg: rgba(0, 43, 54, 0);

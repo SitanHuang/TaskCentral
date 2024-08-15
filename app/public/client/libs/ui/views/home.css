@@ -112,6 +112,12 @@
   background-color: #dadada;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .home task:hover:not(:active) {
+    background-color: var(--task-hover-bg);
+  }
+}
+
 .home task:last-child {
   border-bottom: none;
 

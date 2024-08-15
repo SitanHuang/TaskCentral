@@ -23,6 +23,7 @@ body.solarized {
 
   --task-activated-bg: #eee8d5;
   --task-active-bg: #fdf6e3;
+  --task-hover-bg: #fcf7ec;
   --task-border: #93a1a1;
 
   --task-progress-bg: rgba(253, 246, 227, 0);

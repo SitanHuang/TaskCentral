@@ -23,6 +23,7 @@ body.pink {
 
   --task-activated-bg: #F5B6C0;
   --task-active-bg: var(--panel-sec-bg);
+  --task-hover-bg: #f8bec6;
   --task-border: #F7A8B2;
 
   --task-progress-bg: rgba(255, 214, 220, 0.1);

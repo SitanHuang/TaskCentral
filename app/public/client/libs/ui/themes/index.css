@@ -23,7 +23,8 @@ body {
   --task-activated-bg: #e3e3e3;
   --task-completed-bg: var(--panel-sec-bg);
   --task-active-bg: #dadada;
-  --task-border: #e3e3e3;
+  --task-hover-bg: #f7f7f7;
+  --task-border: #f3f3f3;
 
   --graph-bg: var(--body-bg);
   --graph-border-color: var(--task-border);
@@ -263,4 +264,19 @@ gantt-header {
 
 .force-transparent-bg {
   background: rgba(0, 0, 0, 0) !important;
+}
+
+.pure-table {
+  border: none;
+}
+
+.pure-table thead {
+  background-color: var(--input-disabled-bg);
+  color: var(--input-disabled-color);
+  border: none;
+  border-bottom: var(--menu-border);
+}
+.pure-table td {
+  border: none;
+  border-bottom: 1px solid var(--task-border);
 }

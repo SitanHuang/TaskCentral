@@ -22,7 +22,8 @@ body.nord {
   --text-sec-color: #4C566A;
 
   --task-activated-bg: #D8DEE9;
-  --task-active-bg: #E5E9F0;
+  --task-active-bg: #d8dee9;
+  --task-hover-bg: #EAEFF4;
   --task-border: #D8DEE9;
 
   --task-progress-bg: rgba(216, 222, 233, 0);
@@ -33,4 +34,3 @@ body.nord {
 
   color-scheme: light;
 }
-

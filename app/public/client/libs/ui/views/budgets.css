@@ -42,7 +42,8 @@
 }
 
 .trackers-list tracker .chart-con {
-  min-height: calc(min(280px, 70dvw));
+  height: calc(min(200px, 70dvw));
+  overflow-y: hidden;
 }
 
 .trackers-list tracker > .content .form-controls input,
@@ -51,14 +52,107 @@
   margin-bottom: 1em;
 }
 
-@media screen and (min-width: 64em) {
-  .trackers-list tracker .chart-con {
-    padding-left: 1em;
+.trackers-list {
+  container-type: inline-size;
+  container-name: trackers-rightpane;
+  --form-control-width-lg: max(25%, 180px);
+}
+
+.trackers .trackers-summary .content {
+  overflow-x: auto;
+  container-type: inline-size;
+  container-name: trackers-summary-table;
+}
+
+.trackers .trackers-summary table tr {
+  transition: background-color 300ms ease;
+}
+
+.trackers .trackers-summary table {
+  width: 100%;
+  font-size: min(0.8rem, calc(0.8 * 16px));
+}
+
+.trackers .trackers-summary table td,
+.trackers .trackers-summary table th {
+  text-align: center;
+  padding: 0.5em;
+}
+
+.trackers .trackers-summary table td:first-child,
+.trackers .trackers-summary table th:first-child {
+  text-align: left;
+}
+
+@container trackers-summary-table (min-width: 550px) {
+  .trackers .trackers-summary table tbody td br {
+    display: none;
   }
+}
+
+
+.trackers .trackers-summary table tbody tr {
+  cursor: pointer;
+}
+.trackers .trackers-summary table tbody td {
+  border-bottom: 1px solid var(--task-progress-sep-bg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trackers .trackers-summary table tbody tr:hover {
+    background-color: var(--task-hover-bg);
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .trackers {
+    --trackers-summary-width: min(max(30dvw, calc(1150px - 720px)), calc(100% - 720px));
+  }
+  .trackers .trackers-summary {
+    width: var(--trackers-summary-width);
+  }
+  .trackers .trackers-summary .info-card {
+    position: sticky;
+    top: 0;
+  }
+  .trackers .trackers-list {
+    width: calc(100% - var(--trackers-summary-width));
+  }
+}
+
+@container trackers-rightpane (min-width: 720px) {
   .trackers-list tracker > .content .form-controls label {
     text-align: right;
     display: block;
     margin: 0;
     padding: 0.4em 0.6em 0 0;
+  }
+
+  .trackers-list > * {
+    font-size: min(0.8rem, calc(0.8 * 16px));
+  }
+
+  .trackers-list tracker>.content .form-controls .label-con {
+    width: 64px;
+  }
+
+  .trackers-list tracker>.content .form-controls .input-con {
+    width: calc(100% - 64px);
+  }
+
+  .trackers-list tracker>.content .form-controls {
+    width: var(--form-control-width-lg);
+  }
+
+  .trackers-list tracker .chart-con {
+    width: calc((100% - var(--form-control-width-lg)) * 0.65);
+  }
+
+  .trackers-list tracker .chart-con:last-child {
+    width: calc((100% - var(--form-control-width-lg)) * 0.35);
+  }
+
+  .trackers-summary {
+
   }
 }

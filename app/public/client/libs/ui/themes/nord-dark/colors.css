@@ -23,6 +23,7 @@ body.nord-dark {
 
   --task-activated-bg: #3B4252;
   --task-active-bg: #2E3440;
+  --task-hover-bg: #333944;
   --task-border: #4C566A;
 
   --task-progress-bg: rgba(46, 52, 64, 0);

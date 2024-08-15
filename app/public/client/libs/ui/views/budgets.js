@@ -3,17 +3,20 @@ let _trackers_list;
 let _trackers_mtime;
 let _trackers_queried_tasks;
 
+let _trackers_table_stats;
+
 function ui_menu_select_trackers() {
   if (back.data._tele)
     back.data._tele.trackers = new Date().getTime();
 
   _trackers_con = $('.content-container > div.trackers');
-  _trackers_list = $('.content-container > div.trackers > .trackers-list');
+  _trackers_list = $('.content-container > div.trackers .trackers-list');
 
   if (_trackers_mtime != back.mtime)
     _ui_trackers_rerender();
-  else
-    _ui_trackers_update_graphs(); // task list haven't changed but duration may change
+
+  _ui_trackers_update_graphs(); // task list haven't changed but duration may change
+  _ui_trackers_summary_table();
 }
 
 function _ui_trackers_update_graphs() {
@@ -26,6 +29,8 @@ function _ui_trackers_update_graphs() {
 
 function _ui_trackers_rerender() {
   _ui_trackers_data_fetch();
+
+  _trackers_table_stats = new Map();
 
   const trackers = back.data?.trackers || [];
 
@@ -51,17 +56,17 @@ function _ui_trackers_rerender() {
     ele.find('.fa-chevron-up')[0].onclick = () => {
       tracker_reorder(i, _ui_keydown_shift ? -1 : i - 1);
       _trackers_mtime = null;
-      _ui_trackers_rerender();
+      ui_menu_select_trackers();
     };
     ele.find('.fa-chevron-down')[0].onclick = () => {
       tracker_reorder(i, _ui_keydown_shift ? back.data.trackers.length : i + 1);
       _trackers_mtime = null;
-      _ui_trackers_rerender();
+      ui_menu_select_trackers();
     };
     ele.find('.fa-trash')[0].onclick = () => {
       tracker_delete(i);
       _trackers_mtime = null;
-      _ui_trackers_rerender();
+      ui_menu_select_trackers();
     };
 
     function __gen_onchange(ele, validate, callback) {
@@ -145,8 +150,73 @@ function _ui_trackers_rerender() {
 
   // remove unused elements
   _trackers_list.children('tracker.tainted').remove();
+}
 
-  _ui_trackers_update_graphs();
+function _ui_trackers_summary_table() {
+  if (!_trackers_table_stats)
+    return;
+
+  const con = _trackers_con.find('.trackers-summary tbody');
+
+  con.html('');
+
+  for (const [index, stat] of _trackers_table_stats) {
+    const {
+      tracker,
+      total, remaining, percThrough,
+      rateCurrent, rateRequired, deltaColor,
+      workingUnit, periodUnit
+    } = stat;
+
+    const actualTotal = remaining + total;
+
+    const percUsed = Math.min(1, Math.max(0, 1 - remaining / actualTotal));
+
+    const tr = $('<tr></tr>');
+
+    tr.append($('<td/>').text(tracker.name));
+    tr.append($('<td/>').text(tracker.type.toUpperCase()));
+    // note: total = used
+    tr.append($('<td/>').html(total.toFixed(1) + '<br> ' + workingUnit.s));
+    tr.append($('<td/>').html(remaining.toFixed(1) + '<br> ' + workingUnit.s));
+    tr.append($('<td/>').html(rateCurrent.toFixed(1) + `<br> ${workingUnit.s}/${periodUnit.s}`)
+      .css('color', deltaColor));
+    tr.append($('<td/>').html(rateRequired.toFixed(1) + `<br> ${workingUnit.s}/${periodUnit.s}`));
+
+    tr.click(() => {
+      _trackers_list.children(`tracker[data-index="${index}"]`)[0]
+        .scrollIntoView(true);
+    });
+
+    const backgrounds = [];
+
+    if (percUsed > 0 && percUsed <= 1) {
+      backgrounds.push(
+        `linear-gradient(90deg, var(--task-progress-done-bg) ${percUsed * 100}%,
+                                var(--task-progress-sep-bg) ${percUsed * 100}%,
+                                var(--task-progress-sep-bg) calc(${percUsed * 100}% + 1px),
+                                var(--task-progress-bg) calc(${percUsed * 100}% + 1px),
+                                var(--task-progress-bg) 100%)`
+      );
+    }
+
+    if (percThrough > 0 && percThrough <= 1) {
+      const color = tracker.type == 'limit' ?
+        'rgba(200, 50, 50, 0.5)' :
+        'rgba(50, 200, 50, 0.5)';
+      backgrounds.push(
+        `linear-gradient(90deg, rgba(0, 0, 0, 0) ${percThrough * 100}%,
+                                ${color} ${percThrough * 100}%,
+                                ${color} calc(${percThrough * 100}% + 2px),
+                                rgba(0, 0, 0, 0) calc(${percThrough * 100}% + 2px),
+                                rgba(0, 0, 0, 0) 100%)`
+      );
+    }
+
+    tr.css('background-image', backgrounds.join(", "));
+
+    con.append(tr);
+  }
 }
 
 function _ui_trackers_signal_changed(tracker, index) {
@@ -156,6 +226,7 @@ function _ui_trackers_signal_changed(tracker, index) {
   _ui_trackers_data_fetch();
 
   _ui_trackers_gen_graphs(tracker, index);
+  _ui_trackers_summary_table();
 }
 
 function _ui_trackers_add() {
@@ -247,9 +318,9 @@ function _ui_trackers_gen_graphs(tracker, index) {
       }
     ],
     {
-      height: Math.ceil(Math.min(280, 0.7 * window.innerWidth)),
+      height: Math.ceil(Math.min(240, 0.7 * window.innerWidth)),
       title: `${new Date(from).toLocaleDateString()} to ${new Date(to).toLocaleDateString()}`,
-      margin: { l: 85, b: 80, r: 0, autoexpand: true }
+      margin: { t: 100, l: 85, b: 80, r: 0, autoexpand: true }
     },
     { responsive: true }
   );
@@ -327,8 +398,8 @@ function _ui_trackers_gen_graphs(tracker, index) {
       }
     ],
     {
-      height: Math.ceil(Math.min(245, 0.7 * window.innerWidth)),
-      margin: { l: 20, b: 20, t: 115, r: 20, autoexpand: true },
+      height: Math.ceil(Math.min(200, 0.7 * window.innerWidth)),
+      margin: { l: 20, b: 20, t: 80, r: 20, autoexpand: true },
       title: {
         text:
           `<br><span style="font-size: 1.5em;">` +
@@ -350,6 +421,13 @@ function _ui_trackers_gen_graphs(tracker, index) {
 
   _trackers_list.find(`tracker[data-index="${index}"] svg.main-svg`)
     .addClass('force-transparent-bg');
+
+  _trackers_table_stats.set(index, {
+    tracker,
+    total, remaining, workingUnit, percThrough,
+    periodTotal, periodPassed, periodRemaining, periodUnit,
+    rateExpected, rateCurrent, rateRequired, delta, deltaColor,
+  });
 }
 
 function _ui_trackers_data_fetch() {
