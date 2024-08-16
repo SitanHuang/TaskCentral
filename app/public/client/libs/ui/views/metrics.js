@@ -642,9 +642,11 @@ var ui_metrics_inject_tasks;
        .call(d3.axisLeft(y));
   }
 
-  function _ui_metrics_animate_rankchange(old_rank, new_rank) {
-    if (old_rank.rank == new_rank.rank)
+  function _ui_metrics_animate_rankchange(old_rank, new_rank, callback) {
+    if (old_rank.rank == new_rank.rank) {
+      callback && callback();
       return;
+    }
 
     const overlay = document.getElementById("rank-up-overlay");
     const oldRankElem = document.getElementById("old-rank");
@@ -692,6 +694,7 @@ var ui_metrics_inject_tasks;
 
     setTimeout(() => {
       overlay.classList.add("fade-out");
+      callback && callback();
     }, 10000);
 
     setTimeout(() => {
@@ -702,12 +705,15 @@ var ui_metrics_inject_tasks;
   function _ui_metrics_comp_recalibrate() {
     const old = comp_get_rank_obj();
     const msg = comp_rank_calc();
-    if (typeof msg == 'string')
+    if (typeof msg == 'string') {
       ui_alert(msg);
-    else
-      _ui_metrics_animate_rankchange(old, comp_get_rank_obj());
-    // even with a msg, rank can still change (ie. Unranked)
-    _ui_metrics_render_profile();
+      // even with a msg, rank can still change (ie. Unranked)
+      _ui_metrics_render_profile();
+    } else {
+      _ui_metrics_animate_rankchange(old, comp_get_rank_obj(), () => {
+        _ui_metrics_render_profile();
+      });
+    }
   }
 
   function _ui_metrics_render_profile() {
