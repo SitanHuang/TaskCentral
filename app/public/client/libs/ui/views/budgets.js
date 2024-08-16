@@ -234,6 +234,8 @@ function _ui_trackers_add() {
   _trackers_mtime = null;
 
   _ui_trackers_rerender();
+  _ui_trackers_update_graphs();
+  _ui_trackers_summary_table();
 }
 
 function _ui_trackers_gen_graphs(tracker, index) {
