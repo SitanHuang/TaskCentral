@@ -18,6 +18,7 @@ async function ui_import_tsv() {
 
     msg += x.earliest ? `Earliest ${new Date(x.earliest).toLocaleDateString()}; ` : '';
     msg += x.due ? `Due ${new Date(x.due).toLocaleDateString()}; ` : '';
+    msg += x.until ? `Until ${new Date(x.until).toLocaleDateString()}; ` : '';
 
     msg += '\n';
   });
@@ -55,7 +56,8 @@ function _ui_import_gen_commands(tsv) {
     project: 3,
     earliest: 4,
     due: 5,
-    notes: 6,
+    until: 6,
+    notes: 7,
   };
 
   const reqFields = [0, 1, 2, 3];
@@ -89,6 +91,13 @@ function _ui_import_gen_commands(tsv) {
         continue ROW;
     } else {
       delete dat.due;
+    }
+    if (dat.until?.length) {
+      dat.until = new Date(dat.until + ' 00:00:00').getTime();
+      if (dat.until < new Date('2010-01-01') || dat.until > new Date('2099-01-01'))
+        continue ROW;
+    } else {
+      delete dat.until;
     }
 
     // check numbers

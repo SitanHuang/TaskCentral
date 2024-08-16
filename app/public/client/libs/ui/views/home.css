@@ -113,7 +113,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .home task:hover:not(:active) {
+  .home task:hover:not(:active):not(.activated) {
     background-color: var(--task-hover-bg);
   }
 }

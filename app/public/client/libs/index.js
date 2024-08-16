@@ -4,6 +4,7 @@ const RELEASE_NOTES = `
  Release notes:
 - Add Summary pane in Trackers tab
 - Task importance (and ordering) now recursively considers blocked tasks downstream
+- Add Until date in Batch Import feature
 - Home view applies last used filter at app launch
 
  Older notes from this summer:
