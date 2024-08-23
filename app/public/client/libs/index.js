@@ -1,4 +1,4 @@
-const RELEASE_DATE = '20240814';
+const RELEASE_DATE = '20240823R1';
 
 const RELEASE_NOTES = `
  Release notes:
@@ -28,7 +28,7 @@ if (localStorage.last_release && localStorage.last_release != RELEASE_DATE.toStr
   //     back.set_dirty();
   //   }
   // }, 1000);
-  ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
+  // ui_alert(`TaskCentral update detected: ${localStorage.last_release} -> ${RELEASE_DATE}. \n ${RELEASE_NOTES}`);
 }
 
 localStorage.last_release = RELEASE_DATE;

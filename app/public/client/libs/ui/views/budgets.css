@@ -17,6 +17,17 @@
   box-shadow: none;
 }
 
+.trackers-list tracker,
+.trackers-list tracker > .info-action {
+  background-color: var(--body-bg);
+  transition: background-color 1.2s cubic-bezier(.28, .84, .52, .97);
+}
+.trackers-list tracker.blinked,
+.trackers-list tracker.blinked > .info-action {
+  background-color: var(--task-progress-done-bg);
+  transition: none;
+}
+
 .trackers-list tracker .info-action:first-child {
   padding: 6px 4px;
   position: sticky;

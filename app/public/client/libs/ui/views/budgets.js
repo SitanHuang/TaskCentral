@@ -184,8 +184,12 @@ function _ui_trackers_summary_table() {
     tr.append($('<td/>').html(rateRequired.toFixed(1) + `<br> ${workingUnit.s}/${periodUnit.s}`));
 
     tr.click(() => {
-      _trackers_list.children(`tracker[data-index="${index}"]`)[0]
-        .scrollIntoView(true);
+      const tracker = _trackers_list.children(`tracker[data-index="${index}"]`);
+      tracker[0].scrollIntoView(true);
+      tracker.addClass('blinked');
+      setTimeout(() => {
+        tracker.removeClass('blinked');
+      }, 200);
     });
 
     const backgrounds = [];
