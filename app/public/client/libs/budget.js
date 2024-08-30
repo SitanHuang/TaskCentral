@@ -44,12 +44,30 @@ function tracker_delete(index) {
   back.set_dirty();
 }
 
+function tracker_parse_smart_date(smartDate) {
+  const now = new Date();
+  const format = new Intl.DateTimeFormat('en-US').format;
+
+  const replacers = [
+    [/@iso-week-offset(\(([^\(\)]*)\))?/g, (_, _1, offsetNumber) => format(new Date(now.setDate(now.getDate() - (now.getDay() || 7) + 1 + 7 * (eval(offsetNumber || '0') || 0))))]
+  ];
+
+  for (const [key, value] of replacers) {
+    smartDate = smartDate.replace(key, value);
+  }
+
+  return smartDate.startsWith("javascript:") ?
+    eval(smartDate.replace("javascript:", "")) :
+    Sugar.Date.create(smartDate);
+}
+
 function tracker_gen_query(trackers) {
   trackers = trackers || back.data?.trackers || [];
 
   const queries = trackers.map(tracker => {
-    let from = Sugar.Date.create(tracker.start);
-    let to = Sugar.Date.create(tracker.end);
+    let from = tracker_parse_smart_date(tracker.start);
+    let to = tracker_parse_smart_date(tracker.end);
+
     return {
       from, to,
 

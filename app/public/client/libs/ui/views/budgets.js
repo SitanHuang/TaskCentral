@@ -120,14 +120,14 @@ function _ui_trackers_rerender() {
     );
     __gen_onchange(
       startInput,
-      (val) => Sugar.Date.create(val) > 0,
+      (val) => tracker_parse_smart_date(val) > 0,
       (val) => {
         tracker.start = val;
       }
     );
     __gen_onchange(
       endInput,
-      (val) => Sugar.Date.create(val) > 0,
+      (val) => tracker_parse_smart_date(val) > 0,
       (val) => {
         tracker.end = val;
       }
@@ -469,6 +469,10 @@ function _ui_trackers_add_tooltips(trackerEle) {
   trackerEle.find('label[name="from"], label[name="to"]').attr('data-tooltip',
     'Smart dates are dates that are dynamically evaluated relative to the ' +
     'current time. Valid examples include:\n' +
+    '  - javascript:/*js code */\n' +
+    '  - @iso-week-offset(/*week offset*/)\n' +
+    '  - @iso-week-offset(1 /*start of next week*/)\n' +
+    '  - @iso-week-offset\n' +
     '  - now\n' +
     '  - today\n' +
     '  - next week\n' +
