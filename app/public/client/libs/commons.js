@@ -25,7 +25,7 @@ function addDateByRecurInt(date, recurInt, factor=1) {
     (recurInt.week || 0) * 7 * factor * 8.64e+7 +
     (recurInt.day || 0) * factor * 8.64e+7);
 
-  result.setMonth(result.getMonth() + (recurInt.month || 0)) * factor;
+  result.setMonth(result.getMonth() + (recurInt.month || 0) * factor);
   return result;
 }
 

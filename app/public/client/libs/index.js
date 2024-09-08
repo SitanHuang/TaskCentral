@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20240830';
+const RELEASE_DATE = '20240908';
 
 const RELEASE_NOTES = `
  Release notes:
-- Added macros and code eval support to smart dates in Trackers tab
+- Fix infinite loop on recur tasks preventing login (fk you Sitan)
 
 If you don't see changes, clear browser cache or force refresh.
 `;
