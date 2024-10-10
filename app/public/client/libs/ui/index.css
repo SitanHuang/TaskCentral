@@ -612,7 +612,6 @@ body:not(.proMode) *[data-tooltip] span,
 .help-tooltip {
   border-bottom: 1px dashed var(--text-sec-color);
   cursor: pointer;
-  transition: all 300ms ease;
 }
 
 body:not(.proMode) *[data-tooltip] span:hover,
