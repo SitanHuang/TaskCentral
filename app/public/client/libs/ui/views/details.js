@@ -569,8 +569,8 @@ function _ui_detail_render_dependsOn(task) {
 
         $row.find('name').text(parent.name);
 
-        if (task.project)
-          project_create_chip(task.project).appendTo($row.find('.project'));
+        if (parent.project)
+          project_create_chip(parent.project).appendTo($row.find('.project'));
 
         $row.click(() => {
           ui_detail_select_task(parent);
