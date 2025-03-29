@@ -249,6 +249,49 @@ function task_unsnooze(task) {
   back.set_dirty();
 }
 
+function task_calc_proj_aware_priority(task) {
+  let base = task.priority;
+
+  if (task.project === null || typeof task.project === 'undefined') return base;
+
+  const rules = back.data.projectPriorityCoeffRules;
+  if (!(rules?.length > 0)) return base;
+
+  let cumulativeCoeff = 1;
+  let cumulativeOffset = 0;
+
+  for (let i = 0; i < rules.length; i++) {
+    let rule = rules[i];
+    if (!rule.query) continue;
+
+    if (rule.query === 'none') {
+      if (task.project) continue;
+    } else {
+      // Compile the regex if not already cached.
+      if (!Object.prototype.hasOwnProperty.call(rule, '_compiledRegex')) {
+        try {
+          let compiled = fzy_compile(rule.query);
+          Object.defineProperty(rule, '_compiledRegex', {
+            value: compiled,
+            enumerable: false,
+            configurable: true,
+            writable: true
+          });
+        } catch (e) {
+          console.error(e);
+          delete rule._compiledRegex;
+        }
+      }
+      if (!rule._compiledRegex || !task.project.match(rule._compiledRegex)) continue;
+    }
+
+    cumulativeCoeff *= isNaN(rule.coeff) ? 1 : rule.coeff;
+    cumulativeOffset += isNaN(rule.offset) ? 0 : rule.offset;
+  }
+
+  return base * cumulativeCoeff + cumulativeOffset;
+}
+
 /**
  * Calcs eta of task or task[] using weights done & time spent
  *
@@ -340,18 +383,20 @@ function task_calc_importance(
 
   const now = timestamp();
 
+  const adjustedPriority = task_calc_proj_aware_priority(task);
+
   if (task.status == 'completed' || task.status == 'recur')
     return 0 + offset;
 
   if (task.status == 'start')
-    return 11 * (task.priority + 1) / 11 + offset;
+    return 11 * (adjustedPriority + 1) / 11 + offset;
 
   if (task.until && midnight() > midnight(task.until))
     return 0 + offset;
 
   // weight 10 vs priority 3
   let weight = (task.weight + 1) / 11 * 10;
-  let priority = (task.priority + 1) / 11 * 3;
+  let priority = (adjustedPriority + 1) / 11 * 3;
 
   let end = task.due || task.until;
 
@@ -378,7 +423,7 @@ function task_calc_importance(
         if (!child)
           continue;
 
-        priority += (child.priority) / 11 * 3 / (depth + 2);
+        priority += (task_calc_proj_aware_priority(child)) / 11 * 3 / (depth + 2);
 
         if (depth < maxDep)
           stack.push([depth + 1, child]);

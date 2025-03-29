@@ -1,0 +1,16 @@
+
+#modal-project-rules .project-rule-row {
+  border-bottom: var(--menu-border);
+  padding-top: 0.5em;
+}
+
+#modal-project-rules .pr-rule-query {
+  font-family: var(--mono-family);
+}
+
+#modal-project-rules input[name="project"],
+#modal-project-rules input[name="coeff"],
+#modal-project-rules input[name="offset"]
+ {
+  font-family: var(--mono-family);
+}

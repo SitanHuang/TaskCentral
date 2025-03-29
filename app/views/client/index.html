@@ -132,6 +132,7 @@
                 PROJECT
                 <i class="fa-solid fa-pen-to-square edit-projects-btn" onclick="ui_home_add_project_edit()"></i>
                 <i class="fa-solid fa-xmark edit-projects-btn" onclick="ui_home_add_project_cancel_edit()"></i>
+                <i class="fa-solid fa-cog edit-projects-btn" onclick="ui_project_rules_raise_modal()"></i>
               </sub-title>
               <div class="projects">
                 <div class="pure-form project-search-form">
@@ -973,6 +974,60 @@
         </div>
       </div>
     </div>
+    <!-- Modal: Project Rules -->
+    <div class="modal micromodal-slide" id="modal-project-rules">
+      <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" role="dialog">
+          <form onsubmit="return false;" autocomplete="off" class="pure-form pure-form-aligned">
+            <header class="modal__header">
+              <h2 class="modal__title" id="modal-project-rules-title">
+                Project Rules
+              </h2>
+              <button class="modal__close" data-micromodal-close></button>
+            </header>
+            <main class="modal__content">
+              <div class="rules-container pure-form pure-form-aligned"></div>
+              <button type="button" style="width: 100%;margin-top: 0.5em;" onclick="_ui_project_rules_add_row()" class="pure-button">Add Rule</button>
+            </main>
+            <footer class="modal__footer" style="text-align: right;">
+              <button type="button" onclick="_ui_project_rules_modal_save()" class="modal__btn modal__btn-primary">
+                <b>Save</b>
+              </button>
+            </footer>
+          </form>
+        </div>
+      </div>
+
+      <script type="text/template" id="template-project-rule-row">
+        <div class="project-rule-row">
+          <div class="pure-control-group">
+            <label>Project</label>
+            <input type="text" name="project" placeholder="Query">
+            <span class="pure-form-message-inline proMode-hide">
+              "none" for tasks without project; pattern match available, ex: "school..hw", "school.*", "(school*|personal*)"; add "\v" prefix for regex mode, ex: "\v^(?!misc)\."
+            </span>
+          </div>
+          <div class="pure-control-group">
+            <h4 style="margin: 0;text-align: center;width: 100%;">Priority Modifiers</h4>
+          </div>
+          <div class="pure-control-group">
+            <label>Multiplier</label>
+            <input type="number" name="coeff" value="1" step="0.01">
+          </div>
+          <div class="pure-control-group">
+            <label>Offset</label>
+            <input type="number" name="offset" value="0" step="0.01">
+            <span class="pure-form-message-inline proMode-hide">
+              Task priority modifiers will only affect calculation of task importance and ordering.
+            </span>
+          </div>
+          <div class="pure-control-group">
+            <label></label>
+            <button type="button" class="pr-rule-remove pure-button">Delete Rule</button>
+          </div>
+        </div>
+      </script>
+    </div>
     <!-- Modal: Filter -->
     <div class="modal micromodal-slide" id="modal-filter">
       <div class="modal__overlay" tabindex="-1">
@@ -987,7 +1042,7 @@
             <main class="modal__content" id="modal-filter-content">
               <div class="pure-control-group">
                 <label>Project</label>
-                <input type="text" name="project"
+                <input type="text" name="project" placeholder="Query"
                   style="font-family: var(--mono-family);">
                 <span class="pure-form-message-inline proMode-hide">
                   "none" for tasks without project; pattern match available, ex: "school..hw", "school.*", "(school*|personal*)"; add "\v" prefix for regex mode, ex: "\v^(?!misc)\."
@@ -1250,57 +1305,59 @@
 
     <style id="app-user-stylesheets"></style>
 
-    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20230914R2"></script>
-    <script src="libs/external/randomColor.min.js?releaseDate=20230914R2"></script>
-    <script src="libs/external/micromodal.min.js?releaseDate=20230914R2"></script>
-    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20230914R2"></script>
-    <script src="libs/external/d3.v4.js?releaseDate=20230914R2"></script>
-    <script src="libs/external/d3_timeseries.min.js?releaseDate=20230914R2"></script>
-    <script src="libs/external/plotly-2.32.0.min.js?releaseDate=20240613"></script>
-    <script src="libs/external/dice.js?releaseDate=20240221R2"></script>
-    <script src="libs/external/autoComplete.min.js?releaseDate=20240221"></script>
-    <script src="libs/external/sugar.js?releaseDate=20240627"></script>
-    <script src="libs/external/smart-duration.js?releaseDate=20240628"></script>
+    <script src="libs/external/jquery-3.6.0.min.js?releaseDate=20250329"></script>
+    <script src="libs/external/randomColor.min.js?releaseDate=20250329"></script>
+    <script src="libs/external/micromodal.min.js?releaseDate=20250329"></script>
+    <script src="libs/external/zip-no-worker-deflate.min.js?releaseDate=20250329"></script>
+    <script src="libs/external/d3.v4.js?releaseDate=20250329"></script>
+    <script src="libs/external/d3_timeseries.min.js?releaseDate=20250329"></script>
+    <script src="libs/external/plotly-2.32.0.min.js?releaseDate=20250329"></script>
+    <script src="libs/external/dice.js?releaseDate=20250329"></script>
+    <script src="libs/external/autoComplete.min.js?releaseDate=20250329"></script>
+    <script src="libs/external/sugar.js?releaseDate=20250329"></script>
+    <script src="libs/external/smart-duration.js?releaseDate=20250329"></script>
 
-    <script src="libs/commons.js?releaseDate=20240908"></script>
+    <script src="libs/commons.js?releaseDate=20250329"></script>
 
-    <script src="libs/data.js?releaseDate=20240702"></script>
-    <script src="libs/task.js?releaseDate=20240808R1"></script>
-    <script src="libs/recur.js?releaseDate=20240224R6"></script>
-    <script src="libs/project.js?releaseDate=20240221R2"></script>
+    <script src="libs/data.js?releaseDate=20250329"></script>
+    <script src="libs/task.js?releaseDate=20250329"></script>
+    <script src="libs/recur.js?releaseDate=20250329"></script>
+    <script src="libs/project.js?releaseDate=20250329"></script>
     <!-- tracker.js is blocked by uOrigin :( -->
-    <script src="libs/budget.js?releaseDate=20240830"></script>
-    <script src="libs/backend.js?releaseDate=20240221R2"></script>
-    <script src="libs/competitive.js?releaseDate=20231004"></script>
+    <script src="libs/budget.js?releaseDate=20250329"></script>
+    <script src="libs/backend.js?releaseDate=20250329"></script>
+    <script src="libs/competitive.js?releaseDate=20250329"></script>
 
-    <script src="libs/fuzzy.js?releaseDate=20230930"></script>
-    <script src="libs/query.js?releaseDate=20240627"></script>
+    <script src="libs/fuzzy.js?releaseDate=20250329"></script>
+    <script src="libs/query.js?releaseDate=20250329"></script>
 
-    <script src="libs/ui/dialog.js?releaseDate=20240722"></script>
-    <script src="libs/ui/filter.js?releaseDate=20240630"></script>
+    <script src="libs/ui/dialog.js?releaseDate=20250329"></script>
+    <script src="libs/ui/filter.js?releaseDate=20250329"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20240806"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20250221"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20240608"></script>
-    <script src="libs/ui/views/metrics.js?releaseDate=20240815"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/metrics.js?releaseDate=20250329"></script>
 
-    <script src="libs/ui/layout.js?releaseDate=20240628"></script>
-    <script src="libs/ui/timer.js?releaseDate=20240210R1"></script>
-    <script src="libs/ui/themes/loader.js?releaseDate=20230916"></script>
-    <script src="libs/index.js?releaseDate=20241010"></script>
+    <script src="libs/ui/views/project_rules.js?releaseDate=20250329"></script>
+
+    <script src="libs/ui/layout.js?releaseDate=20250329"></script>
+    <script src="libs/ui/timer.js?releaseDate=20250329"></script>
+    <script src="libs/ui/themes/loader.js?releaseDate=20250329"></script>
+    <script src="libs/index.js?releaseDate=20250329"></script>
 
     <!-- lazy loads stylesheets & images -->
-    <script src="libs/ui/css.js?releaseDate=20240627"></script>
+    <script src="libs/ui/css.js?releaseDate=20250329"></script>
 
     <!-- lazy load non-essential stuff-->
-    <script src="libs/ui/tooltips.js?releaseDate=20240627"></script>
+    <script src="libs/ui/tooltips.js?releaseDate=20250329"></script>
 
-    <script src="libs/ui/views/gantt.js?releaseDate=20240224R6"></script>
-    <script src="libs/ui/views/log.js?releaseDate=20230925"></script>
-    <script src="libs/ui/views/forecast.js?releaseDate=20240224R6"></script>
-    <script src="libs/ui/views/import.js?releaseDate=20240815"></script>
-    <script src="libs/ui/views/budgets.js?releaseDate=20240830"></script>
-    <script src="libs/ui/views/budgets_treemap.js?releaseDate=20240702"></script>
-    <script src="libs/ui/cookbook.js?releaseDate=20240212R1"></script>
+    <script src="libs/ui/views/gantt.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/log.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/forecast.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/import.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/budgets.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/budgets_treemap.js?releaseDate=20250329"></script>
+    <script src="libs/ui/cookbook.js?releaseDate=20250329"></script>
   </body>
 </html>

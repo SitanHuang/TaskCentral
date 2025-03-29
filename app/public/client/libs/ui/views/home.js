@@ -588,9 +588,11 @@ function _ui_home_task_row_decorate_class($row, task) {
   else if (task.weight <= _ui_settings_get_user_style_threshold("low-weight-thre"))
     $row.addClass("low-weight");
 
-  if (task.priority >= _ui_settings_get_user_style_threshold("high-priority-thre"))
+  const priority = task_calc_proj_aware_priority(task);
+
+  if (priority >= _ui_settings_get_user_style_threshold("high-priority-thre"))
     $row.addClass("high-priority");
-  else if (task.priority <= _ui_settings_get_user_style_threshold("low-priority-thre"))
+  else if (priority <= _ui_settings_get_user_style_threshold("low-priority-thre"))
     $row.addClass("low-priority");
 
   // we're disabling offset so that pinned tasks with low importance previously

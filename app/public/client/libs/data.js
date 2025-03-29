@@ -16,6 +16,7 @@ function data_init_default() {
       lastUpdated: undefined,
     },
     _tele: {}, // can be set to false to turn off
+    projectPriorityCoeffRules: [],
   };
   back.data = Object.assign(def, back.data);
 }

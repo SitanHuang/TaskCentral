@@ -29,6 +29,7 @@
     'libs/ui/views/metrics.css',
     'libs/ui/views/forecast.css',
     'libs/ui/views/settings.css',
+    'libs/ui/views/project_rules.css',
 
     'libs/ui/themes/index.css',
     'libs/ui/themes/default-dark/colors.css',

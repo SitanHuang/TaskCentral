@@ -181,7 +181,7 @@ function query_generate_gantt_tracks(tasks, range) {
     (task_calc_importance(b.task) - task_calc_importance(a.task)) ||
     // if completed or importance = 0, use weight then priority
     (b.weight - a.weight) ||
-    (b.priority - a.priority)
+    (task_calc_proj_aware_priority(b) - task_calc_proj_aware_priority(a))
   );
 
   let tracks = [];
