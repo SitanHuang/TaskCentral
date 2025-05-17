@@ -42,6 +42,7 @@ function ui_menu_select_settings() {
   let pro = _settings_con.find('#app-pro-mode');
   let pomotick = _settings_con.find('#app-pomotick');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
+  let pomoautostart = _settings_con.find('#app-pomodoro-autostart');
 
   Object.keys(_UI_USER_STYLE_THRESHOLDS).forEach(key => {
     let multiply = key.match("weight|priority");
@@ -118,6 +119,19 @@ function ui_menu_select_settings() {
       back.data.settings.usePomoticks = true;
     else
       delete back.data.settings.usePomoticks;
+    back.set_dirty();
+  };
+
+  // unbind
+  pomoautostart[0].onchange = function () {};
+  // set value
+  pomoautostart[0].checked = back.data.settings.autostartPomo || false;
+  // bind
+  pomoautostart[0].onchange = function () {
+    if (pomoautostart[0].checked)
+      back.data.settings.autostartPomo = true;
+    else
+      delete back.data.settings.autostartPomo;
     back.set_dirty();
   };
 

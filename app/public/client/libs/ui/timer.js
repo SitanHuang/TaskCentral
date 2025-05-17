@@ -59,6 +59,10 @@ function timer_start_task(task) {
   $timer_container
     .show()
     .attr('style', 'opacity: 1;');
+
+  if (back.data.settings.autostartPomo) {
+    timer_pomodoro($timer_container.find('.pomodoro-btn'));
+  }
 }
 
 function timer_pomodoro(btn) {
