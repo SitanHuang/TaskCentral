@@ -1,8 +1,8 @@
-const RELEASE_DATE = '20250517';
+const RELEASE_DATE = '20250524';
 
 const RELEASE_NOTES = `
  Release notes:
-- Add Pomodoro Autostart option to User Settings
+- Add Pomodoro Break Timer. Go to User Settings to enable.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

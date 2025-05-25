@@ -11,13 +11,22 @@ let _timer_blink_cancel_callback = () => {};
 function timer_get_user_pomotick() {
   return back.data.settings.pomodoro || 25;
 }
+function timer_get_user_breaktime() {
+  return back.data.settings.pomodoroBreakTime || 5;
+}
 
 function timer_start_task(task) {
   // does nothing if unset
   clearInterval(_timer_interval_id);
 
+  _timer_pomodoro_stop();
+  _timer_pomodoro_break_cleanup();
+
   $timer_container.find('name').text(task.name);
+  $timer_container.find('subname').addClass('_hidden');
   $timer_container.find('timer:not(.pomodoro)').text('0:00:00.0');
+  $timer_container.find('.pomodoro-btn').removeClass('folded');
+  $timer_container.find('.pomodoro-break-btn').addClass('folded');
 
   _timer_stamp = task_get_latest_start_stamp(task) || timestamp();
 
@@ -46,13 +55,12 @@ function timer_start_task(task) {
       _timer_blink_cancel_callback = _timer_blink_title();
 
       _timer_pomodoro_beep_bursts();
-      setTimeout(_timer_pomodoro_beep_bursts, 400 + 200);
-      setTimeout(_timer_pomodoro_beep_bursts, (400 + 200) * 2);
 
-      setTimeout(_timer_pomodoro_beep_bursts, (400 + 200) * 5);
-      setTimeout(_timer_pomodoro_beep_bursts, (400 + 200) * 6);
-      setTimeout(_timer_pomodoro_beep_bursts, (400 + 200) * 7);
       _timer_pomodoro_stop();
+
+      if (back.data.settings.autostartPomobreak) {
+        timer_pomodoro_break(task);
+      }
     }
   }, 100);
 
@@ -63,6 +71,79 @@ function timer_start_task(task) {
   if (back.data.settings.autostartPomo) {
     timer_pomodoro($timer_container.find('.pomodoro-btn'));
   }
+}
+
+let _pomodoro_break_saved_task = null;
+function timer_pomodoro_break(oldTask) {
+  timer_stop_task(_pomodoro_break_saved_task = oldTask, false);
+
+  $timer_container.find('name').text(`Break Time`);
+  $timer_container.find('subname').removeClass('_hidden').text(`Next: ${oldTask.name}`);
+  $timer_container.find('.pomodoro-btn').addClass('folded');
+  $timer_container.find('.pomodoro-break-btn').removeClass('folded');
+
+  $timer_container.find('timer:not(.pomodoro)').addClass('moved');
+  $timer_container.find('.pomodoro-progress').addClass('active')
+    .find('.bar').css('width', '0');
+
+  _timer_stamp = timestamp();
+  _timer_pomodoro_start = timestamp();
+
+  _timer_interval_id = setInterval(() => {
+    $timer_container
+      .find('timer:not(.pomodoro)')
+      .text(timeIntervalString(timestamp(), _timer_stamp));
+
+    if (!_timer_pomodoro_start)
+      return;
+
+    const pom_offset = 60000 * timer_get_user_breaktime();
+    const pom_end = _timer_pomodoro_start + pom_offset;
+    if (pom_end > timestamp()) {
+      $timer_container
+        .find('timer.pomodoro')
+        .text(timeIntervalString(timestamp(), pom_end));
+
+      const perc = Math.round((100 - (pom_end - timestamp()) / pom_offset * 100));
+
+      $timer_container.find('.pomodoro-progress .bar')
+        .css('width', perc + '%');
+    } else {
+      // time's up
+
+      _timer_blink_cancel_callback = _timer_blink_title();
+
+      _timer_pomodoro_beep_bursts();
+
+      _timer_pomodoro_stop();
+    }
+  }, 100);
+}
+
+function timer_pomodoro_restart_from_break() {
+  if (
+    _pomodoro_break_saved_task &&
+    !back.data.started &&
+    back.data.tasks[_pomodoro_break_saved_task.id]
+  ) {
+    const restart = _pomodoro_break_saved_task;
+    timer_stop_task(restart, false);
+    task_start(restart);
+    timer_start_task(restart);
+
+    if (_selected_task || _ui_menu_current_menu == 'home')
+      ui_menu_select_home();
+  } else {
+    timer_stop_task(_pomodoro_break_saved_task, true);
+  }
+
+  _pomodoro_break_saved_task = null;
+}
+
+function _timer_pomodoro_break_cleanup() {
+  $timer_container.find('subname').addClass('_hidden').text('');
+  $timer_container.find('.pomodoro-btn').removeClass('folded');
+  $timer_container.find('.pomodoro-break-btn').addClass('folded');
 }
 
 function timer_pomodoro(btn) {
@@ -91,20 +172,27 @@ function _timer_pomodoro_stop() {
   _timer_pomodoro_start = null;
 }
 
-function timer_stop_task(task) {
-  task_pause(back.data.tasks[back.data.started]);
+function timer_stop_task(task, hideContainer=true) {
+  if (back.data.tasks[back.data.started])
+    task_pause(back.data.tasks[back.data.started]);
 
   _timer_blink_cancel_callback();
 
   _timer_pomodoro_stop();
 
+  _timer_pomodoro_break_cleanup();
+
   // does nothing if unset
   clearInterval(_timer_interval_id);
-  $timer_container
-    .removeClass('_hidden')
-    .hide();
+
   if (_selected_task || _ui_menu_current_menu == 'home')
     ui_menu_select_home();
+
+  if (hideContainer) {
+    $timer_container
+      .removeClass('_hidden')
+      .hide();
+  }
 }
 
 function timer_hide() {
@@ -117,16 +205,26 @@ function timer_unhide() {
 }
 
 function _timer_pomodoro_beep_bursts() {
-  const oscillator = _timer_audiocontext.createOscillator();
+  const func = () => {
+    const oscillator = _timer_audiocontext.createOscillator();
 
-  oscillator.type = 'sine';
+    oscillator.type = 'sine';
 
-  oscillator.frequency.setValueAtTime(440, _timer_audiocontext.currentTime);
+    oscillator.frequency.setValueAtTime(440, _timer_audiocontext.currentTime);
 
-  oscillator.connect(_timer_audiocontext.destination);
+    oscillator.connect(_timer_audiocontext.destination);
 
-  oscillator.start();
-  oscillator.stop(_timer_audiocontext.currentTime + 0.2);
+    oscillator.start();
+    oscillator.stop(_timer_audiocontext.currentTime + 0.2);
+  }
+
+  func();
+  setTimeout(func, 400 + 200);
+  setTimeout(func, (400 + 200) * 2);
+
+  setTimeout(func, (400 + 200) * 5);
+  setTimeout(func, (400 + 200) * 6);
+  setTimeout(func, (400 + 200) * 7);
 }
 
 function _timer_blink_title() {

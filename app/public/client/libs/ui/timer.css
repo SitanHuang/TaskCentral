@@ -1,0 +1,162 @@
+#timer-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background-color: var(--app-primary-color);
+  width: 100vw;
+  height: calc(100dvh - 28px);
+  z-index: 100;
+
+  opacity: 0;
+  transition: all 300ms ease-out;
+}
+
+#timer-container._hidden {
+  border-radius: 24px;
+  transform: translate(calc(100% - 48px), calc(-100% + 48px));
+}
+
+#timer-container .unhide {
+  transform: rotate(45deg);
+  display: none;
+}
+
+#timer-container._hidden .unhide {
+  cursor: pointer;
+  display: block;
+  transition: none;
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.7em;
+  display: block;
+  color: white;
+  font-size: 24px;
+}
+
+#timer-container subname,
+#timer-container name {
+  color: white;
+  padding: 0.5em;
+  line-height: 1.5em;
+  font-size: 2.5rem;
+  display: -webkit-box;
+  text-align: center;
+  border-bottom: 1px solid white;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 5.3em;
+}
+
+#timer-container subname {
+  padding: 0.5em;
+  line-height: 1.5em;
+  font-size: 1.25rem;
+  border-bottom: 0;
+  opacity: 1;
+  transition: opacity ease 300ms;
+}
+#timer-container subname._hidden {
+  opacity: 0;
+}
+
+#timer-container pause,
+#timer-container stop {
+  color: white;
+  position: fixed;
+  bottom: calc(24px + 5vw);
+  user-select: none;
+  cursor: pointer;
+  transition: left 300ms ease-out;
+}
+
+#timer-container pause i:active,
+#timer-container i.unhide:active,
+#timer-container pause.play,
+#timer-container stop i:active,
+#timer-container stop i.active {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+#timer-container pause {
+  left: 15vw;
+}
+
+#timer-container stop {
+  width: 100vw;
+  font-size: 0;
+  text-align: center;
+}
+#timer-container stop > i {
+  overflow: hidden;
+  font-size: 75px;
+}
+
+#timer-container stop>*:not(:last-child) {
+  margin-right: calc(min(5vw, 1em));
+  width: 75px;
+  transition: margin-right ease 300ms, width ease 300ms;
+}
+
+#timer-container stop>*:not(:last-child).folded {
+  width: 0;
+  margin-right: 0;
+}
+
+#timer-container timer {
+  font-family: var(--mono-family);
+  font-size: 3rem;
+  color: white;
+  display: block;
+  text-align: center;
+  position: fixed;
+  top: calc(50dvh - 1em);
+  width: 100vw;
+
+  transition: top 200ms ease;
+}
+
+#timer-container timer.moved {
+  top: calc(50dvh - 2em);
+}
+
+#timer-container timer.pomodoro {
+  top: calc(50dvh - 0.5em);
+  font-size: 2rem;
+}
+
+#timer-container .pomodoro-progress {
+  display: block;
+  position: fixed;
+
+  --bar-width: calc(min(80dvw, 16em));
+
+  top: calc(50dvh + 4em);
+  left: calc(50dvw - var(--bar-width) / 2);
+
+  width: var(--bar-width);
+  height: 12px;
+  overflow: hidden;
+
+  background: rgba(0, 0, 0, .2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+#timer-container .pomodoro-progress.active {
+  opacity: 0.9;
+}
+
+#timer-container .pomodoro-progress .bar {
+  max-width: var(--bar-width);
+  height: inherit;
+  width: 0%;
+
+  background: white;
+
+  transition: width 300ms ease;
+}

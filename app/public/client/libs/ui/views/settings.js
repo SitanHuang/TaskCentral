@@ -43,6 +43,8 @@ function ui_menu_select_settings() {
   let pomotick = _settings_con.find('#app-pomotick');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
   let pomoautostart = _settings_con.find('#app-pomodoro-autostart');
+  let pomodorobreak = _settings_con.find('.user-form input[name="app-pomodoro-break-time"]');
+  let pomoautobreakstart = _settings_con.find('#app-pomodoro-autostart-break');
 
   Object.keys(_UI_USER_STYLE_THRESHOLDS).forEach(key => {
     let multiply = key.match("weight|priority");
@@ -136,6 +138,19 @@ function ui_menu_select_settings() {
   };
 
   // unbind
+  pomoautobreakstart[0].onchange = function () { };
+  // set value
+  pomoautobreakstart[0].checked = back.data.settings.autostartPomobreak || false;
+  // bind
+  pomoautobreakstart[0].onchange = function () {
+    if (pomoautobreakstart[0].checked)
+      back.data.settings.autostartPomobreak = true;
+    else
+      delete back.data.settings.autostartPomobreak;
+    back.set_dirty();
+  };
+
+  // unbind
   pomodoro[0].onchange = function () {};
   // set value
   pomodoro.val(back.data.settings.pomodoro || 25);
@@ -144,6 +159,18 @@ function ui_menu_select_settings() {
     const val = Math.min(Math.max(parseInt(pomodoro.val()), 5), 120) || 25;
     pomodoro[0].value = val;
     back.data.settings.pomodoro = val;
+    back.set_dirty();
+  };
+
+  // unbind
+  pomodorobreak[0].onchange = function () {};
+  // set value
+  pomodorobreak.val(back.data.settings.pomodoroBreakTime || 5);
+  // bind
+  pomodorobreak[0].onchange = function () {
+    const val = Math.min(Math.max(parseInt(pomodorobreak.val()), 5), 120) || 5;
+    pomodorobreak[0].value = val;
+    back.data.settings.pomodoroBreakTime = val;
     back.set_dirty();
   };
 
