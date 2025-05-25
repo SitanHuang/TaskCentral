@@ -43,7 +43,9 @@ function task_recur_get_threshold(template) {
 }
 
 function task_recur_gen_readable_info(template) {
-  return `Instances created: ${template.recurIndex}\n` +
+  const ints = template.recurInts;
+  return `Recur interval: ${ints.month} M / ${ints.week} W / ${ints.day} D\n` +
+         `Instances created: ${template.recurIndex}\n` +
          `Next instance to be created after ${
           template.recurLim == 0 ?
             "∞ (Recurrence Limit=0)" :
