@@ -58,7 +58,10 @@ function timer_start_task(task) {
 
       _timer_pomodoro_stop();
 
-      if (back.data.settings.autostartPomobreak) {
+      if (
+        back.data.settings.autostartPomobreak &&
+        !task.noPomoBreak
+      ) {
         timer_pomodoro_break(task);
       }
     }

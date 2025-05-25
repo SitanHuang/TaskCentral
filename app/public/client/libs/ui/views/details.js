@@ -412,6 +412,14 @@ function ui_detail_select_task(task) {
       _ui_home_details_signal_changed();
     };
 
+  let noPomoBreak = _home_detail_form.find('input[name=no-break]')[0];
+  noPomoBreak.checked = !!task.noPomoBreak;
+  noPomoBreak.onchange = () => {
+    if (!_selected_task) return;
+    _selected_task.noPomoBreak = noPomoBreak.checked;
+    _ui_home_details_signal_changed();
+  };
+
   let hidden = _home_detail_form.find('input[name=hidden]')[0];
   hidden.checked = task.hidden;
   hidden.onchange = () => {

@@ -1,8 +1,9 @@
-const RELEASE_DATE = '20250524';
+const RELEASE_DATE = '20250524R1';
 
 const RELEASE_NOTES = `
  Release notes:
 - Add Pomodoro Break Timer. Go to User Settings to enable.
+- Add an option in task details panel to disallow interruption of certain tasks by the Break Timer.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

@@ -320,6 +320,13 @@
                 </label>
                 <input type="date" name="until">
               </div>
+              <div class="pure-control-group">
+                <label data-tooltip="Sometimes, tasks made explicitly for time-tracking purposes (e.g., lecture time) are not applicable to the usual work / break cycle. Enabling this will prevent the break timer from automatically stopping the task.">Pomodoro</label>
+                <label for="home-details-no-break-checkbox" class="pure-checkbox"
+                  style="text-align: left;">
+                  <input type="checkbox" name="no-break" id="home-details-no-break-checkbox"> Disallow interruption by break timer
+                </label>
+              </div>
               <div class="pure-control-group split">
                 <label data-tooltip="Hidden tasks can only be viewed through the Hidden view or by changing the Filter.">Visibility</label>
                 <label for="home-details-hidden-checkbox" class="pure-checkbox"
@@ -800,11 +807,6 @@
               <div class="pure-control-group">
               </div>
               <div class="pure-control-group">
-                <label for="app-pomodoro-time">Pomodoro Time</label>
-                <input type="number" min="5" max="120" step="1" value="25" name="app-pomodoro-time"/>
-                <span class="pure-form-message-inline proMode-hide">Set working minutes for the Pomodoro timer.</span>
-              </div>
-              <div class="pure-control-group">
                 <label for="app-pomodoro-autostart">Pomodoro Autostart Task</label>
                 <div class="stacked-checkboxes">
                   <label for="app-pomodoro-autostart" class="pure-checkbox">
@@ -814,12 +816,14 @@
                 </div>
               </div>
               <div class="pure-control-group">
-                <label for="app-pomodoro-break-time">Break Time</label>
-                <input type="number" min="5" max="120" step="1" value="5" name="app-pomodoro-break-time" />
-                <span class="pure-form-message-inline proMode-hide">Set break minutes for the Pomodoro timer.</span>
+                <label for="app-pomodoro-time">Pomodoro Time</label>
+                <input type="number" min="5" max="120" step="1" value="25" name="app-pomodoro-time"/>
+                <span class="pure-form-message-inline proMode-hide">Set working minutes for the Pomodoro timer.</span>
               </div>
               <div class="pure-control-group">
-                <label for="app-pomodoro-autostart-break">Pomodoro Break Timer</label>
+              </div>
+              <div class="pure-control-group">
+                <label for="app-pomodoro-autostart-break">Break Timer</label>
                 <div class="stacked-checkboxes">
                   <label for="app-pomodoro-autostart-break" class="pure-checkbox">
                     <input type="checkbox" id="app-pomodoro-autostart-break">
@@ -827,6 +831,13 @@
                   </label>
                 </div>
                 <span class="pure-form-message-inline proMode-hide">This will automatically STOP the current task after the Pomodoro timer, and a new button will appear for resuming the previous task.</span>
+              </div>
+              <div class="pure-control-group">
+                <label for="app-pomodoro-break-time">Break Time</label>
+                <input type="number" min="5" max="120" step="1" value="5" name="app-pomodoro-break-time" />
+                <span class="pure-form-message-inline proMode-hide">
+                  Set break minutes for the Pomodoro timer. This will only work when the Break Timer is enabled.
+                </span>
               </div>
               <div class="pure-control-group">
               </div>
@@ -1362,16 +1373,16 @@
     <script src="libs/ui/filter.js?releaseDate=20250329"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20250329"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20250329"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20250524"></script>
     <script src="libs/ui/views/settings.js?releaseDate=20250524"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20250329"></script>
 
     <script src="libs/ui/views/project_rules.js?releaseDate=20250329"></script>
 
     <script src="libs/ui/layout.js?releaseDate=20250329"></script>
-    <script src="libs/ui/timer.js?releaseDate=20250524"></script>
+    <script src="libs/ui/timer.js?releaseDate=20250524R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20250329"></script>
-    <script src="libs/index.js?releaseDate=20250524"></script>
+    <script src="libs/index.js?releaseDate=20250524R1"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20250524"></script>
