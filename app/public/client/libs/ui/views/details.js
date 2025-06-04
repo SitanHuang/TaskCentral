@@ -537,10 +537,14 @@ function ui_detail_snooze_tomorrow() {
   _ui_home_details_signal_changed();
 }
 
-async function ui_detail_delete() {
-  if (await ui_confirm('Delete task "' + _selected_task.name + '"?')) {
-    task_delete(_selected_task);
-    ui_detail_close();
+async function ui_detail_delete(task) {
+  const ask = back.data.settings?.confirmDelete ?? true;
+
+  if (!ask || await ui_confirm('Delete task "' + task.name + '"?')) {
+    if (_selected_task == task)
+      ui_detail_close();
+
+    task_delete(task);
     ui_menu_select_home();
   }
 }

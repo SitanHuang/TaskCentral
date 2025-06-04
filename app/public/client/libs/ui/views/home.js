@@ -701,11 +701,7 @@ function _ui_home_gen_task_row(task) {
     });
   $row.find('i.fa-trash')
     .click(async () => {
-      if (await ui_confirm('Delete task "' + task.name + '"?')) {
-        task_delete(task);
-        // TODO: update details panel
-        ui_menu_select_home();
-      }
+      ui_detail_delete(task);
     });
   $row.find('i.fa-play')
     .click(() => {

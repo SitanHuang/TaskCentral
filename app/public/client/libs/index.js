@@ -2,7 +2,8 @@ const RELEASE_DATE = '20250604R1';
 
 const RELEASE_NOTES = `
  Release notes:
-- Import feature now allows batch setting task dependencies directly using Excel files.
+- Import feature now allows setting task dependencies directly using Excel files (useful for batch generating Waterfall Method Work Packages).
+- Add option in User Settings to allow task deletion without prompt (useful for batch deleting tasks on Home tab by right clicking on each and then click the delete buttons).
 
 If you don't see changes, clear browser cache or force refresh.
 `;

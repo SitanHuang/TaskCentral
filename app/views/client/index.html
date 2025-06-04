@@ -414,7 +414,7 @@
                 <label></label>
                 <div>
                   <input type="button" value="Delete Task Permanently"
-                    name="delete" class="pure-button" onclick="ui_detail_delete()">
+                    name="delete" class="pure-button" onclick="ui_detail_delete(_selected_task)">
                 </div>
               </div>
               <br>
@@ -790,6 +790,15 @@
                   </label>
                 </div>
                 <span class="pure-form-message-inline proMode-hide">Synced across all devices.</span>
+              </div>
+              <div class="pure-control-group">
+                <label for="app-confirm-delete" style="vertical-align: top;">Delete</label>
+                <div class="stacked-checkboxes">
+                  <label for="app-confirm-delete" class="pure-checkbox">
+                    <input type="checkbox" id="app-confirm-delete">
+                    Confirm before deleting a task
+                  </label>
+                </div>
               </div>
               <div class="pure-control-group">
                 <label for="app-pomotick" style="vertical-align: top;">PomoTick</label>
@@ -1374,9 +1383,9 @@
     <script src="libs/ui/dialog.js?releaseDate=20250329"></script>
     <script src="libs/ui/filter.js?releaseDate=20250329"></script>
 
-    <script src="libs/ui/views/home.js?releaseDate=20250329"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20250524"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20250524"></script>
+    <script src="libs/ui/views/home.js?releaseDate=20250604"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20250604"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20250604"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20250329"></script>
 
     <script src="libs/ui/views/project_rules.js?releaseDate=20250329"></script>

@@ -40,6 +40,7 @@ function ui_menu_select_settings() {
   let projectSort = _settings_con.find('select[name="app-projects-sort"]');
   let color = _settings_con.find('.user-form input[name="app-primary-color"]');
   let pro = _settings_con.find('#app-pro-mode');
+  let confirmDelete = _settings_con.find('#app-confirm-delete');
   let pomotick = _settings_con.find('#app-pomotick');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
   let pomoautostart = _settings_con.find('#app-pomodoro-autostart');
@@ -111,6 +112,20 @@ function ui_menu_select_settings() {
 
     ui_update_proMode();
   };
+
+  // unbind
+  confirmDelete[0].onchange = function () {};
+  // set value
+  confirmDelete[0].checked = back.data.settings.confirmDelete ?? true;
+  // bind
+  confirmDelete[0].onchange = function () {
+    if (!confirmDelete[0].checked)
+      back.data.settings.confirmDelete = false;
+    else
+      delete back.data.settings.confirmDelete;
+    back.set_dirty();
+  };
+
   // unbind
   pomotick[0].onchange = function () {};
   // set value
