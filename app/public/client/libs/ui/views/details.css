@@ -172,6 +172,10 @@
   vertical-align: middle;
 }
 
+.task-detail .textarea[name="notes"] {
+  font-family: var(--mono-family);
+}
+
 .task-detail .textarea:focus {
   outline: 0;
   border-color: var(--app-primary-color);

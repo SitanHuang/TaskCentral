@@ -16,9 +16,11 @@ async function ui_import_tsv() {
   commands.forEach(x => {
     msg += `+ (${x.project}) "${x.name}" - `;
 
-    msg += x.earliest ? `Earliest ${new Date(x.earliest).toLocaleDateString()}; ` : '';
-    msg += x.due ? `Due ${new Date(x.due).toLocaleDateString()}; ` : '';
-    msg += x.until ? `Until ${new Date(x.until).toLocaleDateString()}; ` : '';
+    msg += x.ref ? `ref="${x.ref}"; ` : '';
+    msg += x.dependsOn ? `dependsOn="${x.dependsOn}"; ` : '';
+    msg += x.earliest ? `earliest=${new Date(x.earliest).toLocaleDateString()}; ` : '';
+    msg += x.due ? `due=${new Date(x.due).toLocaleDateString()}; ` : '';
+    msg += x.until ? `until=${new Date(x.until).toLocaleDateString()}; ` : '';
 
     msg += '\n';
   });
@@ -32,7 +34,27 @@ async function ui_import_tsv() {
 }
 
 async function _ui_import_exec_commands(commands) {
+  const refs = new Map();
+
+  const dependsOnCmds = [];
+
   for (const obj of commands) {
+    let useRef = null;
+
+    if (obj.ref) {
+      useRef = obj.ref;
+
+      delete obj.ref;
+    }
+
+    let useDependsOn = null;
+
+    if (obj.dependsOn) {
+      useDependsOn = obj.dependsOn;
+
+      delete obj.dependsOn;
+    }
+
     const task = task_new(obj);
 
     const proj = back.data.projects[task.project];
@@ -43,6 +65,23 @@ async function _ui_import_exec_commands(commands) {
     }
 
     task_set(task);
+
+    if (useRef) {
+      refs.set(useRef, task);
+    }
+
+    if (useDependsOn) {
+      useDependsOn.split(",").forEach(x => {
+        dependsOnCmds.push([task, x]); // [child, parentRef]
+      });
+    }
+  }
+
+  for (const [child, refId] of dependsOnCmds) {
+    const parent = refs.get(refId);
+    if (!parent) continue;
+
+    task_set_dependency(child, parent);
   }
 }
 
@@ -50,21 +89,26 @@ function _ui_import_gen_commands(tsv) {
   const rows = tsv.split("\n");
 
   const fields = {
-    name: 0,
-    priority: 1,
-    weight: 2,
-    project: 3,
-    earliest: 4,
-    due: 5,
-    until: 6,
-    notes: 7,
+    ref: 0,
+    name: 1,
+    priority: 2,
+    weight: 3,
+    project: 4,
+    earliest: 5,
+    due: 6,
+    until: 7,
+    notes: 8,
   };
 
-  const reqFields = [0, 1, 2, 3];
+  const reqFields = [1, 2, 3, 4];
 
   const commands = [];
 
-  ROW:
+  const encounteredRefs = new Set();
+
+  const dats = [];
+
+  ROW0:
   for (let row of rows) {
     row = row.split("\t");
 
@@ -73,15 +117,34 @@ function _ui_import_gen_commands(tsv) {
     // check required fields
     for (let i of reqFields)
       if (!row[i]?.trim().length)
-        continue ROW;
+        continue ROW0;
 
     Object.keys(dat).forEach(key => dat[key] = row[dat[key]]?.trim());
 
+    if (dat.ref?.length) {
+      if (encounteredRefs.has(dat.ref)) {
+        // duplicate ref
+        delete dat.ref;
+      } else {
+        encounteredRefs.add(dat.ref);
+      }
+    }
+
+    dats.push(dat);
+  }
+
+  ROW:
+  for (const dat of dats) {
     // check dates are good
     if (dat.earliest?.length) {
-      dat.earliest = new Date(dat.earliest + ' 00:00:00').getTime();
-      if (dat.earliest < new Date('2010-01-01') || dat.earliest > new Date('2099-01-01'))
-        continue ROW;
+      if (dat.earliest.split(",").every(x => encounteredRefs.has(x))) {
+        dat.dependsOn = dat.earliest;
+        delete dat.earliest;
+      } else {
+        dat.earliest = new Date(dat.earliest + ' 00:00:00').getTime();
+        if (dat.earliest < new Date('2010-01-01') || dat.earliest > new Date('2099-01-01'))
+          continue ROW;
+      }
     } else {
       delete dat.earliest;
     }
