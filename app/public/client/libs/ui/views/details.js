@@ -237,6 +237,15 @@ function _ui_home_detail_update_status_importance(task) {
 function _ui_detail_render_burndown_stats(task) {
   let { avgRatesData, progressData, timeData } = task_gen_burndown_stats(task);
 
+  const timeSpentCheckbox = document.getElementById('burndown-chart-x-axis-use-timespent');
+
+  if (avgRatesData.length <= 2)
+    timeSpentCheckbox.checked = false;
+
+  timeSpentCheckbox.onchange = () => _ui_detail_render_burndown_stats(task);
+
+  const xAxisUseTimeSpent = timeSpentCheckbox.checked;
+
   if (Math.min(avgRatesData.length, progressData.length, timeData.length) >= 2) {
     _home_detail_form.find('#task-burndown-chart')
       .css('min-height', 450)
@@ -251,11 +260,25 @@ function _ui_detail_render_burndown_stats(task) {
   progressData.forEach(x => { x.time = new Date(x.time); x.progress = 100 - x.progress; });
   timeData.forEach(x => { x.time = new Date(x.time); x.total /= 3.6e+6; }); // to hour
 
+  // ascending order
+  avgRatesData.sort((a, b) => a.time - b.time);
+  progressData.sort((a, b) => a.time - b.time);
+  timeData.sort((a, b) => a.time - b.time);
+
+  // map to the latest known cumulative hours spent
+  function hoursAt(t) {
+    let total = 0;
+    for (let i = 0; i < timeData.length; i++) {
+      if (timeData[i].time <= t) total = timeData[i].total; else break;
+    }
+    return total;
+  }
+
   let traceProgress = {
     type: "scatter",
     mode: "lines+markers",
     name: '% Remaining',
-    x: progressData.map(x => x.time),
+    x: xAxisUseTimeSpent ? progressData.map(x => hoursAt(x.time)) : progressData.map(x => x.time),
     y: progressData.map(x => x.progress),
     line: { color: '#DB4437', size: 4, shape: 'linear' },
     marker: { size: 8 },
@@ -264,7 +287,7 @@ function _ui_detail_render_burndown_stats(task) {
     type: "scatter",
     mode: "lines+markers",
     name: 'Avg. %/hr',
-    x: avgRatesData.map(x => x.time),
+    x: xAxisUseTimeSpent ? avgRatesData.map(x => hoursAt(x.time)) : avgRatesData.map(x => x.time),
     y: avgRatesData.map(x => x.rate),
     line: { color: '#2196F3', size: 1, shape: 'linear' },
     marker: { size: 8 },
@@ -281,26 +304,20 @@ function _ui_detail_render_burndown_stats(task) {
     yaxis: 'y3',
   };
 
-  let data = [traceRate, traceProgress, traceTime];
+  let data = xAxisUseTimeSpent ? [traceRate, traceProgress] : [traceRate, traceProgress, traceTime];
 
   let layout = {
     title: 'Burndown Statistics',
-    xaxis: {
+    xaxis: xAxisUseTimeSpent ? {
+      autorange: true,
+      type: 'linear',
+      title: 'Hours Spent',
+    } : {
       autorange: true,
       rangeselector: {
         buttons: [
-          {
-            count: 3,
-            label: '3d',
-            step: 'day',
-            stepmode: 'backward'
-          },
-          {
-            count: 7,
-            label: '7d',
-            step: 'day',
-            stepmode: 'backward'
-          },
+          { count: 3, label: '3d', step: 'day', stepmode: 'backward' },
+          { count: 7, label: '7d', step: 'day', stepmode: 'backward' },
           { step: 'all' }
         ]
       },
@@ -308,7 +325,6 @@ function _ui_detail_render_burndown_stats(task) {
       type: 'date'
     },
     yaxis: {
-      // autorange: true,
       range: [0, 100],
       type: 'linear',
       tickfont: { color: '#DB4437' },
@@ -327,13 +343,12 @@ function _ui_detail_render_burndown_stats(task) {
       overlaying: 'y',
     },
     showlegend: true,
-    legend: { "orientation": "h" },
+    legend: { orientation: "h" },
   };
 
   // remove series with only 1 unique y value
-  data.forEach((x, i) => {
-    if (new Set(x.y).size <= 1)
-      x.visible = 'legendonly';
+  data.forEach((x) => {
+    if (new Set(x.y).size <= 1) x.visible = 'legendonly';
   });
 
   Plotly.react('task-burndown-chart', data, layout, { responsive: true });

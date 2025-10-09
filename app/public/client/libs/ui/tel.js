@@ -16,7 +16,7 @@
 
       logs.push(...out.lines);
 
-      const MAX_COUNT = 25;
+      const MAX_COUNT = 100;
 
       logs.splice(0, Math.max(0, logs.length - MAX_COUNT));
 
