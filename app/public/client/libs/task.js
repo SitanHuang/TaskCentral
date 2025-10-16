@@ -747,23 +747,23 @@ function task_gen_burndown_stats(task) {
       // handle start
       lastTime = log.time;
 
-      timeData.push({ time: log.time, total: totalTime });
-      progressData.push({ time: log.time, progress: lastProgress });
+      timeData.push({ event: i, time: log.time, total: totalTime });
+      progressData.push({ event: i, time: log.time, progress: lastProgress, total: totalTime });
       if (totalTime) {
         let rate = (lastProgress / totalTime) * 1000 * 3600; // progress per hr
-        avgRatesData.push({ time: log.time, rate: rate });
+        avgRatesData.push({ event: i, time: log.time, rate: rate, total: totalTime });
       }
     } else if (log.type == 'default' && lastTime) {
       // handle stop
       totalTime += log.time - lastTime;
 
-      timeData.push({ time: log.time, total: totalTime });
+      timeData.push({ event: i, time: log.time, total: totalTime });
 
       lastTime = null;
     } else if (log.type == 'progress' || isCompletedLog || isReopenedLog) {
       // handle progress
       if (isReopenedLog) {
-        progressData.push({ time: log.time, progress: 100 });
+        progressData.push({ event: i, time: log.time, progress: 100, total: totalTime + (lastTime ? log.time - lastTime : 0) });
       }
 
       lastProgress = log.type == 'progress' ?
@@ -778,10 +778,10 @@ function task_gen_burndown_stats(task) {
       if (lastTime) // we're in the middle of a working period
         adjTotalTime += log.time - lastTime;
 
-      progressData.push({ time: log.time, progress: lastProgress });
+      progressData.push({ event: i, time: log.time, progress: lastProgress, total: adjTotalTime });
       if (adjTotalTime) {
         let rate = (lastProgress / adjTotalTime) * 1000 * 3600; // progress per hr
-        avgRatesData.push({ time: log.time, rate: rate });
+        avgRatesData.push({ event: i, time: log.time, rate: rate, total: adjTotalTime });
       }
     }
   }
@@ -792,8 +792,8 @@ function task_gen_burndown_stats(task) {
     let currentTotalTime = totalTime + (lastTime ? currentTime - lastTime : 0);
     let currentRate = (lastProgress / currentTotalTime) * 1000 * 3600 || 0; // progress per hr
 
-    avgRatesData.push({ time: currentTime, rate: currentRate });
-    progressData.push({ time: currentTime, progress: lastProgress });
+    avgRatesData.push({ time: currentTime, rate: currentRate, total: currentTotalTime });
+    progressData.push({ time: currentTime, progress: lastProgress, total: currentTotalTime });
     timeData.push({ time: currentTime, total: currentTotalTime });
   }
 

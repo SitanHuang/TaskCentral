@@ -265,20 +265,11 @@ function _ui_detail_render_burndown_stats(task) {
   progressData.sort((a, b) => a.time - b.time);
   timeData.sort((a, b) => a.time - b.time);
 
-  // map to the latest known cumulative hours spent
-  function hoursAt(t) {
-    let total = 0;
-    for (let i = 0; i < timeData.length; i++) {
-      if (timeData[i].time <= t) total = timeData[i].total; else break;
-    }
-    return total;
-  }
-
   let traceProgress = {
     type: "scatter",
     mode: "lines+markers",
     name: '% Remaining',
-    x: xAxisUseTimeSpent ? progressData.map(x => hoursAt(x.time)) : progressData.map(x => x.time),
+    x: xAxisUseTimeSpent ? progressData.map(x => x.total) : progressData.map(x => x.time),
     y: progressData.map(x => x.progress),
     line: { color: '#DB4437', size: 4, shape: 'linear' },
     marker: { size: 8 },
@@ -287,7 +278,7 @@ function _ui_detail_render_burndown_stats(task) {
     type: "scatter",
     mode: "lines+markers",
     name: 'Avg. %/hr',
-    x: xAxisUseTimeSpent ? avgRatesData.map(x => hoursAt(x.time)) : avgRatesData.map(x => x.time),
+    x: xAxisUseTimeSpent ? avgRatesData.map(x => x.total) : avgRatesData.map(x => x.time),
     y: avgRatesData.map(x => x.rate),
     line: { color: '#2196F3', size: 1, shape: 'linear' },
     marker: { size: 8 },
