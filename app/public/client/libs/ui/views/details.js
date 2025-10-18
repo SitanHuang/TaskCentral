@@ -256,8 +256,8 @@ function _ui_detail_render_burndown_stats(task) {
     return;
   }
 
-  avgRatesData.forEach(x => x.time = new Date(x.time));
-  progressData.forEach(x => { x.time = new Date(x.time); x.progress = 100 - x.progress; });
+  avgRatesData.forEach(x => { x.time = new Date(x.time); x.total /= 3.6e+6; });
+  progressData.forEach(x => { x.time = new Date(x.time); x.progress = 100 - x.progress; x.total /= 3.6e+6; });
   timeData.forEach(x => { x.time = new Date(x.time); x.total /= 3.6e+6; }); // to hour
 
   // ascending order
