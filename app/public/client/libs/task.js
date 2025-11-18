@@ -804,23 +804,37 @@ function task_gen_burndown_stats(task) {
   };
 }
 
-
-
 function task_update_progress(task, progress, note) {
-  task.progress = Math.max(Math.min(progress, 100), 0);
+  task.progress = Math.max(0, Math.min(progress, 100));
 
-  let now = timestamp();
+  const now = timestamp();
 
-  // delete nearest 5min progress
-  task.log = task.log
-    .filter(x => !(x.type == 'progress' && !x.note && Math.abs(now - x.time) < 300000));
+  // reuse nearest 5min progress
+  let last = null;
+  for (let i = task.log.length - 1; i >= 0; i--) {
+    const x = task.log[i];
+    if (x.type === 'progress' && Math.abs(now - x.time) < 5 * 60 * 1000) {
+      last = x;
+      break;
+    }
+  }
 
-  let log = { type: 'progress', time: now, progress: task.progress };
+  if (last && (!note || last.note == note)) {
+    last.time = now;
+    last.progress = task.progress;
 
-  if (note)
-    log.note = note;
+    if (note)
+      last.note = note;
 
-  task.log.push(log);
+  } else {
+    let log = { type: 'progress', time: now, progress: task.progress };
+
+    if (note)
+      log.note = note;
+
+    task.log.push(log);
+  }
+
   back.set_dirty();
 }
 
