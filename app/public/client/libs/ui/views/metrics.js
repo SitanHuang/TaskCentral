@@ -616,6 +616,16 @@ var ui_metrics_inject_tasks;
                 .append("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    // --- draw gridlines (behind bars) ---
+    svg.append("g")
+      .attr("class", "grid grid-y")
+      .attr("style", "opacity: 0.3")
+      .call(d3.axisLeft(y)
+        .ticks(6)
+        .tickSize(-width)
+        .tickFormat(""))
+      .call(g => g.select(".domain").remove());
+
     svg.selectAll(".bar")
         .data(data)
         .enter()

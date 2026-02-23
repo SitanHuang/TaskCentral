@@ -321,7 +321,7 @@ function _ui_detail_render_burndown_stats(task) {
       tickfont: { color: '#DB4437' },
     },
     yaxis2: {
-      autorange: true,
+      range: [0, Math.max(...avgRatesData.map(x => x.rate)) * 1.25],
       type: 'linear',
       tickfont: { color: '#2196F3' },
       overlaying: 'y',
