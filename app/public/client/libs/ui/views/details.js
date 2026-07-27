@@ -1,6 +1,80 @@
 let _selected_task;
 let _home_detail;
 let _home_detail_form;
+let _home_detail_markdown_editor;
+let _home_detail_markdown_toolbar;
+
+function _ui_details_save_notes(content) {
+  if (!_selected_task) return;
+
+  if ((_selected_task.notes || '') == content) return;
+
+  content = content.trim();
+
+  if ((_selected_task.notes || '') == content) return;
+
+  if (content)
+    _selected_task.notes = content;
+  else
+    delete _selected_task.notes;
+
+  _ui_home_details_signal_changed();
+}
+
+function _ui_details_set_markdown_content(content, resetHistory) {
+  if (!_home_detail_markdown_editor) return;
+
+  if (_home_detail_markdown_editor.getContent() != content)
+    _home_detail_markdown_editor.setContent(content);
+  else if (!resetHistory)
+    return;
+
+  _home_detail_markdown_editor.undoStack =
+    _home_detail_markdown_editor.undoStack.slice(-1);
+  _home_detail_markdown_editor.redoStack = [];
+}
+
+function ui_details_update_markdown_editor() {
+  if (!_home_detail_form) return;
+
+  const markdownEnabled = !back.data.settings.disableMarkdownEditor;
+  const toolbarEnabled =
+    markdownEnabled && !back.data.settings.disableMarkdownToolbar;
+
+  const markdown = _home_detail_form.find('.markdown-editor');
+  const notes = _home_detail_form.find('.textarea[name=notes]');
+
+  if (markdownEnabled && !_home_detail_markdown_editor) {
+    _home_detail_markdown_editor = new TinyMDE.Editor({
+      editor: markdown.find('.markdown-input')[0],
+      content: ''
+    });
+
+    _home_detail_markdown_editor.e.onblur = () => {
+      _ui_details_save_notes(_home_detail_markdown_editor.getContent());
+    };
+  }
+
+  if (toolbarEnabled && !_home_detail_markdown_toolbar) {
+    _home_detail_markdown_toolbar = new TinyMDE.CommandBar({
+      element: markdown.find('.markdown-toolbar')[0],
+      editor: _home_detail_markdown_editor
+    });
+  }
+
+  markdown.toggle(markdownEnabled);
+  notes.toggle(!markdownEnabled);
+
+  if (_home_detail_markdown_toolbar)
+    $(_home_detail_markdown_toolbar.e).toggle(toolbarEnabled);
+
+  if (_selected_task) {
+    const content = _selected_task.notes || '';
+
+    notes.text(content);
+    _ui_details_set_markdown_content(content);
+  }
+}
 
 function _ui_home_detail_update_status_importance(task) {
   task = _selected_task || task;
@@ -407,16 +481,11 @@ function ui_detail_select_task(task) {
 
   _home_detail_form.find('.textarea[name=notes]')
     .text(task.notes || '')[0].onblur = (e) => {
-      if (!_selected_task) return;
-
-      let content = e.target.innerText.trim();
-
-      if (content)
-        _selected_task.notes = content;
-      else
-        delete _selected_task.notes;
-      _ui_home_details_signal_changed();
+      _ui_details_save_notes(e.target.innerText);
     };
+
+  ui_details_update_markdown_editor();
+  _ui_details_set_markdown_content(task.notes || '', true);
 
   let noPomoBreak = _home_detail_form.find('input[name=no-break]')[0];
   noPomoBreak.checked = !!task.noPomoBreak;

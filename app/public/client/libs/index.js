@@ -1,9 +1,9 @@
-const RELEASE_DATE = '20250604R1';
+const RELEASE_DATE = '20260727R2';
 
 const RELEASE_NOTES = `
  Release notes:
-- Import feature now allows setting task dependencies directly using Excel files (useful for batch generating Waterfall Method Work Packages).
-- Add option in User Settings to allow task deletion without prompt (useful for batch deleting tasks on Home tab by right clicking on each and then click the delete buttons).
+- Task notes now support Markdown editing with an optional formatting toolbar.
+- Markdown editing and its toolbar can be disabled independently in User Settings.
 
 If you don't see changes, clear browser cache or force refresh.
 `;

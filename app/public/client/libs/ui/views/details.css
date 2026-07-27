@@ -176,6 +176,87 @@
   font-family: var(--mono-family);
 }
 
+.task-detail .notes-editor {
+  vertical-align: middle;
+}
+
+.task-detail .markdown-editor {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--input-box-border);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px var(--input-box-shadow);
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.task-detail .markdown-editor:focus-within {
+  border-color: var(--app-primary-color);
+}
+
+.task-detail .TinyMDE {
+  min-height: 6em;
+  height: auto;
+  padding: 0.5em 0.6em;
+  color: var(--text-color);
+  background-color: var(--body-bg);
+  font-family: var(--mono-family);
+  font-size: 1em;
+  line-height: 1.5em;
+  box-sizing: border-box;
+}
+
+.task-detail .TMBlankLine {
+  height: 1.5em;
+}
+
+.task-detail .TMCommandBar {
+  background-color: var(--panel-sec-bg);
+  border-color: var(--panel-sec-bg);
+}
+
+.task-detail .TMCommandButton {
+  color: var(--text-color);
+  fill: var(--text-color);
+}
+
+.task-detail .TMCommandButton_Inactive {
+  background-color: var(--panel-sec-bg);
+}
+
+.task-detail .TMCommandButton_Active {
+  color: var(--app-primary-color);
+  fill: var(--app-primary-color);
+  background-color: var(--button-bg);
+}
+
+.task-detail .TMCommandButton_Disabled,
+.task-detail .TMMark {
+  color: var(--text-sec-color);
+  fill: var(--text-sec-color);
+}
+
+.task-detail .TMMark_TMH1,
+.task-detail .TMMark_TMH2,
+.task-detail .TMMark_TMUL,
+.task-detail .TMMark_TMOL,
+.task-detail .TMMark_TMBlockquote {
+  color: var(--app-primary-color);
+  font-weight: bold;
+}
+
+.task-detail .TMFencedCodeBacktick,
+.task-detail .TMFencedCodeTilde,
+.task-detail .TMIndentedCode,
+.task-detail .TMCode {
+  background-color: var(--input-disabled-bg);
+}
+
+.task-detail .TMLinkDestination,
+.task-detail .TMAutolink {
+  color: var(--app-primary-color);
+}
+
 .task-detail .textarea:focus {
   outline: 0;
   border-color: var(--app-primary-color);

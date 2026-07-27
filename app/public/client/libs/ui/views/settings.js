@@ -41,6 +41,8 @@ function ui_menu_select_settings() {
   let color = _settings_con.find('.user-form input[name="app-primary-color"]');
   let pro = _settings_con.find('#app-pro-mode');
   let confirmDelete = _settings_con.find('#app-confirm-delete');
+  let markdownEditor = _settings_con.find('#app-markdown-editor');
+  let markdownToolbar = _settings_con.find('#app-markdown-toolbar');
   let pomotick = _settings_con.find('#app-pomotick');
   let pomodoro = _settings_con.find('.user-form input[name="app-pomodoro-time"]');
   let pomoautostart = _settings_con.find('#app-pomodoro-autostart');
@@ -124,6 +126,38 @@ function ui_menu_select_settings() {
     else
       delete back.data.settings.confirmDelete;
     back.set_dirty();
+  };
+
+  // unbind
+  markdownEditor[0].onchange = function () {};
+  // set value
+  markdownEditor[0].checked = !back.data.settings.disableMarkdownEditor;
+  // bind
+  markdownEditor[0].onchange = function () {
+    if (!markdownEditor[0].checked)
+      back.data.settings.disableMarkdownEditor = true;
+    else
+      delete back.data.settings.disableMarkdownEditor;
+
+    markdownToolbar[0].disabled = !markdownEditor[0].checked;
+    back.set_dirty();
+    ui_details_update_markdown_editor();
+  };
+
+  // unbind
+  markdownToolbar[0].onchange = function () {};
+  // set value
+  markdownToolbar[0].checked = !back.data.settings.disableMarkdownToolbar;
+  markdownToolbar[0].disabled = !markdownEditor[0].checked;
+  // bind
+  markdownToolbar[0].onchange = function () {
+    if (!markdownToolbar[0].checked)
+      back.data.settings.disableMarkdownToolbar = true;
+    else
+      delete back.data.settings.disableMarkdownToolbar;
+
+    back.set_dirty();
+    ui_details_update_markdown_editor();
   };
 
   // unbind

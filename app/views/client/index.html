@@ -14,6 +14,7 @@
     <link href="libs/external/normalize.css" rel="stylesheet">
 
     <link href="libs/external/autoComplete.02.min.css" rel="stylesheet">
+    <link href="libs/external/tiny-mde.min.css?releaseDate=20260727" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/icon?family=Roboto:200,300,400,600,700,900" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/android-chrome-192x192.png" sizes="192x192">
@@ -371,9 +372,15 @@
               </div>
               <div class="pure-control-group">
                 <label>Notes</label>
-                <span name="notes" class="textarea" contenteditable
-                  style="resize: none;"
-                  onpaste="onPasteFormatRemovalHandler(this, event)"></span>
+                <div class="notes-editor">
+                  <div class="markdown-editor" style="display: none;">
+                    <div class="markdown-toolbar"></div>
+                    <div class="markdown-input"></div>
+                  </div>
+                  <span name="notes" class="textarea" contenteditable
+                    style="resize: none;"
+                    onpaste="onPasteFormatRemovalHandler(this, event)"></span>
+                </div>
               </div>
               <div class="pure-control-group">
                 <label>Created</label>
@@ -804,6 +811,23 @@
                     Confirm before deleting a task
                   </label>
                 </div>
+              </div>
+              <div class="pure-control-group">
+                <label for="app-markdown-editor" style="vertical-align: top;">Markdown</label>
+                <div class="stacked-checkboxes">
+                  <label for="app-markdown-editor" class="pure-checkbox">
+                    <input type="checkbox" id="app-markdown-editor">
+                    Enable Markdown editor
+                  </label>
+                  <label for="app-markdown-toolbar"
+                    class="pure-checkbox markdown-toolbar-setting">
+                    <input type="checkbox" id="app-markdown-toolbar">
+                    Show Markdown toolbar
+                  </label>
+                </div>
+                <span class="pure-form-message-inline proMode-hide">
+                  Synced across all devices.
+                </span>
               </div>
               <div class="pure-control-group">
                 <label for="app-pomotick" style="vertical-align: top;">PomoTick</label>
@@ -1370,6 +1394,7 @@
     <script src="libs/external/smart-duration.js?releaseDate=20250329"></script>
     <script src="libs/external/ffflate.min.js?releaseDate=20250329"></script>
     <script src="libs/external/tel.min.js?releaseDate=20250616"></script>
+    <script src="libs/external/tiny-mde.min.js?releaseDate=20260727"></script>
 
     <script src="libs/commons.js?releaseDate=20250329"></script>
 
@@ -1389,8 +1414,8 @@
     <script src="libs/ui/filter.js?releaseDate=20250329"></script>
 
     <script src="libs/ui/views/home.js?releaseDate=20250604"></script>
-    <script src="libs/ui/views/details.js?releaseDate=20250604"></script>
-    <script src="libs/ui/views/settings.js?releaseDate=20250604"></script>
+    <script src="libs/ui/views/details.js?releaseDate=20260727"></script>
+    <script src="libs/ui/views/settings.js?releaseDate=20260727"></script>
     <script src="libs/ui/views/metrics.js?releaseDate=20250329"></script>
 
     <script src="libs/ui/views/project_rules.js?releaseDate=20250329"></script>
@@ -1398,7 +1423,7 @@
     <script src="libs/ui/layout.js?releaseDate=20250329"></script>
     <script src="libs/ui/timer.js?releaseDate=20250524R1"></script>
     <script src="libs/ui/themes/loader.js?releaseDate=20250329"></script>
-    <script src="libs/index.js?releaseDate=20250604R1"></script>
+    <script src="libs/index.js?releaseDate=20260727R2"></script>
 
     <!-- lazy loads stylesheets & images -->
     <script src="libs/ui/css.js?releaseDate=20250524"></script>

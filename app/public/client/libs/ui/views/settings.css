@@ -3,3 +3,7 @@
     width: 100%;
   }
 }
+
+.settings .markdown-toolbar-setting {
+  padding-left: 1.5em;
+}
