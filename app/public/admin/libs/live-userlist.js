@@ -1,11 +1,15 @@
 
 let _admin_userlist_data_raw = null;
 let _admin_userlist_data_uptime = null;
+let _admin_userlist_total_users = null;
+let _admin_userlist_signup_status = null;
 let _admin_userlist_data = null;
 let _admin_userlist_time = null;
 let _admin_userlist_proctime = null;
 let _admin_userlist_intervalid = null;
 let _admin_userlist_timeoutid = null;
+let _admin_userlist_selected = new Set();
+let _admin_userlist_selected_detail = null;
 
 $('#excludeUsersRegex').val(localStorage.admin_excludeUsersRegex || ''),
 $('#includeUsersRegex').val(localStorage.admin_includeUsersRegex || ''),
@@ -61,14 +65,26 @@ function _admin_userlist_preset_save() {
 }
 
 function _admin_userlist_rerender() {
-  $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago. ${_admin_userlist_proctime}ms. ${_admin_userlist_data_uptime?.trim()}`);
+  let signupText = 'Last signup: unavailable. Signup limit: unavailable.';
+  if (_admin_userlist_signup_status) {
+    const signup = _admin_userlist_signup_status;
+    const lastSignup = signup.last_signup > 0
+      ? `${new Date(signup.last_signup).toLocaleString()} (${timeIntervalStringShort(timestamp(), signup.last_signup, Infinity)} ago)`
+      : 'never';
+    const limitStatus = signup.available
+      ? 'available'
+      : `limited for ${timeIntervalStringShort(signup.limited_until, timestamp(), Infinity)}`;
+    signupText = `Last signup: ${lastSignup}. Signup limit: ${limitStatus} (${signup.signup_count}/${signup.signup_cap} used).`;
+  }
+  $('.live-userlist pre.status').text(`Updated ${timeIntervalStringShort(timestamp(), _admin_userlist_time)} ago. ${_admin_userlist_proctime}ms. Total users: ${_admin_userlist_total_users ?? '—'}. ${signupText} ${_admin_userlist_data_uptime?.trim()}`);
 
   if (!Array.isArray(_admin_userlist_data))
     return;
 
   let html = '';
 
-  for (const user of _admin_userlist_data) {
+  for (let userIndex = 0; userIndex < _admin_userlist_data.length; userIndex++) {
+    const user = _admin_userlist_data[userIndex];
     const data = user.data;
 
     let started = '<td data-sort="0">';
@@ -89,7 +105,9 @@ function _admin_userlist_rerender() {
 
     html += `
     <tr>
-      <td><a target="_blank" href="../client/?su=${sanitizeHTMLSafe(user.user)}">${sanitizeHTMLSafe(user.user)}</a>
+      <td><input type="checkbox" class="user-delete-checkbox" data-user-index="${userIndex}" ${user.is_root ? 'disabled title="Root users cannot be deleted"' : ''} ${_admin_userlist_selected.has(user.user) ? 'checked' : ''}>
+      <td><button type="button" class="user-detail-button" data-user-index="${userIndex}">${sanitizeHTMLSafe(user.user)}</button> <a target="_blank" href="../client/?su=${encodeURIComponent(user.user)}">Client</a>
+      <td>${sanitizeHTMLSafe(user.notes || '')}
       <td data-sort="${data.last_visited}">${new Date(data.last_visited).toLocaleString()} (${timeIntervalStringShort(timestamp(), data.last_visited, Infinity)} ago)
       <td data-sort="${data.last_updated}">${new Date(data.last_updated).toLocaleString()} (${timeIntervalStringShort(timestamp(), data.last_updated, Infinity)} ago)
       ${started}
@@ -102,7 +120,125 @@ function _admin_userlist_rerender() {
 
   $('.live-userlist table tbody').html(html);
 
+  $('.user-delete-checkbox').change(function () {
+    const selectedUser = _admin_userlist_data[$(this).data('user-index')];
+    if (this.checked)
+      _admin_userlist_selected.add(selectedUser.user);
+    else
+      _admin_userlist_selected.delete(selectedUser.user);
+    _admin_userlist_update_select_all();
+  });
+  $('.user-detail-button').click(function () {
+    admin_user_details_show($(this).data('user-index'));
+  });
+  _admin_userlist_update_select_all();
+
+  if (_admin_userlist_selected_detail) {
+    const selectedIndex = _admin_userlist_data.findIndex(user => user.user === _admin_userlist_selected_detail);
+    if (selectedIndex >= 0)
+      admin_user_details_show(selectedIndex);
+  }
+
   resortTables();
+}
+
+function _admin_userlist_update_select_all() {
+  const checkboxes = $('.user-delete-checkbox:not(:disabled)');
+  $('#selectAllUsers').prop('checked', checkboxes.length > 0 && checkboxes.filter(':checked').length === checkboxes.length);
+}
+
+$('#selectAllUsers').change(function () {
+  const checked = this.checked;
+  $('.user-delete-checkbox:not(:disabled)').each(function () {
+    this.checked = checked;
+    const selectedUser = _admin_userlist_data[$(this).data('user-index')];
+    if (checked)
+      _admin_userlist_selected.add(selectedUser.user);
+    else
+      _admin_userlist_selected.delete(selectedUser.user);
+  });
+});
+
+function admin_user_details_show(userIndex) {
+  const user = _admin_userlist_data[userIndex];
+  if (!user)
+    return;
+
+  _admin_userlist_selected_detail = user.user;
+  const form = $('#editUserForm').show();
+  form.find('[data-field="username"]').text(user.user);
+  form.find('[data-field="create"]').text(new Date(user.create).toLocaleString());
+  form.find('[data-field="lastVisited"]').text(new Date(user.data.last_visited).toLocaleString());
+  form.find('[data-field="lastUpdated"]').text(new Date(user.data.last_updated).toLocaleString());
+  form.find('[name="username"]').val(user.user);
+  form.find('[name="email"]').val(user.email).prop('disabled', user.is_root);
+  form.find('[name="status"]').val(user.status).prop('disabled', user.is_root);
+  form.find('[name="notes"]').val(user.notes).prop('disabled', user.is_root);
+  form.find('button[type="submit"]').prop('disabled', user.is_root);
+}
+
+$('#editUserForm').submit(function (event) {
+  event.preventDefault();
+  $.ajax({
+    type: 'POST',
+    url: 'updateUser',
+    data: $(this).serialize(),
+  }).fail(function (jqXHR, textStatus, errorThrown) {
+    alert(`Update failed - (${textStatus}: ${errorThrown} - ${jqXHR.responseText})`);
+  }).done(function () {
+    alert('ok');
+    _admin_userlist_fetch();
+  });
+});
+
+function admin_delete_selected() {
+  const usernames = $('.user-delete-checkbox:checked').map(function () {
+    return _admin_userlist_data[$(this).data('user-index')].user;
+  }).get();
+  if (!usernames.length) {
+    alert('Select at least one user.');
+    return;
+  }
+  if (!confirm(`Permanently delete ${usernames.length} user(s) and their stored data?\n\n${usernames.join('\n')}`))
+    return;
+
+  $.ajax({
+    type: 'POST',
+    url: 'deleteUsers',
+    contentType: 'application/json',
+    data: JSON.stringify({ usernames }),
+  }).fail(function (jqXHR, textStatus, errorThrown) {
+    alert(`Delete failed - (${textStatus}: ${errorThrown} - ${jqXHR.responseText})`);
+  }).done(function (result) {
+    for (const deleted of result.deleted)
+      _admin_userlist_selected.delete(deleted);
+    if (result.failed.length)
+      alert(result.failed.map(item => `${item.username}: ${item.reason}`).join('\n'));
+    else
+      alert(`Deleted ${result.deleted.length} user(s).`);
+    _admin_userlist_fetch();
+  });
+}
+
+function admin_raise_signup_cap() {
+  const button = $('#raiseSignupCap').prop('disabled', true);
+  $.post('./raiseSignupCap')
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      alert(`Could not raise signup cap - (${textStatus}: ${errorThrown} - ${jqXHR.responseText})`);
+    })
+    .done(function (result) {
+      if (_admin_userlist_signup_status) {
+        _admin_userlist_signup_status.signup_cap = result.signup_cap;
+        _admin_userlist_signup_status.available =
+          _admin_userlist_signup_status.signup_count < result.signup_cap
+          || timestamp() >= _admin_userlist_signup_status.limited_until;
+      }
+      _admin_userlist_rerender();
+      alert(`Signup cap raised to ${result.signup_cap} until the server restarts.`);
+    })
+    .always(function () {
+      button.prop('disabled', false);
+    });
 }
 
 function _admin_userlist_fetch() {
@@ -127,10 +263,14 @@ function _admin_userlist_fetch() {
     {
       exclude_users: $('#excludeUsersRegex').val(),
       include_users: $('#includeUsersRegex').val(),
+      nonzero_last_visit: $('#nonzeroLastVisit').is(':checked'),
+      nonzero_last_write: $('#nonzeroLastWrite').is(':checked'),
     },
     function (data) {
       data = JSON.parse(data)
       _admin_userlist_data_uptime = data.uptime;
+      _admin_userlist_total_users = data.total_users;
+      _admin_userlist_signup_status = data.signup_status;
       data = JSON.stringify(data.data);
 
       if (_admin_userlist_data_raw != data)

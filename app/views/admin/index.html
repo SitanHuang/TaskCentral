@@ -38,15 +38,21 @@
       <br>
       <input type="text" id="includeUsersRegex" placeholder="username inclusion wildcards, separated by comma">
       <input type="text" id="excludeUsersRegex" placeholder="username exclusion wildcards, separated by comma">
+      <label><input type="checkbox" id="nonzeroLastVisit" checked> Nonzero last visit only</label>
+      <label><input type="checkbox" id="nonzeroLastWrite" checked> Nonzero last write only</label>
       <select id="userListPresets"></select>
       <button type="button" onclick="_admin_userlist_preset_load()">Load</button>
       <button type="button" onclick="_admin_userlist_preset_save()">Save</button>
       <button type="button" onclick="_admin_userlist_preset_del()">Delete</button>
+      <button type="button" id="raiseSignupCap" onclick="admin_raise_signup_cap()" title="The cap resets to 1 when the server restarts">Raise signup cap (+1)</button>
       <pre class="status"></pre>
+      <button type="button" onclick="admin_delete_selected()">Delete selected users</button>
       <table class="sortable">
         <thead>
           <tr>
+            <th data-sort-method="none"><input type="checkbox" id="selectAllUsers" aria-label="Select all users"></th>
             <th>User</th>
+            <th>Notes</th>
             <th>Last Visit</th>
             <th>Last Write</th>
             <th>Started</th>
@@ -61,11 +67,34 @@
     </div>
     <div class="add-user">
       <h1>Add user</h1>
-      <input type="text" placeholder="username" id="addUsername">
-      <input type="text" placeholder="password" id="addPassword">
+      <input type="text" maxlength="24" placeholder="username" id="addUsername">
+      <input type="text" minlength="8" maxlength="24" placeholder="password" id="addPassword">
       <input type="number" step="1" min="1" max="98" placeholder="status" id="addStatus">
-      <input type="email" placeholder="email" id="addEmail">
+      <input type="email" maxlength="24" placeholder="email" id="addEmail">
+      <input type="text" placeholder="notes" id="addNotes">
       <button type="button" onclick="admin_add_user_submit()">Add</button>
+      <p style="color: #777;">
+        Storage levels: 1 = 126.4 KiB; 2 = 505.7 KiB; 3 = 1.11 MiB;
+        4 = 1.98 MiB; 5 = 3.09 MiB; 6 = 4.44 MiB; 7 = 6.05 MiB;
+        8 = 7.90 MiB; 9 = 10.00 MiB. Public signups start at level 3.
+      </p>
+    </div>
+
+    <div class="edit-user">
+      <h1>User details</h1>
+      <p>Select a username in the user list to view and edit its details.</p>
+      <form id="editUserForm" style="display: none;">
+        <p><strong>Username:</strong> <span data-field="username"></span></p>
+        <p><strong>Created:</strong> <span data-field="create"></span></p>
+        <p><strong>Last visit:</strong> <span data-field="lastVisited"></span></p>
+        <p><strong>Last write:</strong> <span data-field="lastUpdated"></span></p>
+        <label>Email <input type="email" maxlength="24" name="email"></label>
+        <label>Storage level <input type="number" step="1" min="1" max="98" name="status" required></label>
+        <label style="display: block; margin-top: 10px;">Notes</label>
+        <textarea name="notes" rows="8" style="width: min(600px, 100%);"></textarea>
+        <input type="hidden" name="username">
+        <button type="submit">Save changes</button>
+      </form>
     </div>
 
     <script src="libs/live-userlist.js"></script>

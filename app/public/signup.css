@@ -1,0 +1,109 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #222;
+  background: #f3f3f3;
+  font: 16px/1.5 Arial, sans-serif;
+}
+
+main {
+  width: min(640px, calc(100% - 32px));
+  margin: 48px auto;
+  padding: 28px;
+  border: 1px solid #aaa;
+  background: #fff;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+
+a {
+  color: #0645ad;
+}
+
+.important,
+.error {
+  font-weight: bold;
+}
+
+form {
+  margin-top: 28px;
+  border-top: 1px solid #bbb;
+  padding-top: 22px;
+}
+
+label,
+legend {
+  display: block;
+  margin: 14px 0 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #777;
+  border-radius: 0;
+  font: inherit;
+}
+
+small {
+  color: #555;
+}
+
+fieldset {
+  margin: 20px 0;
+  padding: 8px 14px 14px;
+  border: 1px solid #aaa;
+  border-radius: 0;
+}
+
+fieldset legend {
+  margin: 0;
+  padding: 0 5px;
+}
+
+fieldset .choice {
+  margin: 7px 0;
+  font-weight: normal;
+}
+
+button,
+.button-link {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid #333;
+  border-radius: 0;
+  color: #fff;
+  background: #333;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+footer {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #bbb;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+footer p {
+  margin: 4px 0;
+}
+
+@media (max-width: 500px) {
+  main {
+    margin: 16px auto;
+    padding: 20px;
+  }
+}

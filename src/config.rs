@@ -1,4 +1,5 @@
 use dotenv;
+use std::sync::atomic::{AtomicU32, Ordering};
 
 use crate::db::DBContext;
 use crate::helpers::password_hash;
@@ -12,6 +13,8 @@ pub struct AppContext {
     db: DBContext,
 
     pub app_root: String,
+
+    signup_cap: AtomicU32,
 
     // Clone operation is cheap as it only creates thread-safe reference counted
     // pointers to the shared internal data structures.
@@ -44,6 +47,7 @@ impl AppContext {
             db: DBContext::init(),
             app_root: std::env::var("APP_DIR")
                 .expect("Environment variable APP_DIR is not set!"),
+            signup_cap: AtomicU32::new(1),
         }
     }
 
@@ -53,5 +57,18 @@ impl AppContext {
 
     pub fn get_session_store_size(&self) -> u64 {
         self.session_store_size
+    }
+
+    pub fn signup_cap(&self) -> u32 {
+        self.signup_cap.load(Ordering::Relaxed)
+    }
+
+    pub fn raise_signup_cap(&self) -> u32 {
+        self.signup_cap
+            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |cap| {
+                cap.checked_add(1)
+            })
+            .map(|previous| previous + 1)
+            .unwrap_or(u32::MAX)
     }
 }

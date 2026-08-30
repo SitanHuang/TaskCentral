@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TaskCentral Account Sign Up</title>
+    <link rel="stylesheet" href="/signup.css">
+  </head>
+  <body>
+    <main>
+      <h1>TaskCentral Account Sign Up</h1>
+
+      <p>
+        This site is a perpetually free public host of the open-source
+        <a href="https://github.com/SitanHuang/TaskCentral">TaskCentral project on GitHub</a>.
+        TaskCentral is a task-management and time-tracking application designed to help organize work and focus.
+      </p>
+      <p>Already have an account? Go to the <a href="/client/">Client Area</a>.</p>
+
+      <p>
+        Due to limited server capacity, account registration needs to go through an approval process.
+        You will receive an email with login instructions. Thank you for your interest.
+      </p>
+      <p class="important">IMPORTANT: Make sure to check your spam folder for emails!</p>
+
+      <footer>
+        <p>Site maintained by Sitan Huang. Service is provided perpetually free.</p>
+        <p>Contact: <a href="mailto:huangsitan@gmail.com">huangsitan@gmail.com</a> or <a
+            href="mailto:huans16@stanford.edu">huans16@stanford.edu</a></p>
+      </footer>
+
+      <form action="/register" method="post">
+        <label for="username">Desired username</label>
+        <input id="username" name="username" type="text" minlength="8" maxlength="24" autocomplete="username" required>
+        <small>8–24 characters</small>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" minlength="8" maxlength="24" autocomplete="new-password" required>
+        <small>8–24 characters</small>
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" maxlength="24" autocomplete="email" required>
+
+        <label for="purpose">Optional: What are you planning to use TaskCentral for? Work? School? Personal?</label>
+        <input id="purpose" name="purpose" type="text" maxlength="24">
+
+        <fieldset>
+          <legend>Optional: Affiliation?</legend>
+          <label class="choice"><input type="radio" name="affiliation" value="vanderbilt"> Vanderbilt University</label>
+          <label class="choice"><input type="radio" name="affiliation" value="stanford"> Stanford University</label>
+          <label class="choice"><input type="radio" name="affiliation" value="custom"> Custom</label>
+          <input id="customAffiliation" name="custom_affiliation" type="text" maxlength="24" placeholder="Custom affiliation" disabled>
+        </fieldset>
+
+        <button type="submit">Sign Up</button>
+      </form>
+    </main>
+
+    <script>
+      const affiliationOptions = document.querySelectorAll('input[name="affiliation"]');
+      const customAffiliation = document.querySelector('#customAffiliation');
+      for (const option of affiliationOptions) {
+        option.addEventListener('change', () => {
+          const customSelected = option.value === 'custom' && option.checked;
+          customAffiliation.disabled = !customSelected;
+          customAffiliation.required = customSelected;
+          if (!customSelected)
+            customAffiliation.value = '';
+        });
+      }
+    </script>
+  </body>
+</html>
